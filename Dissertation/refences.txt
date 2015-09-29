@@ -1,0 +1,23 @@
+http://www.biometric-solutions.com/solutions/index.php?story=face_recognition
+http://www.face-rec.org/algorithms/
+http://en.wikipedia.org/wiki/Facial_recognition_system
+http://teyvoniathomas.com/index.php/projects/56-opencv-on-android.html
+http://engineervisions.blogspot.co.uk/2013/11/javacv-tutorials.html
+http://www.kogics.net/sf:kojo
+http://www.scala-lang.org/documentation/
+http://opencv.org/opencv-java-api.html
+http://docs.opencv.org/doc/tutorials/introduction/desktop_java/java_dev_intro.html
+
+BDD(behavour driven development) testing, SSIS(SQL Server Integration Services)
+https://msdn.microsoft.com/en-us/library/ms169917.aspx
+http://blog.hcilab.org/bastian/2012/06/installing-opencv-2-4-windows-7-visual-studio/
+https://github.com/Itseez/opencv
+
+
+Here is a list of commercial vendors that provide off-the-shelf packages for facial recognition which run on Windows:
+	Cybula - Information on their Facial Recognition SDK. This is a company founded by a University Professor and as such their website looks unprofessional. There's no pricing information or demo that you can download. You'll need to contact them for pricing information.
+	NeuroTechnology - Information on their Facial Recognition SDK. This company has both up-front pricing information as well as an actual 30 day trial of their SDK.
+	Pittsburgh Pattern Recognition - (Acquired by Google) Information on their Facial Tracking and Recognition SDK. The demos that they provide help you evaluate their technology but not their SDSK. You'll need to contact them for pricing information.
+	Sensible Vision - Information on their SDK. Their site allows you to easily get a price quote and you can also order an evaluation kit that will help you evaluate their technology.
+
+https://www3.ntu.edu.sg/home/ehchua/programming/java/J4a_GUI.html
