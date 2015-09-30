@@ -21,3 +21,10 @@ Here is a list of commercial vendors that provide off-the-shelf packages for fac
 	Sensible Vision - Information on their SDK. Their site allows you to easily get a price quote and you can also order an evaluation kit that will help you evaluate their technology.
 
 https://www3.ntu.edu.sg/home/ehchua/programming/java/J4a_GUI.html
+
+PDF SOURCE LINKS:
+PDF: PFC-IonMarques.pdf
+Link: www.ehu.eus/ccwintco/uploads/e/eb/PFC-IonMarques.pdf
+
+Face Recognition Background info sourced from:
+https://en.wikipedia.org/wiki/Facial_recognition_system
