@@ -28,3 +28,9 @@ Link: www.ehu.eus/ccwintco/uploads/e/eb/PFC-IonMarques.pdf
 
 Face Recognition Background info sourced from:
 https://en.wikipedia.org/wiki/Facial_recognition_system
+
+LDA Algorithms:
+http://ieeexplore.ieee.org/xpl/articleDetails.jsp?reload=true&arnumber=5256630
+
+Face recognition constraints:
+http://www.pbs.org/wgbh/nova/next/tech/the-limits-of-facial-recognition/
