@@ -1,5 +1,6 @@
 http://www.biometric-solutions.com/solutions/index.php?story=face_recognition
-http://www.face-rec.org/algorithms/
+
+
 http://en.wikipedia.org/wiki/Facial_recognition_system
 http://teyvoniathomas.com/index.php/projects/56-opencv-on-android.html
 http://engineervisions.blogspot.co.uk/2013/11/javacv-tutorials.html
