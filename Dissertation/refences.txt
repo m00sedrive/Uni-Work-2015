@@ -35,3 +35,19 @@ http://ieeexplore.ieee.org/xpl/articleDetails.jsp?reload=true&arnumber=5256630
 
 Face recognition constraints:
 http://www.pbs.org/wgbh/nova/next/tech/the-limits-of-facial-recognition/
+
+JavaFX Official Oracle Documentation
+http://docs.oracle.com/javafx/2/overview/jfxpub-overview.htm
+
+C++ GUI implementation using MFC as GUI API
+http://depts.washington.edu/cmmr/biga/chapter_tutorial/1.C++_MFC_D3DOGL/1.StepByStepGuide/index.html
+
+Java GUI Swing/JFC oracle documentation
+http://docs.oracle.com/javase/tutorial/uiswing/
+
+viola-jones
+https://en.wikipedia.org/wiki/Viola%E2%80%93Jones_object_detection_framework
+http://www.cs.columbia.edu/~jebara/htmlpapers/UTHESIS/node30.html
+
+viola-jones OpenCV
+http://docs.opencv.org/master/d7/d8b/tutorial_py_face_detection.html#gsc.tab=0
