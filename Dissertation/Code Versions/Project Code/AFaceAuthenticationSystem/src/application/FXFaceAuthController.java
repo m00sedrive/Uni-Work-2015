@@ -8,40 +8,35 @@ import org.opencv.core.Mat;
 import org.opencv.videoio.VideoCapture;
 import org.opencv.core.MatOfByte;
 import org.opencv.imgcodecs.Imgcodecs;
-import org.opencv.imgproc.Imgproc;
 
 import javafx.application.Platform;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
+
 public class FXFaceAuthController {
 	
-	@FXML
-	private ImageView originalImage;
-	
-	@FXML 
-	private ImageView capturedImage;
-	
-	@FXML
-	private ImageView greyscale;
-	
-	@FXML
-	private ImageView canny;
-	
-	@FXML
-	private Button cameraButton;
-	
-	@FXML
-	private Button captureImageButton;
-	
+	// FXFaceAuth.fxml variables
+	@FXML private TextField statsTextField;
+	@FXML private ImageView originalImage;
+	@FXML private ImageView capturedImage;
+	@FXML private ImageView greyscale;
+	@FXML private ImageView canny;
+	@FXML private Button cameraButton;
+	@FXML private Button captureImageButton;
+	@FXML private Button logout;
+		
 	//class variables
 	private Image CameraStream;
 	private boolean cameraActive;
 	private Timer timer;
 	
-	//object that handles video capture
+	//object for handling video capture
 	private VideoCapture vidCapture = new VideoCapture();
 	
 	@FXML
@@ -96,6 +91,9 @@ public class FXFaceAuthController {
 			else 
 			{
 				System.out.println("Failed to establish camera connection!");
+				//show user dialog alert with message instead of print to console!
+				showInformationAlert("Failed to establish camera connection!");
+				
 			}
 		}
 		else
@@ -131,15 +129,25 @@ public class FXFaceAuthController {
 		else
 		{
 			System.out.println("Camera is not active!");
+			showInformationAlert("Camer is not active!");
 		}
+	}
+	
+	private void showInformationAlert(String string)
+	{
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Error Alert");
+		alert.setHeaderText(string);
+		String s = "Would be could to display some more details here!! ";
+		alert.setContentText(s);
+		alert.show();
 	}
 	
 	private Image grabFrame()
 	{
 		Image grabbedFrame = null;
 		Mat frameCanvas = new Mat();
-		Mat greyScale = new Mat();
-		
+				
 		//check video capture is open
 		if(vidCapture.isOpened())
 		{
@@ -152,8 +160,14 @@ public class FXFaceAuthController {
 				if(!frameCanvas.empty())
 				{
 					//This is where analysis such as edge detection, greyscale and image analysis is applied
-						//Convert canvas matrix to JavaFX Image
-						grabbedFrame = Mat2Image(frameCanvas);
+					
+					//instantiate faceDetector object
+					//FaceDetector faceDetect = new FaceDetector();
+					//call face detection function
+					//faceDetect.Detection(frameCanvas);
+					
+					//Convert canvas matrix to JavaFX Image
+					grabbedFrame = Mat2Image(frameCanvas);
 						
 				}
 			}
@@ -178,16 +192,5 @@ public class FXFaceAuthController {
 		
 		//build image from encoded buffered data		
         return new Image(new ByteArrayInputStream(buffer.toArray()));
-	}
-	
-	// this function is currently useless and needs re thinking
-	private Mat Image2Mat(Image image)
-	{
-		//temporary buffer
-		Mat matty = null;
-		//conversion?
-		//build matrix
-		
-		return matty;
 	}
 }

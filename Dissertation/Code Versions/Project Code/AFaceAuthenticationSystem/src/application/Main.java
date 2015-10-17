@@ -12,6 +12,7 @@ import javafx.fxml.FXMLLoader;
 public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
+				
 		try {
 			BorderPane root = (BorderPane)FXMLLoader.load(getClass().getResource("FXFaceAuth.fxml"));
 			Scene scene = new Scene(root,400,400);
@@ -22,8 +23,10 @@ public class Main extends Application {
 			primaryStage.setWidth(900);
 			primaryStage.show();
 		} catch(Exception e) {
+			System.out.println("Error");
 			e.printStackTrace();
 		}
+	
 	}
 	
 	public static void main(String[] args) {
