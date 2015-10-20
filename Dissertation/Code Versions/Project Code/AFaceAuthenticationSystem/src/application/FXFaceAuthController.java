@@ -1,8 +1,12 @@
 package application;
 
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import javax.imageio.ImageIO;
 
 import org.opencv.core.Mat;
 import org.opencv.videoio.VideoCapture;
@@ -35,9 +39,12 @@ public class FXFaceAuthController {
 	private Image CameraStream;
 	private boolean cameraActive;
 	private Timer timer;
+	private Mat grabbedFrame;
 	
 	//object for handling video capture
 	private VideoCapture vidCapture = new VideoCapture();
+	//object for handling Face detection
+	FaceDetector faceDetector = new FaceDetector();
 	
 	@FXML
 	private void startCamera()
@@ -59,7 +66,7 @@ public class FXFaceAuthController {
 					public void run()
 					{
 						// set cameras stream image to grabbedFrame image 
-						CameraStream = grabFrame();
+						CameraStream = Mat2Image(grabFrame());
 						Platform.runLater(new Runnable(){
 							@Override
 							public void run () {
@@ -116,21 +123,9 @@ public class FXFaceAuthController {
 	}
 	
 	@FXML
-	private void captureImage()
+	private void saveImage()
 	{
-		//if camera is active
-		if(this.cameraActive)
-		{
-			//create temp image and assign grabbed image
-			Image temp = grabFrame();
-			//set captured image view
-			capturedImage.setImage(temp);
-		}
-		else
-		{
-			System.out.println("Camera is not active!");
-			showInformationAlert("Camer is not active!");
-		}
+		
 	}
 	
 	private void showInformationAlert(String string)
@@ -143,9 +138,8 @@ public class FXFaceAuthController {
 		alert.show();
 	}
 	
-	private Image grabFrame()
+	private Mat grabFrame()
 	{
-		Image grabbedFrame = null;
 		Mat frameCanvas = new Mat();
 				
 		//check video capture is open
@@ -156,30 +150,20 @@ public class FXFaceAuthController {
 				//read and store video capture frame into matrix
 				this.vidCapture.read(frameCanvas);
 				
-				//Check frame is not empty
-				if(!frameCanvas.empty())
-				{
-					//This is where analysis such as edge detection, greyscale and image analysis is applied
-					
-					//instantiate faceDetector object
-					//FaceDetector faceDetect = new FaceDetector();
-					//call face detection function
-					//faceDetect.Detection(frameCanvas);
-					
-					//Convert canvas matrix to JavaFX Image
-					grabbedFrame = Mat2Image(frameCanvas);
-						
-				}
+					//Check frame is not empty
+					if(!frameCanvas.empty())
+					{
+						// detect and display face detections
+						faceDetector.detection(frameCanvas);
+					}
 			}
 			catch (Exception e) 
 			{
 				System.err.print("ERROR");
 				e.printStackTrace();
 			}
-			
 		}
-		
-		return grabbedFrame;
+		return frameCanvas;
 	}
 	
 	private Image Mat2Image(Mat frame)
@@ -192,5 +176,26 @@ public class FXFaceAuthController {
 		
 		//build image from encoded buffered data		
         return new Image(new ByteArrayInputStream(buffer.toArray()));
+	}
+		
+	public BufferedImage getBufferedImage(Mat amatrix, String fileExtension){
+		
+		Mat matrix = amatrix;
+		String fileExten = fileExtension;
+		MatOfByte mob = new MatOfByte();
+		
+		//convert the matrix into a matrix of bytes appropriate for
+		//this file extension
+		Imgcodecs.imencode(fileExten, matrix ,mob); 
+		//convert the "matrix of bytes" into a byte array
+		 byte[] byteArray = mob.toArray();
+		 BufferedImage bufImage = null;
+		 try {
+		        InputStream in = new ByteArrayInputStream(byteArray);
+		        bufImage = ImageIO.read(in);
+		    } catch (Exception e) {
+		        e.printStackTrace();
+		    }
+		 return bufImage;
 	}
 }

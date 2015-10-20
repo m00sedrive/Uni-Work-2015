@@ -70,3 +70,6 @@ https://blog.openshift.com/day-12-opencv-face-detection-for-java-developers/
 
 Core.rectangle funcitionlity no longer supported in openCv 3
 https://fossies.org/diffs/opencv/2.4.11_vs_3.0.0/samples/java/sbt/src/main/java/DetectFaceDemo.java-diff.html
+
+Matrix to buffered image
+https://sites.google.com/site/pdopencvjava/mat-to-java-bufferedimage
