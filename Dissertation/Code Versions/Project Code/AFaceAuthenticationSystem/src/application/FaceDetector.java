@@ -1,8 +1,8 @@
 package application;
 
+
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfRect;
-import org.opencv.core.Point;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
@@ -20,7 +20,7 @@ public class FaceDetector {
 		
 		//create cascade classifier
 		CascadeClassifier faceDetector = new CascadeClassifier();
-		//path to classifiers
+		//absolute path to classifiers
 		String classifierPath = "C:\\Users\\user\\workspace\\AFaceAuthenticationSystem\\src\\application\\Resources\\HaarCascades\\haarcascade_frontalface_alt.xml";
 		//load classifiers
 		faceDetector.load(classifierPath);
@@ -33,7 +33,7 @@ public class FaceDetector {
         Imgproc.cvtColor(imageMat, greyScaleImg, Imgproc.COLOR_BGR2GRAY);
         // equalize the frame histogram to improve the result
         Imgproc.equalizeHist(greyScaleImg, greyScaleImg);
-		
+        
         // compute minimum face size (20% of the frame height)
         if (absoluteFaceSize == 0)
         {
@@ -48,15 +48,24 @@ public class FaceDetector {
         faceDetector.detectMultiScale(greyScaleImg, faceDetections, 1.1, 2, 0 | Objdetect.CASCADE_SCALE_IMAGE, new Size(
                         absoluteFaceSize, absoluteFaceSize), new Size());
 
-		
-		//iterate through the image
-		for (Rect rect: faceDetections.toArray())
+		//create array of face detections computed
+		Rect[] faceArray = faceDetections.toArray(); 
+        //iterate through the image
+		for (int i=0; i<faceArray.length; i++)
 		{
-			Imgproc.rectangle(imageMat, new Point(rect.x, rect.y), new Point(rect.x + rect.width, rect.y + rect.height), new Scalar(0, 250, 0));
+			//find rectangle contours of faces
+			Imgproc.rectangle(imageMat, faceArray[i].tl(), faceArray[i].br(), new Scalar(0, 250, 0, 255), 3);
+			//crop image of face
+			Mat crop = imageMat.submat(faceArray[i]);
+			Mat greyCrop = greyScaleImg.submat(faceArray[i]);
+			
+			//save grey scale face crop
+			Imgcodecs.imwrite("DetectedFaceGreyScale.jpg", greyCrop);
+			//save face crop
+			Imgcodecs.imwrite("DetectedFace.jpg", crop);
 		}
-		
+					
 		//user details can be mapped to image name when acquired from login screen
-		Imgcodecs.imwrite("DetectedFace.jpg", imageMat);
 	}
 	
 }
