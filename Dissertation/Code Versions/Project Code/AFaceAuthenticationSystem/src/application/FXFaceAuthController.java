@@ -9,9 +9,6 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
-
-import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.videoio.VideoCapture;
 import org.opencv.core.MatOfByte;
@@ -93,12 +90,13 @@ public class FXFaceAuthController {
 						{
 							//get image and put in matrix
 							Mat setOfImg = grabFrame();
+							faceDetector.detection(setOfImg);
 							//write image to file
 							Imgcodecs.imwrite("CapturedImgSet" + imgCounter + ".jpg", setOfImg);
 							//increment counter
 							imgCounter++;
 						}
-
+					
 					}
 				};
 				this.timer = new Timer();
@@ -111,7 +109,6 @@ public class FXFaceAuthController {
 				System.out.println("Failed to establish camera connection!");
 				//show user dialog alert with message instead of print to console!
 				showInformationAlert("Failed to establish camera connection!");
-				
 			}
 		}
 		else
@@ -131,6 +128,34 @@ public class FXFaceAuthController {
 			//clear the image area
 			originalImage.setImage(null);
 		}
+	}
+	
+	private Mat grabFrame()
+	{
+		Mat frameCanvas = new Mat();
+				
+		//check video capture is open
+		if(vidCapture.isOpened())
+		{
+			try 
+			{
+				//read and store video capture frame into matrix
+				this.vidCapture.read(frameCanvas);
+				
+					//Check frame is not empty
+					if(!frameCanvas.empty())
+					{
+						// detect and display face detections
+						faceDetector.detection(frameCanvas);
+					}
+			}
+			catch (Exception e) 
+			{
+				System.err.print("ERROR");
+				e.printStackTrace();
+			}
+		}
+		return frameCanvas;
 	}
 	
 	@FXML
@@ -185,37 +210,9 @@ public class FXFaceAuthController {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Error Alert");
 		alert.setHeaderText(string);
-		String s = "Would be could to display some more details here!! ";
+		String s = "Would be good to display some more details here!! ";
 		alert.setContentText(s);
 		alert.show();
-	}
-	
-	private Mat grabFrame()
-	{
-		Mat frameCanvas = new Mat();
-				
-		//check video capture is open
-		if(vidCapture.isOpened())
-		{
-			try 
-			{
-				//read and store video capture frame into matrix
-				this.vidCapture.read(frameCanvas);
-				
-					//Check frame is not empty
-					if(!frameCanvas.empty())
-					{
-						// detect and display face detections
-						faceDetector.detection(frameCanvas);
-					}
-			}
-			catch (Exception e) 
-			{
-				System.err.print("ERROR");
-				e.printStackTrace();
-			}
-		}
-		return frameCanvas;
 	}
 	
 	private Image Mat2Image(Mat frame)

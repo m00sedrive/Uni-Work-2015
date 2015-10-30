@@ -63,9 +63,9 @@ public class FaceDetector {
 			Imgcodecs.imwrite("DetectedFaceGreyScale.jpg", greyCrop);
 			//save face crop
 			Imgcodecs.imwrite("DetectedFace.jpg", crop);
+			
 		}
 					
-		//user details can be mapped to image name when acquired from login screen
 	}
 	
 }
