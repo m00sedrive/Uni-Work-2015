@@ -1,5 +1,7 @@
 package application;
 
+import javax.swing.JOptionPane;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -40,7 +42,9 @@ public class LoginController {
 		}
 		else
 		{
+			// alert user and print to console wrong username or password entered!
 			System.out.println("Invalid username or password: Please re-enter!!");
+			JOptionPane.showMessageDialog(null, "Invalis username or password: Please re-enter!");
 		}
 		return authorized;
 	}

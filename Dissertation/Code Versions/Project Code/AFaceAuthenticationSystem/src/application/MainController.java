@@ -1,8 +1,13 @@
 package application;
 
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import javax.imageio.ImageIO;
 
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
@@ -16,14 +21,19 @@ import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
 
 /** Controls the main application screen */
 public class MainController {
   
 	@FXML private Button logoutButton;
+	@FXML private Button captureImageButton;
 	@FXML private Label  sessionLabel;
 	@FXML private Button cameraButton;
 	@FXML private ImageView originalImage;
+	@FXML private ImageView capturedImage;
+	@FXML private ImageView greyscale;
 	
 	private boolean cameraActive;
 	private Image CameraStream;
@@ -167,6 +177,54 @@ public class MainController {
         return new Image(new ByteArrayInputStream(buffer.toArray()));
 	}
 
+	@FXML
+	private void captureImage()
+	{
+			try {
+				//read in crop and grey crop and scale
+				BufferedImage imageCaught = ImageIO.read(new File("DetectedFace.jpg"));
+				BufferedImage imageCaughtGrey = ImageIO.read(new File("DetectedFaceGreyScale.jpg"));
+				
+				//set captured image view
+				capturedImage.setImage(bufferedImg2Img(imageCaught));
+				
+				//set grey scale + histogram average image view
+				greyscale.setImage(bufferedImg2Img(imageCaughtGrey));
+				
+				//set Canny edge image view
+				
+			} catch (IOException e) {
+				
+				e.printStackTrace();
+				System.out.println("Capture Image Error");
+			}
+	}
+
+	private WritableImage bufferedImg2Img(BufferedImage bi)
+	{
+		//write buffered image to image
+		WritableImage newImage = null;
+		if(bi != null)
+		{
+			// create writable image with same width and height as buff image
+			newImage = new WritableImage(bi.getHeight(), bi.getWidth());
+			PixelWriter pixWrite = newImage.getPixelWriter();
+			
+			for(int x=0; x<bi.getWidth(); x++)
+			{
+				for(int y=0; y<bi.getHeight(); y++)
+				{
+					//get pixel value at x and y co-ordinate
+					pixWrite.setArgb(x,y,bi.getRGB(x,y));
+				}
+			}
+		}
+		else
+			System.out.println("buffered image is empty");
+		return newImage;
+	}
+
+	
 	private void showInformationAlert(String string)
 	{
 		Alert alert = new Alert(AlertType.INFORMATION);
