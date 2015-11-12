@@ -18,6 +18,11 @@
           </HBox.margin>
         </Button>
         <Button id="captureImage" fx:id="captureImageButton" mnemonicParsing="false" onAction="#captureImage" text="Capture Image" HBox.margin="$x1" />
+        <Button fx:id="logoutButton" mnemonicParsing="false" text="logout">
+          <HBox.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" fx:id="x1" />
+          </HBox.margin>
+        </Button>
       </children>
     </HBox>
   </bottom>

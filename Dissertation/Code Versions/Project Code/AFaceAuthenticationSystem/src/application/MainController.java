@@ -1,65 +1,50 @@
 package application;
 
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import javax.imageio.ImageIO;
 import org.opencv.core.Mat;
-import org.opencv.videoio.VideoCapture;
 import org.opencv.core.MatOfByte;
 import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.videoio.VideoCapture;
 
 import javafx.application.Platform;
 import javafx.event.*;
 import javafx.fxml.FXML;
-import javafx.scene.control.Alert;
+import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.PixelWriter;
-import javafx.scene.image.WritableImage;
 
-
-public class FXFaceAuthController {
-	
-	// FXFaceAuth.fxml variables
-	@FXML private TextField statsTextField;
-	@FXML private ImageView originalImage;
-	@FXML private ImageView capturedImage;
-	@FXML private ImageView greyscale;
-	@FXML private ImageView canny;
-	@FXML private Button cameraButton;
-	@FXML private Button captureImageButton;
+/** Controls the main application screen */
+public class MainController {
+  
 	@FXML private Button logoutButton;
-		
-	//class variables
-	private Image CameraStream;
+	@FXML private Label  sessionLabel;
+	@FXML private Button cameraButton;
+	@FXML private ImageView originalImage;
+	
 	private boolean cameraActive;
+	private Image CameraStream;
 	private Timer timer;
 	private int imgCounter = 0;
-	
 	//object for handling video capture
 	private VideoCapture vidCapture = new VideoCapture();
 	//object for handling Face detection
 	FaceDetector faceDetector = new FaceDetector();
 	
 	public void initialize() {}
-
-	public void initSessionID(final LoginManager loginManager, String sessionID)
-	{
-		logoutButton.setOnAction(new EventHandler<ActionEvent>() {
-			@Override public void handle(ActionEvent event) {
-				loginManager.logout();
-			}
-		});
-	}
+	  
+	  public void initSessionID(final LoginManager loginManager, String sessionID) {
+	    sessionLabel.setText(sessionID);
+	    logoutButton.setOnAction(new EventHandler<ActionEvent>() {
+	      @Override public void handle(ActionEvent event) {
+	        loginManager.logout();
+	      }
+	    });
+	  }
+  
 	
 	@FXML
 	private void startCamera()
@@ -91,9 +76,9 @@ public class FXFaceAuthController {
 								//set original frame width
 								originalImage.setFitWidth(600);
 								//Preserve image ratio
-                                originalImage.setPreserveRatio(true);
-            		          
-                                    
+								originalImage.setPreserveRatio(true);
+          		          
+                                  
 							}
 						});
 					
@@ -114,7 +99,7 @@ public class FXFaceAuthController {
 				this.timer = new Timer();
 		        this.timer.schedule(frameGrab, 0, 33);
 
-                this.cameraButton.setText("Stop Camera");	
+              this.cameraButton.setText("Stop Camera");	
 			}
 			else 
 			{
@@ -141,7 +126,7 @@ public class FXFaceAuthController {
 			originalImage.setImage(null);
 		}
 	}
-	
+
 	private Mat grabFrame()
 	{
 		Mat frameCanvas = new Mat();
@@ -169,64 +154,7 @@ public class FXFaceAuthController {
 		}
 		return frameCanvas;
 	}
-	
-	@FXML
-	private void captureImage()
-	{
-			try {
-				//read in crop and grey crop and scale
-				BufferedImage imageCaught = ImageIO.read(new File("DetectedFace.jpg"));
-				BufferedImage imageCaughtGrey = ImageIO.read(new File("DetectedFaceGreyScale.jpg"));
-				
-				//set captured image view
-				capturedImage.setImage(bufferedImg2Img(imageCaught));
-				
-				//set grey scale + histogram average image view
-				greyscale.setImage(bufferedImg2Img(imageCaughtGrey));
-				
-				//set Canny edge image view
-				
-			} catch (IOException e) {
-				
-				e.printStackTrace();
-				System.out.println("Capture Image Error");
-			}
-	}
-	
-	private WritableImage bufferedImg2Img(BufferedImage bi)
-	{
-		//write buffered image to image
-		WritableImage newImage = null;
-		if(bi != null)
-		{
-			// create writable image with same width and height as buff image
-			newImage = new WritableImage(bi.getHeight(), bi.getWidth());
-			PixelWriter pixWrite = newImage.getPixelWriter();
-			
-			for(int x=0; x<bi.getWidth(); x++)
-			{
-				for(int y=0; y<bi.getHeight(); y++)
-				{
-					//get pixel value at x and y co-ordinate
-					pixWrite.setArgb(x,y,bi.getRGB(x,y));
-				}
-			}
-		}
-		else
-			System.out.println("buffered image is empty");
-		return newImage;
-	}
-	
-	private void showInformationAlert(String string)
-	{
-		Alert alert = new Alert(AlertType.INFORMATION);
-		alert.setTitle("Error Alert");
-		alert.setHeaderText(string);
-		String s = "Would be good to display some more details here!! ";
-		alert.setContentText(s);
-		alert.show();
-	}
-	
+
 	private Image Mat2Image(Mat frame)
 	{
 		//temporary buffer
@@ -238,25 +166,16 @@ public class FXFaceAuthController {
 		//build image from encoded buffered data		
         return new Image(new ByteArrayInputStream(buffer.toArray()));
 	}
-		
-	public BufferedImage getBufferedImage(Mat amatrix, String fileExtension){
-		
-		Mat matrix = amatrix;
-		String fileExten = fileExtension;
-		MatOfByte mob = new MatOfByte();
-		
-		//convert the matrix into a matrix of bytes appropriate for
-		//this file extension
-		Imgcodecs.imencode(fileExten, matrix ,mob); 
-		//convert the "matrix of bytes" into a byte array
-		 byte[] byteArray = mob.toArray();
-		 BufferedImage bufImage = null;
-		 try {
-		        InputStream in = new ByteArrayInputStream(byteArray);
-		        bufImage = ImageIO.read(in);
-		    } catch (Exception e) {
-		        e.printStackTrace();
-		    }
-		 return bufImage;
+
+	private void showInformationAlert(String string)
+	{
+		Alert alert = new Alert(AlertType.INFORMATION);
+		alert.setTitle("Error Alert");
+		alert.setHeaderText(string);
+		String s = "Would be good to display some more details here!! ";
+		alert.setContentText(s);
+		alert.show();
 	}
+  //FXFaceAuthController functions need to be transfered to this class!!
+  
 }
