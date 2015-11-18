@@ -1,5 +1,9 @@
 package application;
 
+import java.awt.image.BufferedImage;
+import java.io.File;
+
+import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
 import javafx.event.ActionEvent;
@@ -8,12 +12,16 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
 
 public class LoginController {
 
 	@FXML private TextField usernameEntered;
 	@FXML private PasswordField passwordEntered;
 	@FXML private Button loginButton;
+	@FXML private ImageView loginImage;
 	
 	String username = "Tom";
 	String password = "hello";
@@ -22,6 +30,13 @@ public class LoginController {
 	
 	public void initManager(final LoginManager loginManager)
 	{
+		try{
+			BufferedImage image = ImageIO.read(new File("images/userImage.png"));
+			loginImage.setImage(bufferedImg2Img(image));	
+		}catch(Exception ex)
+		{
+			System.out.println("Error: " + ex.getMessage());
+		}
 		loginButton.setOnAction(new EventHandler<ActionEvent>(){
 			@Override public void handle(ActionEvent event) {
 				String sessionID = authorize();
@@ -57,5 +72,29 @@ public class LoginController {
 		String id = null;
 		id = "session - " + sessionID;
 		return id;
+	}
+	
+	private WritableImage bufferedImg2Img(BufferedImage bi)
+	{
+		//write buffered image to image
+		WritableImage newImage = null;
+		if(bi != null)
+		{
+			// create writable image with same width and height as buff image
+			newImage = new WritableImage(bi.getHeight(), bi.getWidth());
+			PixelWriter pixWrite = newImage.getPixelWriter();
+			
+			for(int x=0; x<bi.getWidth(); x++)
+			{
+				for(int y=0; y<bi.getHeight(); y++)
+				{
+					//get pixel value at x and y co-ordinate
+					pixWrite.setArgb(x,y,bi.getRGB(x,y));
+				}
+			}
+		}
+		else
+			System.out.println("buffered image is empty");
+		return newImage;
 	}
 }

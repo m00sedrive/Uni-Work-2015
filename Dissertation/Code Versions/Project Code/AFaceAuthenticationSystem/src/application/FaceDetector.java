@@ -6,7 +6,6 @@ import org.opencv.core.MatOfRect;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
-import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.objdetect.Objdetect;
@@ -14,6 +13,9 @@ import org.opencv.objdetect.Objdetect;
 
 public class FaceDetector {
 	
+	public Mat FD;
+	public Mat faceDetectionG;
+
 	public void detection(Mat imageMat)
 	{
 		int absoluteFaceSize = 0;
@@ -57,16 +59,27 @@ public class FaceDetector {
 			Imgproc.rectangle(imageMat, faceArray[i].tl(), faceArray[i].br(), new Scalar(0, 250, 0, 255), 3);
 			//crop image of face
 			Mat crop = imageMat.submat(faceArray[i]);
-			Mat greyCrop = greyScaleImg.submat(faceArray[i]);
-			
-			//save grey scale face crop
-			Imgcodecs.imwrite("DetectedFaceGreyScale.jpg", greyCrop);
-			//save face crop
-			Imgcodecs.imwrite("DetectedFace.jpg", crop);
-			
-		}
-					
+			//crop grey image of face
+			Mat faceDetectGrey = greyScaleImg.submat(faceArray[i]);
+			//set local variables
+			setFD(crop);
+			setFDGrey(faceDetectGrey);
+		}				
 	}
 	
+	public Mat getFD() {
+		return FD;
+	}
+	
+	public void setFD(Mat crop) {
+		this.FD = crop;
+	}
+	
+	public Mat getFDGrey() {
+		return faceDetectionG;
+	}
+
+	public void setFDGrey(Mat faceDetectGrey) {
+		this.faceDetectionG = faceDetectGrey;
+	}
 }
- 

@@ -19,7 +19,7 @@ public class Main extends Application {
 			loginManager.showLoginScreen();
 			
 			primaryStage.setScene(scene);
-			primaryStage.setTitle("A Face Authentication System");
+			primaryStage.setTitle("Face Authentication System");
 			primaryStage.setHeight(700);
 			primaryStage.setWidth(900);
 			primaryStage.show();

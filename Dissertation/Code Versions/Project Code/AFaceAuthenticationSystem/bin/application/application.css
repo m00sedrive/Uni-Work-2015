@@ -1,1 +1,20 @@
 /* JavaFX CSS - Leave this comment until you have at least create one rule which uses -fx-Property */
+
+.background {
+	-fx-background-color: #C0C0C0;
+}
+
+.loginBox {
+	-fx-background-color: #D0D0D0;
+	-fx-border-color: #0066CC;
+	-fx-border-radius: 25px;
+	-fx-border-width: 2;
+	-fx-border-style: solid; 
+}
+
+.containerStyle1 {
+	-fx-border-width: 2;
+	-fx-background-color: #D0D0D0;
+	-fx-border-color: #C0C0C0;
+	-fx-border-style: solid;
+}

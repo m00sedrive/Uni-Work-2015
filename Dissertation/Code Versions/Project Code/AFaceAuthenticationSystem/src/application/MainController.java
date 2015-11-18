@@ -1,13 +1,8 @@
 package application;
 
-import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
-import java.io.File;
-import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import javax.imageio.ImageIO;
 
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
@@ -21,8 +16,6 @@ import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.PixelWriter;
-import javafx.scene.image.WritableImage;
 
 /** Controls the main application screen */
 public class MainController {
@@ -38,11 +31,11 @@ public class MainController {
 	private boolean cameraActive;
 	private Image CameraStream;
 	private Timer timer;
-	private int imgCounter = 0;
+	
 	//object for handling video capture
 	private VideoCapture vidCapture = new VideoCapture();
 	//object for handling Face detection
-	FaceDetector faceDetector = new FaceDetector();
+	FaceDetector faceDetector = new FaceDetector(); 
 	
 	public void initialize() {}
 	  
@@ -91,19 +84,6 @@ public class MainController {
                                   
 							}
 						});
-					
-						//collect images untill counter reaches 10
-						while(imgCounter <=10)
-						{
-							//get image and put in matrix
-							Mat setOfImg = grabFrame();
-							faceDetector.detection(setOfImg);
-							//write image to file
-							Imgcodecs.imwrite("CapturedImgSet" + imgCounter + ".jpg", setOfImg);
-							//increment counter
-							imgCounter++;
-						}
-					
 					}
 				};
 				this.timer = new Timer();
@@ -132,7 +112,7 @@ public class MainController {
 			}
 			//release camera
 			this.vidCapture.release();
-			//clear the image area
+			//clear image view
 			originalImage.setImage(null);
 		}
 	}
@@ -140,7 +120,6 @@ public class MainController {
 	private Mat grabFrame()
 	{
 		Mat frameCanvas = new Mat();
-				
 		//check video capture is open
 		if(vidCapture.isOpened())
 		{
@@ -164,66 +143,28 @@ public class MainController {
 		}
 		return frameCanvas;
 	}
+	
+	@FXML
+	private void captureImage()
+	{
+		// get face detections
+		Mat greyFaceDetected = faceDetector.getFDGrey();
+		Mat cropFD = faceDetector.getFD();
+		// set image views with face detections
+		capturedImage.setImage(Mat2Image(cropFD));
+		greyscale.setImage(Mat2Image(greyFaceDetected));
+		
+	}
 
 	private Image Mat2Image(Mat frame)
 	{
 		//temporary buffer
 		MatOfByte buffer = new MatOfByte();
-		
 		//encode image frame into PNG format
 		Imgcodecs.imencode(".PNG", frame, buffer);
-		
 		//build image from encoded buffered data		
         return new Image(new ByteArrayInputStream(buffer.toArray()));
 	}
-
-	@FXML
-	private void captureImage()
-	{
-			try {
-				//read in crop and grey crop and scale
-				BufferedImage imageCaught = ImageIO.read(new File("DetectedFace.jpg"));
-				BufferedImage imageCaughtGrey = ImageIO.read(new File("DetectedFaceGreyScale.jpg"));
-				
-				//set captured image view
-				capturedImage.setImage(bufferedImg2Img(imageCaught));
-				
-				//set grey scale + histogram average image view
-				greyscale.setImage(bufferedImg2Img(imageCaughtGrey));
-				
-				//set Canny edge image view
-				
-			} catch (IOException e) {
-				
-				e.printStackTrace();
-				System.out.println("Capture Image Error");
-			}
-	}
-
-	private WritableImage bufferedImg2Img(BufferedImage bi)
-	{
-		//write buffered image to image
-		WritableImage newImage = null;
-		if(bi != null)
-		{
-			// create writable image with same width and height as buff image
-			newImage = new WritableImage(bi.getHeight(), bi.getWidth());
-			PixelWriter pixWrite = newImage.getPixelWriter();
-			
-			for(int x=0; x<bi.getWidth(); x++)
-			{
-				for(int y=0; y<bi.getHeight(); y++)
-				{
-					//get pixel value at x and y co-ordinate
-					pixWrite.setArgb(x,y,bi.getRGB(x,y));
-				}
-			}
-		}
-		else
-			System.out.println("buffered image is empty");
-		return newImage;
-	}
-
 	
 	private void showInformationAlert(String string)
 	{
@@ -234,6 +175,4 @@ public class MainController {
 		alert.setContentText(s);
 		alert.show();
 	}
-  //FXFaceAuthController functions need to be transfered to this class!!
-  
 }
