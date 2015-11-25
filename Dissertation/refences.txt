@@ -73,3 +73,5 @@ https://fossies.org/diffs/opencv/2.4.11_vs_3.0.0/samples/java/sbt/src/main/java/
 
 Matrix to buffered image
 https://sites.google.com/site/pdopencvjava/mat-to-java-bufferedimage
+
+http://sumitkumariit.blogspot.co.uk/2013/08/coverting-opencv-mat-to-bufferedimage.html
