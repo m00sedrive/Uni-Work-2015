@@ -40,6 +40,25 @@
               </children>
             </HBox>
           </bottom>
+          <center>
+            <VBox maxHeight="-1.0" prefHeight="200.0" prefWidth="100.0" styleClass="containerStyle1">
+              <children>
+                <VBox prefHeight="200.0" prefWidth="100.0">
+                  <children>
+                    <Label text="Captured Image" />
+                    <ImageView fx:id="capturedImage" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                  </children>
+                </VBox>
+                <VBox prefHeight="200.0" prefWidth="100.0">
+                  <children>
+                    <Label text="Greyscale+ Histogram average" />
+                    <ImageView fx:id="greyscale" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                  </children>
+                </VBox>
+                <VBox prefHeight="200.0" prefWidth="100.0" />
+              </children>
+            </VBox>
+          </center>
           <left>
             <VBox prefHeight="200.0" prefWidth="100.0" styleClass="containerStyle1">
               <children>
@@ -68,25 +87,6 @@
               </children>
             </VBox>
           </left>
-          <right>
-            <VBox maxHeight="-1.0" prefHeight="200.0" prefWidth="100.0" styleClass="containerStyle1">
-              <children>
-                <VBox prefHeight="200.0" prefWidth="100.0">
-                  <children>
-                    <Label text="Captured Image" />
-                    <ImageView fx:id="capturedImage" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-                  </children>
-                </VBox>
-                <VBox prefHeight="200.0" prefWidth="100.0">
-                  <children>
-                    <Label text="Greyscale+ Histogram average" />
-                    <ImageView fx:id="greyscale" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-                  </children>
-                </VBox>
-                <VBox prefHeight="200.0" prefWidth="100.0" />
-              </children>
-            </VBox>
-          </right>
         </BorderPane>
       </children>
     </StackPane>

@@ -1,12 +1,18 @@
 package application;
 
+import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import javax.imageio.ImageIO;
 
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
 import org.opencv.imgcodecs.Imgcodecs;
+import org.opencv.imgproc.Imgproc;
 import org.opencv.videoio.VideoCapture;
 
 import javafx.application.Platform;
@@ -16,6 +22,8 @@ import javafx.scene.control.*;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.image.PixelWriter;
+import javafx.scene.image.WritableImage;
 
 /** Controls the main application screen */
 public class MainController {
@@ -35,7 +43,9 @@ public class MainController {
 	//object for handling video capture
 	private VideoCapture vidCapture = new VideoCapture();
 	//object for handling Face detection
-	FaceDetector faceDetector = new FaceDetector(); 
+	FaceDetector faceDetector = new FaceDetector();
+	//object for handling PCA
+	PCA pca = new PCA();
 	
 	public void initialize() {}
 	  
@@ -154,8 +164,53 @@ public class MainController {
 		capturedImage.setImage(Mat2Image(cropFD));
 		greyscale.setImage(Mat2Image(greyFaceDetected));
 		
+		//pca test
+		pca.filterContours(greyFaceDetected);
+		
 	}
+	
+	private BufferedImage mat2BufferedImg(Mat image)
+	{
+		//Mat image = Imgcodecs.imread("/Users/Sumit/Desktop/image.jpg");
 
+		MatOfByte bytemat = new MatOfByte();
+		Imgcodecs.imencode(".jpg", image, bytemat);
+		byte[] bytes = bytemat.toArray();
+		InputStream in = new ByteArrayInputStream(bytes);
+		BufferedImage img = null;
+		try {
+			img = ImageIO.read(in);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
+		return img;
+	}
+	
+	private WritableImage bufferedImg2Img(BufferedImage bi)
+	{
+		//write buffered image to image
+		WritableImage newImage = null;
+		if(bi != null)
+		{
+			// create writable image with same width and height as buff image
+			newImage = new WritableImage(bi.getHeight(), bi.getWidth());
+			PixelWriter pixWrite = newImage.getPixelWriter();
+			
+			for(int x=0; x<bi.getWidth(); x++)
+			{
+				for(int y=0; y<bi.getHeight(); y++)
+				{
+					//get pixel value at x and y co-ordinate
+					pixWrite.setArgb(x,y,bi.getRGB(x,y));
+				}
+			}
+		}
+		else
+			System.out.println("buffered image is empty");
+		return newImage;
+	}
+	
 	private Image Mat2Image(Mat frame)
 	{
 		//temporary buffer
