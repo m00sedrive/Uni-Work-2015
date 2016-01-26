@@ -79,7 +79,7 @@
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" fx:id="x2" />
               </VBox.margin>
             </Label>
-            <ImageView fx:id="canny" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView id="canny" fx:id="canny_image" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
               <VBox.margin>
                 <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" fx:id="x2" />
               </VBox.margin>

@@ -35,6 +35,7 @@ public class MainController {
 	@FXML private ImageView originalImage;
 	@FXML private ImageView capturedImage;
 	@FXML private ImageView greyscale;
+	@FXML private ImageView canny_image;
 	
 	private boolean cameraActive;
 	private Image CameraStream;
@@ -45,7 +46,7 @@ public class MainController {
 	//object for handling Face detection
 	FaceDetector faceDetector = new FaceDetector();
 	//object for handling PCA
-	PCA pca = new PCA();
+	//PCA pca = new PCA();
 	
 	public void initialize() {}
 	  
@@ -165,8 +166,19 @@ public class MainController {
 		greyscale.setImage(Mat2Image(greyFaceDetected));
 		
 		//pca test
-		pca.filterContours(greyFaceDetected);
+		//pca.getOrientation();
+		FaceRecognition pca = new FaceRecognition();
+		pca.initManager();
 		
+		
+	}
+	
+	public ImageView getCanny_image() {
+		return canny_image;
+	}
+
+	public void setCanny_image(ImageView canny_image) {
+		this.canny_image = canny_image;
 	}
 	
 	private BufferedImage mat2BufferedImg(Mat image)
