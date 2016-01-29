@@ -1,5 +1,6 @@
 package application;
 
+
 import java.awt.image.BufferedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
@@ -11,6 +12,10 @@ import java.util.TimerTask;
 import javax.imageio.ImageIO;
 import org.opencv.core.Mat;
 import org.opencv.videoio.VideoCapture;
+
+import application.FaceDetector;
+import application.LoginManager;
+
 import org.opencv.core.MatOfByte;
 import org.opencv.imgcodecs.Imgcodecs;
 

@@ -23,6 +23,7 @@ public class Main extends Application {
 			primaryStage.setHeight(700);
 			primaryStage.setWidth(900);
 			primaryStage.show();
+			
 		} catch(Exception e) {
 			System.out.println("Error");
 			e.printStackTrace();
