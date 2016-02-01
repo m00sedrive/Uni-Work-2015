@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import java.lang.*?>
+<?import java.net.*?>
+<?import java.util.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.paint.*?>
+
+<StackPane prefWidth="231.0" styleClass="background" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="application.LoginController">
+  <children>
+    <StackPane>
+      <children>
+        <BorderPane prefHeight="200.0" prefWidth="200.0" StackPane.alignment="CENTER">
+          <center>
+            <HBox prefHeight="100.0" prefWidth="200.0" styleClass="loginBox" BorderPane.alignment="CENTER">
+              <children>
+                <GridPane>
+                  <children>
+                    <Label minWidth="-Infinity" text="Username:" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.valignment="CENTER">
+                      <GridPane.margin>
+                        <Insets />
+                      </GridPane.margin>
+                    </Label>
+                    <Label minWidth="-Infinity" text="Password:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <TextField fx:id="usernameEntered" promptText="Use &quot;Tom&quot; to login" text="Tom" GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.valignment="CENTER">
+                      <GridPane.margin>
+                        <Insets right="10.0" fx:id="x1" />
+                      </GridPane.margin>
+                    </TextField>
+                    <PasswordField fx:id="passwordEntered" promptText="Use &quot;hello&quot; to login" text="hello" GridPane.columnIndex="1" GridPane.margin="$x1" GridPane.rowIndex="1" />
+                    <Button fx:id="loginButton" alignment="CENTER" defaultButton="true" mnemonicParsing="false" text="Login" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                  </children>
+                  <columnConstraints>
+                    <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="148.0" minWidth="10.0" prefWidth="109.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="228.0" minWidth="10.0" prefWidth="189.0" />
+                  </columnConstraints>
+                  <padding>
+                    <Insets bottom="20.0" top="30.0" />
+                  </padding>
+                  <rowConstraints>
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                  </rowConstraints>
+                </GridPane>
+              </children>
+              <BorderPane.margin>
+                <Insets bottom="50.0" left="200.0" right="200.0" top="50.0" />
+              </BorderPane.margin>
+            </HBox>
+          </center>
+          <padding>
+            <Insets bottom="50.0" left="50.0" right="50.0" top="50.0" />
+          </padding>
+          <top>
+            <ImageView fx:id="loginImage" fitHeight="250.0" fitWidth="300.0" pickOnBounds="true" preserveRatio="true" BorderPane.alignment="CENTER" />
+          </top>
+          <StackPane.margin>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+          </StackPane.margin>
+        </BorderPane>
+      </children>
+    </StackPane>
+  </children>
+  <padding>
+    <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+  </padding>
+  <stylesheets>
+    <URL value="@application.css" />
+  </stylesheets>
+</StackPane>

@@ -33,7 +33,7 @@ public class PCA {
 			
 			// compute PCA
 			
-			// calucalte averages
+			// compute average pca
 		}
 		catch(Exception ex) {
 			ex.printStackTrace();

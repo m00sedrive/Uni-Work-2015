@@ -1,6 +1,7 @@
 package application;
 
 import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -9,12 +10,13 @@ import java.util.TimerTask;
 
 import javax.imageio.ImageIO;
 
+import org.opencv.core.CvType;
 import org.opencv.core.Mat;
 import org.opencv.core.MatOfByte;
 import org.opencv.imgcodecs.Imgcodecs;
-import org.opencv.imgproc.Imgproc;
 import org.opencv.videoio.VideoCapture;
 
+import database.Database;
 import javafx.application.Platform;
 import javafx.event.*;
 import javafx.fxml.FXML;
@@ -24,6 +26,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
+
 
 /** Controls the main application screen */
 public class MainController {
@@ -158,6 +161,11 @@ public class MainController {
 	@FXML
 	private void captureImage()
 	{
+		Database db = new Database();
+		db.setUpDatabase();
+		db.getImages();
+		
+		/*
 		// get face detections
 		Mat greyFaceDetected = faceDetector.getFDGrey();
 		Mat cropFD = faceDetector.getFD();
@@ -169,7 +177,7 @@ public class MainController {
 		//pca.getOrientation();
 		FaceRecognition pca = new FaceRecognition();
 		pca.initManager();
-		
+		*/
 		
 	}
 	
@@ -181,22 +189,40 @@ public class MainController {
 		this.canny_image = canny_image;
 	}
 	
-	private BufferedImage mat2BufferedImg(Mat image)
-	{
-		//Mat image = Imgcodecs.imread("/Users/Sumit/Desktop/image.jpg");
+	// source: http://answers.opencv.org/question/10344/opencv-java-load-image-to-gui/
+    /**
+	 * @param 
+	 * @return The output can be assigned either to BufferedImage or to Image
+	 */
+	public BufferedImage Mat2BufferedImage(Mat m){
+	    int type = BufferedImage.TYPE_BYTE_GRAY;
+	    if ( m.channels() > 1 ) {
+	        type = BufferedImage.TYPE_3BYTE_BGR;
+	    }
+	    int bufferSize = m.channels()*m.cols()*m.rows();
+	    byte [] b = new byte[bufferSize];
+	    m.get(0,0,b); // get all the pixels
+	    BufferedImage image = new BufferedImage(m.cols(),m.rows(), type);
+	    final byte[] targetPixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
+	    System.arraycopy(b, 0, targetPixels, 0, b.length);  
+	    return image;
+	}
+	
+	// Source: http://www.answers.opencv.org/question/28348/converting-bufferedimage-to-mat-in-java/
+	// Convert image to Mat
+	public Mat matify(BufferedImage im) {
+	    // Convert INT to BYTE
+	    //im = new BufferedImage(im.getWidth(), im.getHeight(),BufferedImage.TYPE_3BYTE_BGR);
+	    // Convert bufferedimage to byte array
+	    byte[] pixels = ((DataBufferByte) im.getRaster().getDataBuffer())
+	            .getData();
 
-		MatOfByte bytemat = new MatOfByte();
-		Imgcodecs.imencode(".jpg", image, bytemat);
-		byte[] bytes = bytemat.toArray();
-		InputStream in = new ByteArrayInputStream(bytes);
-		BufferedImage img = null;
-		try {
-			img = ImageIO.read(in);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}	
-		return img;
+	    // Create a Matrix the same size of image
+	    Mat image = new Mat(im.getHeight(), im.getWidth(), CvType.CV_64FC1);
+	    // Fill Matrix with image values
+	    image.put(0, 0, pixels);
+
+	    return image;
 	}
 	
 	private WritableImage bufferedImg2Img(BufferedImage bi)

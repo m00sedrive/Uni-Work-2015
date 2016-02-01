@@ -15,7 +15,7 @@ public class NewPCA {
 		
 		Mat eigen_vector = new Mat(rowSize,colSize,CvType.CV_64FC1);
 		Mat eigen_value = new Mat(1,colSize,CvType.CV_64FC1);
-		Mat dataMat = new Mat(rowSize, colSize, CvType.CV_64FC1);
+		//Mat dataMat = new Mat(rowSize, colSize, CvType.CV_64FC1);
 		
 		// iterate through each matrix in images
 		for(Mat img : images) {
