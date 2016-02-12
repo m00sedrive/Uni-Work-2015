@@ -20,10 +20,12 @@
                 <GridPane prefHeight="99.99990000000253" prefWidth="389.0">
                   <children>
                     <Button fx:id="cameraButton" minWidth="-1.0" mnemonicParsing="false" onAction="#startCamera" text="Start Camera" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
-                    <Button id="loginButton" fx:id="logoutButton" alignment="CENTER" defaultButton="true" minWidth="-1.0" mnemonicParsing="false" text="Logout" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
-                    <Button fx:id="captureImageButton" minWidth="-1.0" mnemonicParsing="false" onAction="#captureImage" text="Capture Image" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
+                    <Button fx:id="captureImageButton" minWidth="-1.0" mnemonicParsing="false" onAction="#captureImage" text="Capture Image" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
+                    <Button fx:id="imageDBButton" mnemonicParsing="false" text="Image Database" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                    <Button id="" fx:id="logoutButton" alignment="CENTER" defaultButton="true" minWidth="-1.0" mnemonicParsing="false" text="Logout" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
                   </children>
                   <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="228.0" minWidth="10.0" prefWidth="189.0" />
                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="228.0" minWidth="10.0" prefWidth="189.0" />
                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="228.0" minWidth="10.0" prefWidth="189.0" />
                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="228.0" minWidth="10.0" prefWidth="189.0" />
@@ -87,6 +89,28 @@
               </children>
             </VBox>
           </left>
+          <right>
+            <VBox prefHeight="200.0" prefWidth="100.0">
+              <children>
+                <GridPane>
+                  <columnConstraints>
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  </columnConstraints>
+                  <rowConstraints>
+                    <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                    <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                  </rowConstraints>
+                </GridPane>
+              </children>
+            </VBox>
+          </right>
         </BorderPane>
       </children>
     </StackPane>

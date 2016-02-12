@@ -3,12 +3,8 @@ package application;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.InputStream;
 import java.util.Timer;
 import java.util.TimerTask;
-
-import javax.imageio.ImageIO;
 
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
@@ -17,7 +13,9 @@ import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.videoio.VideoCapture;
 
 import database.Database;
+import database.Person;
 import javafx.application.Platform;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -32,6 +30,7 @@ import javafx.scene.image.WritableImage;
 public class MainController {
   
 	@FXML private Button logoutButton;
+	@FXML private Button imageDBButton;
 	@FXML private Button captureImageButton;
 	@FXML private Label  sessionLabel;
 	@FXML private Button cameraButton;
@@ -60,9 +59,13 @@ public class MainController {
 	        loginManager.logout();
 	      }
 	    });
+	    imageDBButton.setOnAction(new EventHandler<ActionEvent>() {
+		  @Override public void handle(ActionEvent event) {
+		    loginManager.training();
+		  }
+		});
 	  }
   
-	
 	@FXML
 	private void startCamera()
 	{
@@ -161,10 +164,9 @@ public class MainController {
 	@FXML
 	private void captureImage()
 	{
-		Database db = new Database();
-		db.setUpDatabase();
-		db.getImages();
-		
+
+		//BufferedImage bi = db.getPerson(1).getImage();
+		//capturedImage.setImage(bufferedImg2Img(bi));
 		/*
 		// get face detections
 		Mat greyFaceDetected = faceDetector.getFDGrey();
@@ -172,12 +174,23 @@ public class MainController {
 		// set image views with face detections
 		capturedImage.setImage(Mat2Image(cropFD));
 		greyscale.setImage(Mat2Image(greyFaceDetected));
-		
+		*/
 		//pca test
 		//pca.getOrientation();
-		FaceRecognition pca = new FaceRecognition();
-		pca.initManager();
-		*/
+		//FaceRecognition pca = new FaceRecognition();
+		//pca.initManager();
+		
+		// create database
+		Database db = new Database();
+		db.setUpDatabase();
+		
+		BufferedImage pbi = db.getPerson(0).getImage();
+		Image image = SwingFXUtils.toFXImage(pbi, null);
+		capturedImage.setImage(image);
+		
+		// run pca on data
+		PCA pca = new PCA();
+		pca.run();
 		
 	}
 	
@@ -194,7 +207,7 @@ public class MainController {
 	 * @param 
 	 * @return The output can be assigned either to BufferedImage or to Image
 	 */
-	public BufferedImage Mat2BufferedImage(Mat m){
+	private BufferedImage Mat2BufferedImage(Mat m){
 	    int type = BufferedImage.TYPE_BYTE_GRAY;
 	    if ( m.channels() > 1 ) {
 	        type = BufferedImage.TYPE_3BYTE_BGR;
@@ -210,7 +223,7 @@ public class MainController {
 	
 	// Source: http://www.answers.opencv.org/question/28348/converting-bufferedimage-to-mat-in-java/
 	// Convert image to Mat
-	public Mat matify(BufferedImage im) {
+	private Mat matify(BufferedImage im) {
 	    // Convert INT to BYTE
 	    //im = new BufferedImage(im.getWidth(), im.getHeight(),BufferedImage.TYPE_3BYTE_BGR);
 	    // Convert bufferedimage to byte array

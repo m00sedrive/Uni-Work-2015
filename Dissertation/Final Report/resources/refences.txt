@@ -75,3 +75,5 @@ Matrix to buffered image
 https://sites.google.com/site/pdopencvjava/mat-to-java-bufferedimage
 
 http://sumitkumariit.blogspot.co.uk/2013/08/coverting-opencv-mat-to-bufferedimage.html
+
+http://seminarprojects.org/t-face-recognition-based-on-opencv-using-principal-component-analysis?pid=166514

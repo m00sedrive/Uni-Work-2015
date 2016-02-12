@@ -1,7 +1,5 @@
 package database;
 
-import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -11,15 +9,11 @@ import java.util.ArrayList;
 
 import javax.imageio.ImageIO;
 
-import org.opencv.core.CvType;
-import org.opencv.core.Mat;
 
 public class Database {
 	
 	private ArrayList<String> list = new ArrayList<String>();
-	private BufferedImage[] images;
 	private String filepath = "images/xm2vts/";
-	private int numOfPeople = 8;
 	private int imageSetSize = 8;
 	private Person[] personImageSet;
 	
@@ -36,18 +30,17 @@ public class Database {
 		initializePersonImageSet(imageSetSize);
 	}
 	
-	private Person[] initializePersonImageSet(int numOfPeople) {
+	private Person[] initializePersonImageSet(int imageSetSize) {
 		
-		// set image set size
-		personImageSet = new Person[numOfPeople + 1];
-		
-		for(int i=0; i<numOfPeople + 1; i++) {
-			
-			// initialize pe
+		// set image set array size
+		personImageSet = new Person[imageSetSize];
+		for(int i=0; i<=imageSetSize-1 ; i++) {			
+			// populate each persons details in the image set array
 			personImageSet[i] = new Person();
 			try {
-				System.out.println(filepath + list.get(i));
+				// load images
 				personImageSet[i].setImage(ImageIO.read(new FileInputStream(filepath + list.get(i))));
+				// set person details
 				personImageSet[i].setPersonID(i);
 				personImageSet[i].setImageNum(i);
 			} catch (IOException e) {
@@ -55,6 +48,7 @@ public class Database {
 				e.printStackTrace();
 			}
 		}
+		
 		return personImageSet;
 	}
 	
@@ -74,7 +68,6 @@ public class Database {
 			}
 			//Close the input stream
 			br.close();
-			
 		} catch (FileNotFoundException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -84,11 +77,20 @@ public class Database {
 		}	
 	}
 
-	public BufferedImage[] getImages() {
-		return images;
+	public Person[] getPersonImageSet() {
+		return personImageSet;
 	}
 
-	public void setImages(BufferedImage[] images) {
-		this.images = images;
+	public void setPersonImageSet(Person[] personImageSet) {
+		this.personImageSet = personImageSet;
 	}
+	
+	public Person getPerson(int num) {
+		return personImageSet[num];
+	}
+	
+	public void setPerson(Person person, int numPersonInImageSet) {
+		this.personImageSet[numPersonInImageSet] = person;
+	}
+
 }

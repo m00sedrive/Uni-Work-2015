@@ -1,5 +1,6 @@
 package application;
 
+
 import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -20,6 +21,11 @@ public class LoginManager {
 	public void authenticated(String sessionID)
 	{
 		showMainView(sessionID);
+	}
+	
+	public void training() 
+	{
+		showTrainingView();
 	}
 	
 	public void logout()
@@ -46,6 +52,19 @@ public class LoginManager {
 			scene.setRoot((Parent) loader.load());
 			MainController controller = loader.<MainController>getController();
 			controller.initSessionID(this, sessionID);
+		} catch (IOException ex) {
+			Logger.getLogger(LoginManager.class.getName()).log(Level.SEVERE, null, ex);
+
+		}
+	}
+	
+	public void showTrainingView()
+	{
+		try {
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("ScreenTraining.fxml"));
+			scene.setRoot((Parent) loader.load());
+			TrainingController controller = loader.<TrainingController>getController();
+			controller.init(this);
 		} catch (IOException ex) {
 			Logger.getLogger(LoginManager.class.getName()).log(Level.SEVERE, null, ex);
 
