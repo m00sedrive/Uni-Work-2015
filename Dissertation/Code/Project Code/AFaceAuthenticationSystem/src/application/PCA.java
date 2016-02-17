@@ -9,6 +9,8 @@ import org.apache.commons.math3.linear.EigenDecomposition;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.stat.correlation.Covariance;
 
+import database.Person;
+
 public class PCA {
 
 	private double[][] imageData;
@@ -20,7 +22,6 @@ public class PCA {
 	private double[][] imageDataAverage = null;
 	
 	public void run() {
-		
 		// record system start time
 		long currentTime = System.currentTimeMillis();
 		System.out.println("System start time: " + currentTime);

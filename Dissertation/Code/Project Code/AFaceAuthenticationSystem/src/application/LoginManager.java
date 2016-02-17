@@ -23,9 +23,9 @@ public class LoginManager {
 		showMainView(sessionID);
 	}
 	
-	public void training() 
+	public void training(String sessionID) 
 	{
-		showTrainingView();
+		showTrainingView(sessionID);
 	}
 	
 	public void logout()
@@ -58,13 +58,13 @@ public class LoginManager {
 		}
 	}
 	
-	public void showTrainingView()
+	public void showTrainingView(String sessionID)
 	{
 		try {
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("ScreenTraining.fxml"));
 			scene.setRoot((Parent) loader.load());
 			TrainingController controller = loader.<TrainingController>getController();
-			controller.init(this);
+			controller.initSessionID(this, sessionID);
 		} catch (IOException ex) {
 			Logger.getLogger(LoginManager.class.getName()).log(Level.SEVERE, null, ex);
 

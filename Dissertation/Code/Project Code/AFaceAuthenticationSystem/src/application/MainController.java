@@ -3,6 +3,7 @@ package application;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.ByteArrayInputStream;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -30,6 +31,7 @@ import javafx.scene.image.WritableImage;
 public class MainController {
   
 	@FXML private Button logoutButton;
+	
 	@FXML private Button imageDBButton;
 	@FXML private Button captureImageButton;
 	@FXML private Label  sessionLabel;
@@ -38,6 +40,7 @@ public class MainController {
 	@FXML private ImageView capturedImage;
 	@FXML private ImageView greyscale;
 	@FXML private ImageView canny_image;
+	@FXML private ArrayList<ImageView> db_image;
 	
 	private boolean cameraActive;
 	private Image CameraStream;
@@ -52,7 +55,7 @@ public class MainController {
 	
 	public void initialize() {}
 	  
-	  public void initSessionID(final LoginManager loginManager, String sessionID) {
+	  public void initSessionID(LoginManager loginManager, String sessionID) {
 	    sessionLabel.setText(sessionID);
 	    logoutButton.setOnAction(new EventHandler<ActionEvent>() {
 	      @Override public void handle(ActionEvent event) {
@@ -61,7 +64,7 @@ public class MainController {
 	    });
 	    imageDBButton.setOnAction(new EventHandler<ActionEvent>() {
 		  @Override public void handle(ActionEvent event) {
-		    loginManager.training();
+		    loginManager.training(sessionID);
 		  }
 		});
 	  }
@@ -189,11 +192,13 @@ public class MainController {
 		capturedImage.setImage(image);
 		
 		// run pca on data
-		PCA pca = new PCA();
-		pca.run();
+		//PCA pca = new PCA();
+		//pca.run();
+		
+		//
 		
 	}
-	
+		
 	public ImageView getCanny_image() {
 		return canny_image;
 	}

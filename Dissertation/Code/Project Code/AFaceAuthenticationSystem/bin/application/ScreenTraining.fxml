@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<StackPane prefWidth="231.0" styleClass="background" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="application.MainController">
+<StackPane prefWidth="231.0" styleClass="background" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="application.TrainingController">
   <children>
     <StackPane>
       <children>
@@ -19,10 +19,10 @@
               <children>
                 <GridPane prefHeight="99.99990000000253" prefWidth="389.0">
                   <children>
-                    <Button fx:id="addImages" minWidth="-1.0" mnemonicParsing="false" onAction="#addImages" text="Add Images" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
-                    <Button fx:id="returnToMainScreen" alignment="CENTER" defaultButton="true" minWidth="-1.0" mnemonicParsing="false" onAction="#returnToMainScreen" text="Return to Main Screen" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
+                    <Button fx:id="add_images" minWidth="-1.0" mnemonicParsing="false" onAction="#addImages" text="Add Images" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
+                    <Button fx:id="returnToMainScreen" alignment="CENTER" defaultButton="true" minWidth="-1.0" mnemonicParsing="false" text="Return to Main Screen" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
                     <Button fx:id="loadImages" minWidth="-1.0" mnemonicParsing="false" onAction="#loadImages" text="Load Images" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
-                    <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#logout" text="Logout" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                    <Button fx:id="logoutButton" mnemonicParsing="false" text="Logout" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="0" />
                   </children>
                   <columnConstraints>
                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="228.0" minWidth="10.0" prefWidth="189.0" />
