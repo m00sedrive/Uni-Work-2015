@@ -9,17 +9,25 @@ import org.apache.commons.math3.linear.EigenDecomposition;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.stat.correlation.Covariance;
 
-import database.Person;
+import Jama.Matrix;
+
 
 public class PCA {
 
 	private double[][] imageData;
-	private int numOfEigenFaces = 0;
+	private int numOfFaces;
+	private int numEigenFaceUsed = 150;
 	private double[] eigenValues = null;
 	private double[][] eigenVectors = null;
-	private double[][] eigenfaces = null;
+	private double[][] eigenFaces = null;
 	private double[] rowDataAverage = null;
 	private double[][] imageDataAverage = null;
+	private double[][] weights = null;
+	private Matrix resultEigenFaces;
+	
+	public void setPCAData(int numOfFaces) {
+		this.numOfFaces = numOfFaces;
+	}
 	
 	public void run() {
 		// record system start time
@@ -35,6 +43,8 @@ public class PCA {
 			// compute PCA
 			calculatePrincipalComponents();
 			// compute average pca
+			calculateWeightsOfEigenFaces();
+			//get eigenfaces by weight
 			
 		
 		}
@@ -64,6 +74,40 @@ public class PCA {
 			// subtract averages from image data
 			imageDataAverage[i] = matrixSubtract(imageData[i], rowDataAverage);
 		}
+	}
+	
+	private void calculateWeightsOfEigenFaces() {
+		
+		int pixels = imageDataAverage[0].length;
+		int images = imageDataAverage.length;
+		int vectors = eigenVectors.length;
+		
+		//debug
+		System.out.println(pixels);
+		System.out.println(images);
+		System.out.println(vectors);
+		
+		// calculate and normalise images
+		double[][] tempEigenFaces = new double[vectors][pixels];
+		for(int i=0; i<vectors; i++) {
+			double squaredSum = 0;
+			for(int j=0; j<pixels; j++) {
+				for(int k=0; k<images; k++) {
+					tempEigenFaces[i][j] += imageDataAverage[k][j] * eigenVectors[i][k];
+				}
+				squaredSum += tempEigenFaces[i][j] * tempEigenFaces[i][j];
+			}
+			double normalized = Math.sqrt(squaredSum);
+			for(int j=0; j<pixels ;j++) {
+				tempEigenFaces[i][j] /= normalized;
+			}
+		}
+		// get set amount of eigenFaces
+		this.resultEigenFaces = new Matrix(eigenFaces).getMatrix(0, eigenFaces.length <= numEigenFaceUsed ? eigenFaces.length - 1 : numEigenFaceUsed, 0, eigenFaces[0].length - 1);
+		
+		// calculate weights
+		//this.weights = new Matrix(imageDataAverage).times(new Matrix(eigenFaces).transpose().getArray());
+		
 	}
 	
 	private void calculateEigenValues() {

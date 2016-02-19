@@ -8,14 +8,17 @@ import java.util.logging.Logger;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.stage.Stage;
 
 public class LoginManager {
 
 	private Scene scene;
+	private Stage stage;
 	
-	public LoginManager(Scene scene)
+	public LoginManager(Scene scene, Stage stage)
 	{
 		this.scene = scene;
+		this.stage = stage;
 	}
 	
 	public void authenticated(String sessionID)
@@ -70,4 +73,13 @@ public class LoginManager {
 
 		}
 	}
+
+	public Stage getStage() {
+		return stage;
+	}
+
+	public void setStage(Stage stage) {
+		this.stage = stage;
+	}
+	
 }

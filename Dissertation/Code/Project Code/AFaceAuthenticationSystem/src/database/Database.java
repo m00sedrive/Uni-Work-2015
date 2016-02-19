@@ -93,4 +93,8 @@ public class Database {
 		this.personImageSet[numPersonInImageSet] = person;
 	}
 
+	public int getImageSetSize() {
+		return imageSetSize;
+	}
+
 }

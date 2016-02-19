@@ -3,7 +3,6 @@ package application;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.ByteArrayInputStream;
-import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -13,10 +12,7 @@ import org.opencv.core.MatOfByte;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.videoio.VideoCapture;
 
-import database.Database;
-import database.Person;
 import javafx.application.Platform;
-import javafx.embed.swing.SwingFXUtils;
 import javafx.event.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -30,17 +26,15 @@ import javafx.scene.image.WritableImage;
 /** Controls the main application screen */
 public class MainController {
   
-	@FXML private Button logoutButton;
-	
+	@FXML private Button logoutButton;	
 	@FXML private Button imageDBButton;
-	@FXML private Button captureImageButton;
+	@FXML private Button detectedFaceButton;
 	@FXML private Label  sessionLabel;
 	@FXML private Button cameraButton;
 	@FXML private ImageView originalImage;
-	@FXML private ImageView capturedImage;
+	@FXML private ImageView faceDetected_IV;
 	@FXML private ImageView greyscale;
 	@FXML private ImageView canny_image;
-	@FXML private ArrayList<ImageView> db_image;
 	
 	private boolean cameraActive;
 	private Image CameraStream;
@@ -109,7 +103,8 @@ public class MainController {
 				this.timer = new Timer();
 		        this.timer.schedule(frameGrab, 0, 33);
 
-              this.cameraButton.setText("Stop Camera");	
+              this.cameraButton.setText("Stop Camera");
+
 			}
 			else 
 			{
@@ -135,6 +130,7 @@ public class MainController {
 			//clear image view
 			originalImage.setImage(null);
 		}
+		
 	}
 
 	private Mat grabFrame()
@@ -165,38 +161,19 @@ public class MainController {
 	}
 	
 	@FXML
-	private void captureImage()
+	private void addImage2set()
 	{
-
-		//BufferedImage bi = db.getPerson(1).getImage();
-		//capturedImage.setImage(bufferedImg2Img(bi));
-		/*
-		// get face detections
+		
+	}
+	
+	@FXML
+	private void detectFace() {
+        // get face detections
 		Mat greyFaceDetected = faceDetector.getFDGrey();
 		Mat cropFD = faceDetector.getFD();
 		// set image views with face detections
-		capturedImage.setImage(Mat2Image(cropFD));
+		faceDetected_IV.setImage(Mat2Image(cropFD));
 		greyscale.setImage(Mat2Image(greyFaceDetected));
-		*/
-		//pca test
-		//pca.getOrientation();
-		//FaceRecognition pca = new FaceRecognition();
-		//pca.initManager();
-		
-		// create database
-		Database db = new Database();
-		db.setUpDatabase();
-		
-		BufferedImage pbi = db.getPerson(0).getImage();
-		Image image = SwingFXUtils.toFXImage(pbi, null);
-		capturedImage.setImage(image);
-		
-		// run pca on data
-		//PCA pca = new PCA();
-		//pca.run();
-		
-		//
-		
 	}
 		
 	public ImageView getCanny_image() {
