@@ -13,4 +13,9 @@ public class GeneticAlgorithm {
 			System.out.println(al.get(i));
 		}
 	}
+	
+	public ArrayList<String> createChildren(ArrayList<String> parents) {
+		
+		return new ArrayList();
+	}
 }
