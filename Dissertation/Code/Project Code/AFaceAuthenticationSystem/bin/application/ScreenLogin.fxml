@@ -32,6 +32,7 @@
                     </TextField>
                     <PasswordField fx:id="passwordEntered" promptText="Use &quot;hello&quot; to login" text="hello" GridPane.columnIndex="1" GridPane.margin="$x1" GridPane.rowIndex="1" />
                     <Button fx:id="loginButton" alignment="CENTER" defaultButton="true" mnemonicParsing="false" text="Login" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                    <Button fx:id="logout_button" mnemonicParsing="false" text="Exit" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   </children>
                   <columnConstraints>
                     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="148.0" minWidth="10.0" prefWidth="109.0" />

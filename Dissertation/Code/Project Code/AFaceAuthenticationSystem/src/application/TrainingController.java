@@ -48,7 +48,7 @@ public class TrainingController {
 	  
 	  @FXML public void selectImage() {
 
-		  FileChooserClass fc = new FileChooserClass();
+		  //FileChooserClass fc = new FileChooserClass();
 		  
 	  }
 	  

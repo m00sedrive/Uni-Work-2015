@@ -3,6 +3,7 @@ package application;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.ByteArrayInputStream;
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -21,7 +22,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
-
+import javafx.scene.layout.HBox;
 
 /** Controls the main application screen */
 public class MainController {
@@ -31,14 +32,18 @@ public class MainController {
 	@FXML private Button detectedFaceButton;
 	@FXML private Label  sessionLabel;
 	@FXML private Button cameraButton;
+	@FXML private Button addImage_button;
 	@FXML private ImageView originalImage;
 	@FXML private ImageView faceDetected_IV;
 	@FXML private ImageView greyscale;
 	@FXML private ImageView canny_image;
+	@FXML private HBox imageSet_hBox;
 	
 	private boolean cameraActive;
 	private Image CameraStream;
 	private Timer timer;
+	private Mat greyFaceDetected;
+	private int imageSetCount = 0; 
 	
 	//object for handling video capture
 	private VideoCapture vidCapture = new VideoCapture();
@@ -46,6 +51,7 @@ public class MainController {
 	FaceDetector faceDetector = new FaceDetector();
 	//object for handling PCA
 	//PCA pca = new PCA();
+	private ArrayList<ImageView> new_imageSet = new ArrayList<ImageView>();
 	
 	public void initialize() {}
 	  
@@ -61,6 +67,11 @@ public class MainController {
 		    loginManager.training(sessionID);
 		  }
 		});
+	    addImage_button.setOnAction(new EventHandler<ActionEvent>() {
+			  @Override public void handle(ActionEvent event) {
+			    addImage();
+			  }
+			});
 	  }
   
 	@FXML
@@ -161,19 +172,21 @@ public class MainController {
 	}
 	
 	@FXML
-	private void addImage2set()
-	{
-		
-	}
-	
-	@FXML
 	private void detectFace() {
         // get face detections
-		Mat greyFaceDetected = faceDetector.getFDGrey();
+		greyFaceDetected = faceDetector.getFDGrey();
 		Mat cropFD = faceDetector.getFD();
 		// set image views with face detections
 		faceDetected_IV.setImage(Mat2Image(cropFD));
 		greyscale.setImage(Mat2Image(greyFaceDetected));
+	}
+	
+	private void addImage() {
+		ImageView iv = new ImageView(Mat2Image(greyFaceDetected));
+		iv.setFitHeight(100);
+		iv.setFitWidth(80);
+		new_imageSet.add(imageSetCount, iv);
+		imageSetCount++;
 	}
 		
 	public ImageView getCanny_image() {

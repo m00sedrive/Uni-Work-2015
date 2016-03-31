@@ -22,6 +22,7 @@ public class LoginController {
 	@FXML private PasswordField passwordEntered;
 	@FXML private Button loginButton;
 	@FXML private ImageView loginImage;
+	@FXML private Button logout_button;
 	
 	// test purposes, will store encode elsewhere
 	String username = "Tom";
@@ -44,6 +45,15 @@ public class LoginController {
 				if(sessionID != null)
 				{
 					loginManager.authenticated(sessionID);
+				}
+			}
+		});
+		logout_button.setOnAction(new EventHandler<ActionEvent>(){
+			@Override public void handle(ActionEvent event) {
+				String sessionID = authorize();
+				if(sessionID != null)
+				{
+					exit(0);
 				}
 			}
 		});
@@ -73,6 +83,10 @@ public class LoginController {
 		String id = null;
 		id = "session - " + sessionID;
 		return id;
+	}
+	
+	private static void exit(int status) {
+		System.exit(status);
 	}
 	
 	private WritableImage bufferedImg2Img(BufferedImage bi)

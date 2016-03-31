@@ -15,25 +15,6 @@
       <children>
         <VBox prefHeight="200.0" prefWidth="100.0">
           <children>
-            <MenuBar>
-              <menus>
-                <Menu mnemonicParsing="false" text="File">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="Close" />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Edit">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="Delete" />
-                  </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Help">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="About" />
-                  </items>
-                </Menu>
-              </menus>
-            </MenuBar>
             <BorderPane prefHeight="200.0" prefWidth="200.0">
               <bottom>
                 <HBox prefHeight="100.0" prefWidth="200.0" styleClass="containerStyle1">
@@ -64,6 +45,23 @@
                 </HBox>
               </bottom>
               <center>
+                <VBox fx:id="vBox_right" prefHeight="200.0" prefWidth="100.0" styleClass="containerStyle1" BorderPane.alignment="CENTER">
+                  <children>
+                    <Label text="Image to Train">
+                      <VBox.margin>
+                        <Insets left="10.0" top="10.0" />
+                      </VBox.margin>
+                    </Label>
+                    <ImageView fx:id="image2train" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+                    <Button fx:id="selectImageButton" mnemonicParsing="false" onAction="#selectImage" text="Select Image">
+                      <VBox.margin>
+                        <Insets bottom="10.0" left="40.0" right="40.0" top="10.0" />
+                      </VBox.margin>
+                    </Button>
+                  </children>
+                </VBox>
+              </center>
+              <left>
                 <VBox maxHeight="-1.0" prefHeight="188.9998779296875" prefWidth="218.0" styleClass="containerStyle1">
                   <children>
                     <VBox prefHeight="200.0" prefWidth="100.0">
@@ -85,20 +83,7 @@
                     <VBox prefHeight="200.0" prefWidth="100.0" />
                   </children>
                 </VBox>
-              </center>
-              <right>
-                <VBox fx:id="vBox_right" prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
-                  <children>
-                    <Label text="Image to Train" />
-                    <ImageView fx:id="image2train" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-                    <Button fx:id="selectImageButton" mnemonicParsing="false" onAction="#selectImage" text="Select Image">
-                      <VBox.margin>
-                        <Insets bottom="10.0" left="40.0" right="40.0" top="10.0" />
-                      </VBox.margin>
-                    </Button>
-                  </children>
-                </VBox>
-              </right>
+              </left>
             </BorderPane>
           </children>
         </VBox>
