@@ -15,6 +15,8 @@ public class Database {
 	private ArrayList<String> list = new ArrayList<String>();
 	private String filepath = "images/xm2vts/";
 	private int imageSetSize = 8;
+	public int imageRows = 55;
+	public int imageCols = 51;
 	private Person[] personImageSet;
 	
 	// constructor

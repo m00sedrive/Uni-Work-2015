@@ -23,6 +23,7 @@ public class LoginController {
 	@FXML private Button loginButton;
 	@FXML private ImageView loginImage;
 	@FXML private Button logout_button;
+	@FXML private Button capture;
 	
 	// test purposes, will store encode elsewhere
 	String username = "Tom";

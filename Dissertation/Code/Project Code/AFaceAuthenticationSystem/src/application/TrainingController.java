@@ -30,6 +30,8 @@ public class TrainingController {
 	@FXML private HBox hBox_imgGallery_r2;
 	@FXML private HBox hBox_imgGallery_r3;
 	
+	Database database = new Database();
+	
 	private ArrayList<ImageView> database_image = new ArrayList<ImageView>();
 	
 	  public void initSessionID(final LoginManager loginManager, String sessionID) { 
@@ -54,8 +56,6 @@ public class TrainingController {
 	  
 	  @FXML public void loadDatabase() {
 		  
-		  Database database = new Database();
-		  
 		  // setup database
 		  database.setUpDatabase();
 		  
@@ -79,5 +79,9 @@ public class TrainingController {
 	  }
   
 	  @FXML public void addImages(){
+		  CustomPCA cpca = new CustomPCA();
+		  cpca.setPCAData(8, database);
+		  cpca.loadImageSet(database);
+		  cpca.performPCA();
 	  }
 }
