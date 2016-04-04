@@ -24,14 +24,14 @@
                         <Insets />
                       </GridPane.margin>
                     </Label>
-                    <Label minWidth="-Infinity" text="Captured Image:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <Label minWidth="-Infinity" text="Password" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                     <TextField fx:id="usernameEntered" promptText="Use &quot;Tom&quot; to login" text="Tom" GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.valignment="CENTER">
                       <GridPane.margin>
                         <Insets right="10.0" fx:id="x1" />
                       </GridPane.margin>
                     </TextField>
                     <PasswordField fx:id="passwordEntered" promptText="Use &quot;hello&quot; to login" text="hello" GridPane.columnIndex="1" GridPane.margin="$x1" GridPane.rowIndex="1" />
-                    <Button fx:id="loginButton" alignment="CENTER" defaultButton="true" mnemonicParsing="false" text="Capture" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                    <Button fx:id="loginButton" alignment="CENTER" defaultButton="true" mnemonicParsing="false" text="Login" GridPane.columnIndex="0" GridPane.rowIndex="2" />
                     <Button fx:id="logout_button" mnemonicParsing="false" text="Exit" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   </children>
                   <columnConstraints>

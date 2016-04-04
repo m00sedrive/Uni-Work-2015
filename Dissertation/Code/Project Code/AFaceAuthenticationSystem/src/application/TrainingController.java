@@ -81,7 +81,7 @@ public class TrainingController {
 	  @FXML public void addImages(){
 		  CustomPCA cpca = new CustomPCA();
 		  cpca.setPCAData(8, database);
-		  cpca.loadImageSet(database);
+		  cpca.prepareFaceMatrix();
 		  cpca.performPCA();
 	  }
 }
