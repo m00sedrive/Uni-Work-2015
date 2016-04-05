@@ -32,7 +32,7 @@ public class TrainingController {
 	
 	Database database = new Database();
 	
-	private ArrayList<ImageView> database_image = new ArrayList<ImageView>();
+	private ArrayList<ImageView> database_image;
 	
 	  public void initSessionID(final LoginManager loginManager, String sessionID) { 
 		  
@@ -58,6 +58,7 @@ public class TrainingController {
 		  
 		  // setup database
 		  database.setUpDatabase();
+		  database_image = new ArrayList<ImageView>();
 		  
 		  // load buffered image set into image array 
 		  for(int i=0;i< database.getPersonImageSet().length; i++){

@@ -33,7 +33,6 @@ public class Database {
 	}
 	
 	private Person[] initializePersonImageSet(int imageSetSize) {
-		
 		// set image set array size
 		personImageSet = new Person[imageSetSize];
 		for(int i=0; i<=imageSetSize-1 ; i++) {			
@@ -50,6 +49,7 @@ public class Database {
 				e.printStackTrace();
 			}
 		}
+		// normalize image set before storing
 		
 		return personImageSet;
 	}

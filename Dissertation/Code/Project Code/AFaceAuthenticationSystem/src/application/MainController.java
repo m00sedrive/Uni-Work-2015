@@ -3,9 +3,12 @@ package application;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.ByteArrayInputStream;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+
+import javax.imageio.ImageIO;
 
 import org.opencv.core.CvType;
 import org.opencv.core.Mat;
@@ -26,169 +29,195 @@ import javafx.scene.layout.HBox;
 
 /** Controls the main application screen */
 public class MainController {
-  
-	@FXML private Button logoutButton;	
-	@FXML private Button imageDBButton;
-	@FXML private Button detectedFaceButton;
-	@FXML private Label  sessionLabel;
-	@FXML private Button cameraButton;
-	@FXML private Button addImage_button;
-	@FXML private ImageView originalImage;
-	@FXML private ImageView faceDetected_IV;
-	@FXML private ImageView greyscale;
-	@FXML private ImageView canny_image;
-	@FXML private HBox imageSet_hBox;
-	
+
+	@FXML
+	private Button logoutButton;
+	@FXML
+	private Button imageDBButton;
+	@FXML
+	private Button detectedFaceButton;
+	@FXML
+	private Label sessionLabel;
+	@FXML
+	private Button cameraButton;
+	@FXML
+	private Button addImage_button;
+	@FXML
+	private ImageView originalImage;
+	@FXML
+	private ImageView faceDetected_IV;
+	@FXML
+	private ImageView greyscale;
+	@FXML
+	private ImageView canny_image;
+	@FXML
+	private HBox imageSet_hBox;
+
 	private boolean cameraActive;
 	private Image CameraStream;
 	private Timer timer;
 	private Mat greyFaceDetected;
-	private int imageSetCount = 0; 
-	
-	//object for handling video capture
+	private int imageSetCount = 0;
+
+	private ArrayList<ImageView> database_images;
+	// object for handling video capture
 	private VideoCapture vidCapture = new VideoCapture();
-	//object for handling Face detection
+	// object for handling Face detection
 	FaceDetector faceDetector = new FaceDetector();
-	//object for handling PCA
-	//PCA pca = new PCA();
+	// object for handling PCA
+	// PCA pca = new PCA();
 	private ArrayList<ImageView> new_imageSet = new ArrayList<ImageView>();
-	
-	public void initialize() {}
-	  
-	  public void initSessionID(LoginManager loginManager, String sessionID) {
-	    sessionLabel.setText(sessionID);
-	    logoutButton.setOnAction(new EventHandler<ActionEvent>() {
-	      @Override public void handle(ActionEvent event) {
-	        loginManager.logout();
-	      }
-	    });
-	    imageDBButton.setOnAction(new EventHandler<ActionEvent>() {
-		  @Override public void handle(ActionEvent event) {
-		    loginManager.training(sessionID);
-		  }
-		});
-	    addImage_button.setOnAction(new EventHandler<ActionEvent>() {
-			  @Override public void handle(ActionEvent event) {
-			    addImage();
-			  }
-			});
-	  }
-  
+
 	@FXML
-	private void startCamera()
-	{
-		if(!this.cameraActive)
-		{
-			//start camera stream
+	private HBox hboxImageGallery_r1;
+	@FXML
+	private HBox hboxImageGallery_r2;
+
+	public void initialize() {
+	}
+
+	public void initSessionID(LoginManager loginManager, String sessionID) {
+		database_images = new ArrayList<ImageView>(8);
+
+		sessionLabel.setText(sessionID);
+		logoutButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				loginManager.logout();
+			}
+		});
+		imageDBButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				loginManager.training(sessionID);
+			}
+		});
+		addImage_button.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				addImage();
+			}
+		});
+
+		try {
+			while (database_images.size() < 8) {
+				BufferedImage image = ImageIO.read(new File("images/userImage.png"));
+				ImageView imageview = new ImageView();
+				imageview.setImage(bufferedImg2Img(image));
+				database_images.add(imageview);
+				if (database_images.size() < 4) {
+					hboxImageGallery_r1.getChildren().add(database_images.get(database_images.size() + 1));
+				} else
+					hboxImageGallery_r2.getChildren().add(database_images.get(database_images.size() + 1));
+			}
+
+		} catch (Exception ex) {
+			System.out.println("Error: " + ex.getMessage());
+		}
+	}
+
+	@FXML
+	private void startCamera() {
+		if (!this.cameraActive) {
+			// start camera stream
 			this.vidCapture.open(0);
-			
-			//if camera stream has started
-			if(this.vidCapture.isOpened())
-			{
-				//set camera boolean to active
+
+			// if camera stream has started
+			if (this.vidCapture.isOpened()) {
+				// set camera boolean to active
 				this.cameraActive = true;
-				
-				//grab frame every 33 ms and apply to imageView
-				TimerTask frameGrab = new TimerTask(){
+
+				// grab frame every 33 ms and apply to imageView
+				TimerTask frameGrab = new TimerTask() {
 					@Override
-					public void run()
-					{
-						// set cameras stream image to grabbedFrame image 
+					public void run() {
+						// set cameras stream image to grabbedFrame image
 						CameraStream = Mat2Image(grabFrame());
-						Platform.runLater(new Runnable(){
+						Platform.runLater(new Runnable() {
 							@Override
-							public void run () {
-								
-								//set original frame
+							public void run() {
+
+								// set original frame
 								originalImage.setImage(CameraStream);
-								//set original frame width
+								// set original frame width
 								originalImage.setFitWidth(600);
-								//Preserve image ratio
+								// Preserve image ratio
 								originalImage.setPreserveRatio(true);
-          		          
-                                  
+
 							}
 						});
 					}
 				};
 				this.timer = new Timer();
-		        this.timer.schedule(frameGrab, 0, 33);
+				this.timer.schedule(frameGrab, 0, 33);
 
-              this.cameraButton.setText("Stop Camera");
+				this.cameraButton.setText("Stop Camera");
 
-			}
-			else 
-			{
+			} else {
 				System.out.println("Failed to establish camera connection!");
-				//show user dialog alert with message instead of print to console!
+				// show user dialog alert with message instead of print to
+				// console!
 				showInformationAlert("Failed to establish camera connection!");
 			}
-		}
-		else
-		{
-			//camera is not active
+		} else {
+			// camera is not active
 			cameraActive = false;
-			//set camera button text
+			// set camera button text
 			this.cameraButton.setText("Start Camera");
-			//stop the timer
-			if(this.timer != null)
-			{
+			// stop the timer
+			if (this.timer != null) {
 				this.timer.cancel();
 				this.timer = null;
 			}
-			//release camera
+			// release camera
 			this.vidCapture.release();
-			//clear image view
+			// clear image view
 			originalImage.setImage(null);
 		}
-		
+
 	}
 
-	private Mat grabFrame()
-	{
+	private Mat grabFrame() {
 		Mat frameCanvas = new Mat();
-		//check video capture is open
-		if(vidCapture.isOpened())
-		{
-			try 
-			{
-				//read and store video capture frame into matrix
+		// check video capture is open
+		if (vidCapture.isOpened()) {
+			try {
+				// read and store video capture frame into matrix
 				this.vidCapture.read(frameCanvas);
-				
-					//Check frame is not empty
-					if(!frameCanvas.empty())
-					{
-						// detect and display face detections
-						faceDetector.detection(frameCanvas);
-					}
-			}
-			catch (Exception e) 
-			{
+
+				// Check frame is not empty
+				if (!frameCanvas.empty()) {
+					// detect and display face detections
+					faceDetector.detection(frameCanvas);
+				}
+			} catch (Exception e) {
 				System.err.print("ERROR");
 				e.printStackTrace();
 			}
 		}
 		return frameCanvas;
 	}
-	
+
 	@FXML
 	private void detectFace() {
-        // get face detections
+		// get face detections
 		greyFaceDetected = faceDetector.getFDGrey();
+		// normalize face detected
 		Mat cropFD = faceDetector.getFD();
 		// set image views with face detections
 		faceDetected_IV.setImage(Mat2Image(cropFD));
 		greyscale.setImage(Mat2Image(greyFaceDetected));
 	}
-	
+
 	private void addImage() {
-		ImageView iv = new ImageView(Mat2Image(greyFaceDetected));
-		iv.setFitHeight(100);
-		iv.setFitWidth(80);
-		new_imageSet.add(imageSetCount, iv);
-		imageSetCount++;
+		/*
+		 * ImageView iv = new ImageView(Mat2Image(greyFaceDetected));
+		 * iv.setFitHeight(100); iv.setFitWidth(80);
+		 * new_imageSet.add(imageSetCount, iv); imageSetCount++;
+		 */
+
 	}
-		
+
 	public ImageView getCanny_image() {
 		return canny_image;
 	}
@@ -196,79 +225,74 @@ public class MainController {
 	public void setCanny_image(ImageView canny_image) {
 		this.canny_image = canny_image;
 	}
-	
-	// source: http://answers.opencv.org/question/10344/opencv-java-load-image-to-gui/
-    /**
-	 * @param 
+
+	// source:
+	// http://answers.opencv.org/question/10344/opencv-java-load-image-to-gui/
+	/**
+	 * @param
 	 * @return The output can be assigned either to BufferedImage or to Image
 	 */
-	private BufferedImage Mat2BufferedImage(Mat m){
-	    int type = BufferedImage.TYPE_BYTE_GRAY;
-	    if ( m.channels() > 1 ) {
-	        type = BufferedImage.TYPE_3BYTE_BGR;
-	    }
-	    int bufferSize = m.channels()*m.cols()*m.rows();
-	    byte [] b = new byte[bufferSize];
-	    m.get(0,0,b); // get all the pixels
-	    BufferedImage image = new BufferedImage(m.cols(),m.rows(), type);
-	    final byte[] targetPixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
-	    System.arraycopy(b, 0, targetPixels, 0, b.length);  
-	    return image;
+	private BufferedImage Mat2BufferedImage(Mat m) {
+		int type = BufferedImage.TYPE_BYTE_GRAY;
+		if (m.channels() > 1) {
+			type = BufferedImage.TYPE_3BYTE_BGR;
+		}
+		int bufferSize = m.channels() * m.cols() * m.rows();
+		byte[] b = new byte[bufferSize];
+		m.get(0, 0, b); // get all the pixels
+		BufferedImage image = new BufferedImage(m.cols(), m.rows(), type);
+		final byte[] targetPixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
+		System.arraycopy(b, 0, targetPixels, 0, b.length);
+		return image;
 	}
-	
-	// Source: http://www.answers.opencv.org/question/28348/converting-bufferedimage-to-mat-in-java/
+
+	// Source:
+	// http://www.answers.opencv.org/question/28348/converting-bufferedimage-to-mat-in-java/
 	// Convert image to Mat
 	private Mat matify(BufferedImage im) {
-	    // Convert INT to BYTE
-	    //im = new BufferedImage(im.getWidth(), im.getHeight(),BufferedImage.TYPE_3BYTE_BGR);
-	    // Convert bufferedimage to byte array
-	    byte[] pixels = ((DataBufferByte) im.getRaster().getDataBuffer())
-	            .getData();
+		// Convert INT to BYTE
+		// im = new BufferedImage(im.getWidth(),
+		// im.getHeight(),BufferedImage.TYPE_3BYTE_BGR);
+		// Convert bufferedimage to byte array
+		byte[] pixels = ((DataBufferByte) im.getRaster().getDataBuffer()).getData();
 
-	    // Create a Matrix the same size of image
-	    Mat image = new Mat(im.getHeight(), im.getWidth(), CvType.CV_64FC1);
-	    // Fill Matrix with image values
-	    image.put(0, 0, pixels);
+		// Create a Matrix the same size of image
+		Mat image = new Mat(im.getHeight(), im.getWidth(), CvType.CV_64FC1);
+		// Fill Matrix with image values
+		image.put(0, 0, pixels);
 
-	    return image;
+		return image;
 	}
-	
-	private WritableImage bufferedImg2Img(BufferedImage bi)
-	{
-		//write buffered image to image
+
+	private WritableImage bufferedImg2Img(BufferedImage bi) {
+		// write buffered image to image
 		WritableImage newImage = null;
-		if(bi != null)
-		{
+		if (bi != null) {
 			// create writable image with same width and height as buff image
 			newImage = new WritableImage(bi.getHeight(), bi.getWidth());
 			PixelWriter pixWrite = newImage.getPixelWriter();
-			
-			for(int x=0; x<bi.getWidth(); x++)
-			{
-				for(int y=0; y<bi.getHeight(); y++)
-				{
-					//get pixel value at x and y co-ordinate
-					pixWrite.setArgb(x,y,bi.getRGB(x,y));
+
+			for (int x = 0; x < bi.getWidth(); x++) {
+				for (int y = 0; y < bi.getHeight(); y++) {
+					// get pixel value at x and y co-ordinate
+					pixWrite.setArgb(x, y, bi.getRGB(x, y));
 				}
 			}
-		}
-		else
+		} else
 			System.out.println("buffered image is empty");
 		return newImage;
 	}
-	
-	private Image Mat2Image(Mat frame)
-	{
-		//temporary buffer
+
+	private Image Mat2Image(Mat frame) {
+		// temporary buffer
 		MatOfByte buffer = new MatOfByte();
-		//encode image frame into PNG format
+		// encode image frame into PNG format
 		Imgcodecs.imencode(".PNG", frame, buffer);
-		//build image from encoded buffered data		
-        return new Image(new ByteArrayInputStream(buffer.toArray()));
+		// build image from encoded buffered data
+		return new Image(new ByteArrayInputStream(buffer.toArray()));
 	}
-	
-	private void showInformationAlert(String string)
-	{
+
+	private void showInformationAlert(String string) {
 		Alert alert = new Alert(AlertType.INFORMATION);
 		alert.setTitle("Error Alert");
 		alert.setHeaderText(string);

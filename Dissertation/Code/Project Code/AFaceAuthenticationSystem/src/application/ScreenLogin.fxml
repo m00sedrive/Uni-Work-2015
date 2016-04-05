@@ -15,9 +15,9 @@
       <children>
         <BorderPane prefHeight="200.0" prefWidth="200.0" StackPane.alignment="CENTER">
           <center>
-            <HBox prefHeight="100.0" prefWidth="200.0" styleClass="loginBox" BorderPane.alignment="CENTER">
+            <HBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="250.0" minWidth="-Infinity" prefHeight="300.0" prefWidth="400.0" styleClass="loginBox" BorderPane.alignment="CENTER">
               <children>
-                <GridPane>
+                <GridPane hgap="0.0" minWidth="-Infinity" vgap="30.0">
                   <children>
                     <Label minWidth="-Infinity" text="Username:" GridPane.columnIndex="0" GridPane.rowIndex="0" GridPane.valignment="CENTER">
                       <GridPane.margin>
@@ -25,18 +25,28 @@
                       </GridPane.margin>
                     </Label>
                     <Label minWidth="-Infinity" text="Password" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                    <Label text="User Image" GridPane.columnIndex="0" GridPane.rowIndex="2" GridPane.rowSpan="2147483647" />
                     <TextField fx:id="usernameEntered" promptText="Use &quot;Tom&quot; to login" text="Tom" GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.valignment="CENTER">
                       <GridPane.margin>
                         <Insets right="10.0" fx:id="x1" />
                       </GridPane.margin>
                     </TextField>
                     <PasswordField fx:id="passwordEntered" promptText="Use &quot;hello&quot; to login" text="hello" GridPane.columnIndex="1" GridPane.margin="$x1" GridPane.rowIndex="1" />
-                    <Button fx:id="loginButton" alignment="CENTER" defaultButton="true" mnemonicParsing="false" text="Login" GridPane.columnIndex="0" GridPane.rowIndex="2" />
-                    <Button fx:id="logout_button" mnemonicParsing="false" text="Exit" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                    <ImageView fx:id="capturedImage" fitHeight="100.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                      <GridPane.margin>
+                        <Insets left="20.0" top="50.0" />
+                      </GridPane.margin>
+                    </ImageView>
+                    <Button fx:id="loginButton" alignment="CENTER" defaultButton="true" mnemonicParsing="false" text="Login" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                    <Button mnemonicParsing="false" text="Start Camera" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                    <Button fx:id="capture_image_button" mnemonicParsing="false" text="Capture Image" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                    <Button fx:id="logout_button" mnemonicParsing="false" text="Exit" GridPane.columnIndex="3" GridPane.rowIndex="4" />
                   </children>
                   <columnConstraints>
                     <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="148.0" minWidth="10.0" prefWidth="109.0" />
-                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="228.0" minWidth="10.0" prefWidth="189.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="228.0" minWidth="10.0" prefWidth="109.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="228.0" minWidth="10.0" prefWidth="109.0" />
+                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="228.0" minWidth="10.0" prefWidth="109.0" />
                   </columnConstraints>
                   <padding>
                     <Insets bottom="20.0" top="30.0" />
@@ -45,11 +55,13 @@
                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                   </rowConstraints>
                 </GridPane>
               </children>
               <BorderPane.margin>
-                <Insets bottom="50.0" left="200.0" right="200.0" top="50.0" />
+                <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
               </BorderPane.margin>
             </HBox>
           </center>

@@ -22,6 +22,7 @@ public class LoginController {
 	@FXML private PasswordField passwordEntered;
 	@FXML private Button loginButton;
 	@FXML private ImageView loginImage;
+	@FXML private ImageView capturedImage;
 	@FXML private Button logout_button;
 	@FXML private Button capture;
 	
@@ -35,7 +36,8 @@ public class LoginController {
 	{
 		try{
 			BufferedImage image = ImageIO.read(new File("images/userImage.png"));
-			loginImage.setImage(bufferedImg2Img(image));	
+			loginImage.setImage(bufferedImg2Img(image));
+			capturedImage.setImage(bufferedImg2Img(image));
 		}catch(Exception ex)
 		{
 			System.out.println("Error: " + ex.getMessage());

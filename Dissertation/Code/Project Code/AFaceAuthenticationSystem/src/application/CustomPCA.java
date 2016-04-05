@@ -4,44 +4,46 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.List;
 
-import Jama.Matrix;
 import database.Database;
 
-import org.apache.commons.math3.linear.BlockRealMatrix; 
-import org.apache.commons.math3.linear.EigenDecomposition; 
-import org.apache.commons.math3.linear.RealMatrix; 
-import org.apache.commons.math3.stat.correlation.Covariance; 
-
+import org.apache.commons.math3.linear.BlockRealMatrix;
+import org.apache.commons.math3.linear.EigenDecomposition;
+import org.apache.commons.math3.linear.RealMatrix;
+import org.apache.commons.math3.stat.correlation.Covariance;
 
 public class CustomPCA {
 
 	private int imgSetSize;
-	//private Matrix[] imageSet;
 	private List<List<Double>> faceMatrix;
 	private Database database;
-	
+	private double[] dataAverageOfEachRow = null;
+	private double[][] faceMatrixMinusAverages = null;
+	private double[] eigenValues = null;
+	private double[][] eigenVectors = null;
 
 	public void setPCAData(int imgSetSize, Database database) {
 		// set up database
 		this.database = database;
 		this.database.setUpDatabase();
 		// get image dimensions
-		this.imgSetSize = imgSetSize;	
-		//imageSet = new Matrix[imgSetSize];
+		this.imgSetSize = imgSetSize;
+		// imageSet = new Matrix[imgSetSize];
 	}
-	
-	public void prepareFaceMatrix() {	
+
+	public void prepareFaceMatrix() {
 		double[][] image = null;
-		faceMatrix = new ArrayList<List<Double>>();
+		faceMatrix = new ArrayList<List<Double>>(imgSetSize);
 		List<Double> imageRow = null;
-		
+
 		// read values from each row into a column in face matrix
 		for (int i = 0; i < imgSetSize; i++) {
 			image = buffImg2array(database.getPerson(i).getImage());
+			// normalize image data
+			normalizeImageData(image);
 			imageRow = new ArrayList<Double>(image.length * image.length);
-			for(int x=0; x<image.length;x++) {
-				for(int y=0; y<image[x].length; y++){
-					//imageRow[x + (y * image[x].length)] = image[x][y];
+			for (int x = 0; x < image.length; x++) {
+				for (int y = 0; y < image[x].length; y++) {
+					// imageRow[x + (y * image[x].length)] = image[x][y];
 					imageRow.add(image[x][y]);
 				}
 			}
@@ -50,14 +52,28 @@ public class CustomPCA {
 	}
 	
 	public void performPCA() {
-		// This is how we go List -> Array
-		double[][] faceMatrix_array = faceMatrix.toArray(new double[faceMatrix.size()][faceMatrix.get(0).size()]);
+
+		// Convert face data from List --> array
+		double[][] faceMatrix_array = new double[faceMatrix.size()][faceMatrix.get(0).size()];
+		for (int i = 0; i < faceMatrix_array.length; ++i) {
+			for (int j = 0; j < faceMatrix_array[i].length; ++j) {
+				faceMatrix_array[i][j] = faceMatrix.get(i).get(j).doubleValue();
+			}
+		}
+		// calculate averages and coefficents
+		calculateAverageAndCoevariance(faceMatrix_array);
+		// calculate eigen values and vectors
+		calculateEigenValuesAndVectors();
 		
-		print2DArrayMatrix(faceMatrix_array);
-		
-		// CallLibrary(faceMatrix_array);
-		
-		// This is how we go Array -> List
+		// debug print values
+		System.out.println("Eigen Values: ");
+		for(int i=0; i<eigenValues.length; i++)
+			System.out.print(eigenValues[i] + ", ");
+		System.out.println();
+		System.out.println("Eigen Vectors: ");
+		print2DArrayMatrix(eigenVectors);
+
+		// Convert face data from Array --> List
 		faceMatrix = new ArrayList<List<Double>>(faceMatrix_array.length);
 		for (int i = 0; i < faceMatrix_array.length; ++i) {
 			List<Double> face = new ArrayList<Double>(faceMatrix_array[i].length);
@@ -67,14 +83,79 @@ public class CustomPCA {
 			faceMatrix.add(face);
 		}
 	}
-	
-	private void print2DArrayMatrix(double[][] matrix) {
-		
-		for(int i=0;i<matrix.length; i++) {
-			for(int j=0; j<matrix[i].length; j++) {
-				System.out.println(matrix[i][j]);
+
+	private void calculateAverageAndCoevariance(double[][] faceMatrix) {
+		int columnLength = faceMatrix[0].length;
+		int rowLength = faceMatrix.length;
+		dataAverageOfEachRow = new double[columnLength];
+		for (int i = 0; i < columnLength; ++i) {
+			double sum = 0;
+			for (int counter = 0; counter < rowLength; ++counter) {
+				sum += faceMatrix[counter][i];
 			}
+			dataAverageOfEachRow[i] = sum / rowLength;
 		}
+		faceMatrixMinusAverages = new double[rowLength][columnLength];
+		for (int i = 0; i < rowLength; ++i) {
+			faceMatrixMinusAverages[i] = matrixSubtract(faceMatrix[i], dataAverageOfEachRow);
+		}
+	}
+
+	private void calculateEigenValuesAndVectors() {
+
+		// Log.append("Computing covariance matrix...");
+		// Compute covariance matrix
+		RealMatrix matrix = new Covariance(new BlockRealMatrix(faceMatrixMinusAverages).transpose())
+				.getCovarianceMatrix();
+		// Log.append("Computing eigen decomposition...");
+		// Get the eigenvalues and eigenvectors
+		EigenDecomposition eigen = new EigenDecomposition(matrix);
+		eigenValues = eigen.getRealEigenvalues();
+		// Transpose so that eigenvalues are in vectors/columns
+		eigenVectors = eigen.getV().transpose().getData();
+	}
+
+	private double[][] normalizeImageData(double[][] image) {
+		// Normalise data between 0 and 1
+		for (int faceInd = 0; faceInd < image.length; ++faceInd) {
+			double[] data2 = image[faceInd];
+			double min = getMinValue(data2);
+			double max = getMaxValue(data2);
+			for (int j = 0; j < data2.length; ++j)
+				data2[j] = 0 + (1 - 0) * (((data2[j]) - min) / (max - min));
+		}
+		return image;
+	}
+
+	protected double getMinValue(double[] data) {
+		double minVal = Double.MAX_VALUE;
+		for (int i = 0; i < data.length; ++i) {
+			minVal = Math.min(minVal, data[i]);
+		}
+		return minVal;
+	}
+
+	protected double getMaxValue(double[] data) {
+		double maxVal = Double.NEGATIVE_INFINITY;
+		for (int i = 0; i < data.length; ++i)
+			maxVal = Math.max(maxVal, data[i]);
+		return maxVal;
+	}
+
+	private void print2DArrayMatrix(double[][] faceMatrix_array) {
+		for (int i = 0; i < faceMatrix_array.length; i++) {
+			for (int j = 0; j < faceMatrix_array[i].length; j++) {
+				System.out.print(faceMatrix_array[i][j] + " | ");
+			}
+			System.out.println();
+		}
+	}
+
+	protected double[] matrixSubtract(double[] matrix1, double[] matrix2) {
+		double[] result = new double[matrix1.length];
+		for (int i = 0; i < result.length; ++i)
+			result[i] = matrix1[i] - matrix2[i];
+		return result;
 	}
 
 	private double[][] buffImg2array(BufferedImage bi) {
@@ -87,26 +168,6 @@ public class CustomPCA {
 			}
 		}
 		return returnArray;
-	}
-
-
-	public void calculateAverageAndCoevariance(double[][] matrix) {
-		int columnLength = matrix[0].length;
-		int rowLength = matrix.length;
-		//dataAverageForEachRow = new double[columnLength]; 
-		for (int i = 0; i < columnLength; ++i) { 
- 			double sum = 0; 
- 			for (int counter = 0; counter < rowLength; ++counter) { 
- 				//sum += data[counter][i]; 
- 			} 
- 			//dataAverageForEachRow[i] = sum / rowLength; 
- 		} 
- 		//dataWithAverageSubtracted = new double[rowLength][columnLength]; 
- 		for (int i = 0; i < rowLength; ++i) { 
- 			//dataWithAverageSubtracted[i] = matrixSubtract(data[i], 
- 					//dataAverageForEachRow); 
- 		} 
-
 	}
 
 }
