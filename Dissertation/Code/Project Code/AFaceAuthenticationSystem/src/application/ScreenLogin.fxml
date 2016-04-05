@@ -38,8 +38,8 @@
                       </GridPane.margin>
                     </ImageView>
                     <Button fx:id="loginButton" alignment="CENTER" defaultButton="true" mnemonicParsing="false" text="Login" GridPane.columnIndex="0" GridPane.rowIndex="4" />
-                    <Button mnemonicParsing="false" text="Start Camera" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-                    <Button fx:id="capture_image_button" mnemonicParsing="false" text="Capture Image" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+                    <Button id="startCamera" fx:id="cameraButton" mnemonicParsing="false" onAction="#startCamera" text="Start Camera" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                    <Button id="capture_image_button" fx:id="captureImageButton" mnemonicParsing="false" onAction="#setUserImage" text="Capture Image" GridPane.columnIndex="2" GridPane.rowIndex="4" />
                     <Button fx:id="logout_button" mnemonicParsing="false" text="Exit" GridPane.columnIndex="3" GridPane.rowIndex="4" />
                   </children>
                   <columnConstraints>

@@ -117,7 +117,7 @@ public class MainController {
 	}
 
 	@FXML
-	private void startCamera() {
+	public void startCamera() {
 		if (!this.cameraActive) {
 			// start camera stream
 			this.vidCapture.open(0);
@@ -177,7 +177,7 @@ public class MainController {
 
 	}
 
-	private Mat grabFrame() {
+	public Mat grabFrame() {
 		Mat frameCanvas = new Mat();
 		// check video capture is open
 		if (vidCapture.isOpened()) {
