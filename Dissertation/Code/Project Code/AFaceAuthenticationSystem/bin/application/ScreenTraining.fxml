@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<StackPane prefWidth="231.0" styleClass="background" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="application.TrainingController">
+<StackPane minWidth="-Infinity" prefWidth="920.0" styleClass="background" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="application.TrainingController">
   <children>
     <StackPane>
       <children>
@@ -45,7 +45,7 @@
                 </HBox>
               </bottom>
               <center>
-                <VBox fx:id="vBox_right" prefHeight="200.0" prefWidth="100.0" styleClass="containerStyle1" BorderPane.alignment="CENTER">
+                <VBox fx:id="vBox_right" maxWidth="-Infinity" prefHeight="200.0" prefWidth="600.0" styleClass="containerStyle1" BorderPane.alignment="CENTER">
                   <children>
                     <Label text="Image to Train">
                       <VBox.margin>
@@ -62,7 +62,7 @@
                 </VBox>
               </center>
               <left>
-                <VBox maxHeight="-1.0" prefHeight="188.9998779296875" prefWidth="218.0" styleClass="containerStyle1">
+                <VBox maxHeight="-1.0" prefHeight="200.0" prefWidth="400.0" styleClass="containerStyle1">
                   <children>
                     <VBox prefHeight="200.0" prefWidth="100.0">
                       <children>

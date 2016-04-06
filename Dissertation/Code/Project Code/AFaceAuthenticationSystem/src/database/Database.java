@@ -28,7 +28,24 @@ public class Database {
 	
 	// constructor
 	public void setUpDatabase(){
-		loadImageLibrary();
+		//loadImageLibrary();
+		getFilepathList();
+		loadTestLibrary(8);
+	}
+	
+	public void loadTestLibrary(int imageSetSize) {
+		
+		// set image set array size
+		imageSet = new Person[imageSetSize];
+		for(int i=0; i<=imageSetSize-1 ; i++) {			
+			// populate each persons details in the image set array
+			try {
+				BufferedImage bi = ImageIO.read(new FileInputStream(filepath + list.get(i)));
+				imageSet[i] = new Person(bi, "new person", i, bi.getWidth(), bi.getHeight(), 1);
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	// read image library into memory
@@ -84,34 +101,7 @@ public class Database {
 			}
 		}
 		
-		// get list of file paths
-		//getFilepathList();
-		// read and store image set data into memory
-		//initializePersonImageSet(imageSetSize);
 	}
-	/*
-	private Person[] initializeImageSet(int imageSetSize) {
-		// set image set array size
-		imageSet = new Person[imageSetSize];
-		for(int i=0; i<=imageSetSize-1 ; i++) {			
-			// populate each persons details in the image set array
-			imageSet[i] = new Person();
-			try {
-				// load images
-				imageSet[i].setImage(ImageIO.read(new FileInputStream(filepath + list.get(i))));
-				// set person details
-				imageSet[i].setPersonName("something");
-				imageSet[i].setImageNum(i);
-			} catch (IOException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-		}
-		// normalize image set before storing
-		
-		return imageSet;
-	}
-	*/
 	
 	public void getFilepathList() {
 		

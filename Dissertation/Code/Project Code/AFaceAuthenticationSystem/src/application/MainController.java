@@ -5,6 +5,7 @@ import java.awt.image.DataBufferByte;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -16,7 +17,9 @@ import org.opencv.core.MatOfByte;
 import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.videoio.VideoCapture;
 
+import database.Database;
 import javafx.application.Platform;
+import javafx.embed.swing.SwingFXUtils;
 import javafx.event.*;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -25,6 +28,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
 /** Controls the main application screen */
@@ -59,23 +63,26 @@ public class MainController {
 	private Mat greyFaceDetected;
 	private int imageSetCount = 0;
 
-	private ArrayList<ImageView> database_images;
 	// object for handling video capture
 	private VideoCapture vidCapture = new VideoCapture();
 	// object for handling Face detection
-	FaceDetector faceDetector = new FaceDetector();
+	private FaceDetector faceDetector = new FaceDetector();
 	private ArrayList<ImageView> new_imageSet = new ArrayList<ImageView>();
+	private Database database;
 
+	// custom image set variables
 	@FXML
 	private HBox hboxImageGallery_r1;
 	@FXML
 	private HBox hboxImageGallery_r2;
+	@FXML
+	private GridPane imageGalleryGrid;
 
+	
 	public void initialize() {
 	}
 
 	public void initSessionID(LoginManager loginManager, String sessionID) {
-		database_images = new ArrayList<ImageView>(8);
 
 		sessionLabel.setText(sessionID);
 		logoutButton.setOnAction(new EventHandler<ActionEvent>() {
@@ -96,22 +103,6 @@ public class MainController {
 				addImage();
 			}
 		});
-
-		try {
-			while (database_images.size() < 8) {
-				BufferedImage image = ImageIO.read(new File("images/userImage.png"));
-				ImageView imageview = new ImageView();
-				imageview.setImage(bufferedImg2Img(image));
-				database_images.add(imageview);
-				if (database_images.size() < 4) {
-					hboxImageGallery_r1.getChildren().add(database_images.get(database_images.size() + 1));
-				} else
-					hboxImageGallery_r2.getChildren().add(database_images.get(database_images.size() + 1));
-			}
-
-		} catch (Exception ex) {
-			System.out.println("Error: " + ex.getMessage());
-		}
 	}
 
 	@FXML
@@ -207,12 +198,25 @@ public class MainController {
 	}
 
 	private void addImage() {
-		/*
-		 * ImageView iv = new ImageView(Mat2Image(greyFaceDetected));
-		 * iv.setFitHeight(100); iv.setFitWidth(80);
-		 * new_imageSet.add(imageSetCount, iv); imageSetCount++;
-		 */
-
+		
+		// get captured image
+		BufferedImage buffImage = Mat2BufferedImage(faceDetector.getFD());
+		// convert image Mat to Image
+		WritableImage wi = new WritableImage(buffImage.getWidth(), buffImage.getHeight());
+		Image newImage = SwingFXUtils.toFXImage(buffImage, wi);
+		//create image view
+		ImageView iv = new ImageView(newImage);
+		iv.setFitWidth(100);
+		iv.setFitHeight(80);
+		// add imageviews to image gallery grid
+		new_imageSet.add(iv);
+		
+		// add image views to image gallery grid
+		for(int i=0; i < new_imageSet.size() - 1; i++) {
+			imageGalleryGrid.add(new_imageSet.get(i), i, 0);
+		}
+		
+		// need to debug this function // images not displaying in image gallery
 	}
 
 	public ImageView getCanny_image() {

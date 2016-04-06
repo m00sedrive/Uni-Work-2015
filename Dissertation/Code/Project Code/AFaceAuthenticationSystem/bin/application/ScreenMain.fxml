@@ -46,40 +46,36 @@
               <center>
                 <VBox maxHeight="-1.0" maxWidth="-Infinity" minWidth="-1.0" prefHeight="200.0" prefWidth="600.0" styleClass="containerStyle1">
                   <children>
-                    <HBox fx:id="hboxImageGallery_r1" maxWidth="-1.0" prefHeight="100.0" prefWidth="300.0">
-                      <children>
-                        <ImageView fitHeight="140.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
-                          <HBox.margin>
-                            <Insets />
-                          </HBox.margin>
-                        </ImageView>
-                        <ImageView fitHeight="140.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true" />
-                        <ImageView fitHeight="140.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true" />
-                        <ImageView fitHeight="140.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true" />
-                      </children>
-                    </HBox>
-                    <HBox fx:id="hboxImageGallery_r2" prefHeight="100.0" prefWidth="200.0">
-                      <children>
-                        <ImageView fitHeight="140.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true">
-                          <HBox.margin>
-                            <Insets />
-                          </HBox.margin>
-                        </ImageView>
-                        <ImageView fitHeight="140.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true" />
-                        <ImageView fitHeight="140.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true" />
-                        <ImageView fitHeight="140.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true" />
-                      </children>
-                    </HBox>
-                    <Label text="Image Training">
+                    <Label text="Customised Image Set" textAlignment="LEFT">
                       <VBox.margin>
                         <Insets left="10.0" top="10.0" fx:id="x3" />
                       </VBox.margin>
                     </Label>
+                    <GridPane id="imageGaleery" fx:id="imageGalleryGrid" prefHeight="136.0" prefWidth="540.0">
+                      <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="269.0" minWidth="10.0" prefWidth="111.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="429.0" minWidth="10.0" prefWidth="429.0" />
+                      </columnConstraints>
+                      <rowConstraints>
+                        <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="60.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="29.0" minHeight="0.0" prefHeight="0.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      </rowConstraints>
+                    </GridPane>
+                    <HBox fx:id="hboxImageGallery_r1" maxWidth="-1.0" prefHeight="100.0" prefWidth="300.0" />
+                    <HBox fx:id="hboxImageGallery_r2" prefHeight="100.0" prefWidth="200.0">
+                      <children>
+                        <ImageView fitHeight="140.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true" HBox.margin="$x1" />
+                        <ImageView fitHeight="140.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fitHeight="140.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fitHeight="140.0" fitWidth="130.0" pickOnBounds="true" preserveRatio="true" />
+                      </children>
+                    </HBox>
                   </children>
                 </VBox>
               </center>
               <left>
-                <VBox maxWidth="-Infinity" minWidth="-1.0" prefHeight="200.0" prefWidth="400.0" styleClass="containerStyle1">
+                <VBox maxHeight="-Infinity" maxWidth="-Infinity" minWidth="-1.0" prefHeight="566.0" prefWidth="400.0" styleClass="containerStyle1">
                   <children>
                     <Label text="Camera Feed">
                       <VBox.margin>

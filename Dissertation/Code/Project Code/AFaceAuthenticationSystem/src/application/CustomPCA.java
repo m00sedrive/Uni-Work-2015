@@ -2,6 +2,8 @@ package application;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Iterator;
 import java.util.List;
 
 import database.Database;
@@ -64,14 +66,25 @@ public class CustomPCA {
 		calculateAverageAndCoevariance(faceMatrix_array);
 		// calculate eigen values and vectors
 		calculateEigenValuesAndVectors();
+
 		
-		// debug print values
+		// debug
 		System.out.println("Eigen Values: ");
 		for(int i=0; i<eigenValues.length; i++)
 			System.out.print(eigenValues[i] + ", ");
 		System.out.println();
 		System.out.println("Eigen Vectors: ");
 		print2DArrayMatrix(eigenVectors);
+		System.out.println();	
+		
+		
+		// calculate principal components
+		calculatePrincipalComponents();
+		
+		// debug
+		System.out.println("Principal Components: ");
+		for(int i=0; i<eigenValues.length; i++)
+			System.out.print(eigenValues[i] + ", ");
 
 		// Convert face data from Array --> List
 		faceMatrix = new ArrayList<List<Double>>(faceMatrix_array.length);
@@ -114,6 +127,37 @@ public class CustomPCA {
 		// Transpose so that eigenvalues are in vectors/columns
 		eigenVectors = eigen.getV().transpose().getData();
 	}
+	
+	private void calculatePrincipalComponents() {
+		int numOfComponents = eigenVectors.length;
+		// Get principle components
+		ArrayList<PrincipalComponent> principalComponents = new ArrayList<PrincipalComponent>();
+		for(int i=0; i<numOfComponents; i++) {
+			double[] eigenVector = new double[numOfComponents];
+			for(int j=0;j< numOfComponents;j++) {
+				eigenVector[j] = eigenVectors[i][j];
+			}
+			principalComponents.add(new PrincipalComponent(eigenValues[i], eigenVector));
+		}
+		// sort components
+		Collections.sort(principalComponents);
+		Iterator<PrincipalComponent> iterator = principalComponents.iterator();
+		int count = 0;
+		double[][] tempVectors = new double[3][eigenVectors.length];
+		double[] tempValues = new double[3];
+		while(iterator.hasNext()) {
+			PrincipalComponent pc = iterator.next();
+			if(count < 3) {
+				tempVectors[count] = pc.eigenVector;
+				tempValues[count] = pc.eigenValue;
+			}
+			else {
+				eigenVectors[count - 3] = pc.eigenVector;
+				eigenValues[count - 3] = pc.eigenValue;
+			}
+			count++;
+		}
+	}
 
 	private double[][] normalizeImageData(double[][] image) {
 		// Normalise data between 0 and 1
@@ -142,10 +186,10 @@ public class CustomPCA {
 		return maxVal;
 	}
 
-	private void print2DArrayMatrix(double[][] faceMatrix_array) {
-		for (int i = 0; i < faceMatrix_array.length; i++) {
-			for (int j = 0; j < faceMatrix_array[i].length; j++) {
-				System.out.print(faceMatrix_array[i][j] + " | ");
+	private void print2DArrayMatrix(double[][] matrix_array) {
+		for (int i = 0; i < matrix_array.length; i++) {
+			for (int j = 0; j < matrix_array[i].length; j++) {
+				System.out.print(matrix_array[i][j] + " | ");
 			}
 			System.out.println();
 		}

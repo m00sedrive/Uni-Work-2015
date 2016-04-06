@@ -50,7 +50,8 @@ public class TrainingController {
 	  
 	  @FXML public void selectImage() {
 
-		  //FileChooserClass fc = new FileChooserClass();
+		FileChooser sfc = new FileChooser();
+		sfc.setVisible(true);
 		  
 	  }
 	  
@@ -82,7 +83,7 @@ public class TrainingController {
 	  @FXML public void addImages(){
 		  CustomPCA cpca = new CustomPCA();
 		  cpca.setPCAData(8, database);
-		  //cpca.prepareFaceMatrix();
-		  //cpca.performPCA();
+		  cpca.prepareFaceMatrix();
+		  cpca.performPCA();
 	  }
 }

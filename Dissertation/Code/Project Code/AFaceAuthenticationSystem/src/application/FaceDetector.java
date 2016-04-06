@@ -13,8 +13,8 @@ import org.opencv.objdetect.Objdetect;
 
 public class FaceDetector {
 	
-	public Mat FD;
-	public Mat faceDetectionG;
+	private Mat FD;
+	private Mat faceDetectionG;
 
 	public void detection(Mat imageMat)
 	{
