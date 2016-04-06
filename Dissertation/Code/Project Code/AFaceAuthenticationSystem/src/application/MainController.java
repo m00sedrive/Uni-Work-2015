@@ -206,13 +206,13 @@ public class MainController {
 		Image newImage = SwingFXUtils.toFXImage(buffImage, wi);
 		//create image view
 		ImageView iv = new ImageView(newImage);
-		iv.setFitWidth(100);
-		iv.setFitHeight(80);
-		// add imageviews to image gallery grid
+		iv.setFitWidth(80);
+		iv.setFitHeight(100);
+		// add image view to list
 		new_imageSet.add(iv);
 		
 		// add image views to image gallery grid
-		for(int i=0; i < new_imageSet.size() - 1; i++) {
+		for(int i=0; i < new_imageSet.size(); i++) {
 			imageGalleryGrid.add(new_imageSet.get(i), i, 0);
 		}
 		
