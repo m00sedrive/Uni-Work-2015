@@ -64,8 +64,6 @@ public class MainController {
 	private VideoCapture vidCapture = new VideoCapture();
 	// object for handling Face detection
 	FaceDetector faceDetector = new FaceDetector();
-	// object for handling PCA
-	// PCA pca = new PCA();
 	private ArrayList<ImageView> new_imageSet = new ArrayList<ImageView>();
 
 	@FXML
@@ -184,7 +182,6 @@ public class MainController {
 			try {
 				// read and store video capture frame into matrix
 				this.vidCapture.read(frameCanvas);
-
 				// Check frame is not empty
 				if (!frameCanvas.empty()) {
 					// detect and display face detections

@@ -23,7 +23,7 @@ public class Main extends Application {
 			this.primaryStage.setScene(scene);
 			this.primaryStage.setTitle("Face Authentication System");
 			this.primaryStage.setHeight(700);
-			this.primaryStage.setWidth(900);
+			this.primaryStage.setWidth(1000);
 			this.primaryStage.show();
 			
 		} catch(Exception e) {
