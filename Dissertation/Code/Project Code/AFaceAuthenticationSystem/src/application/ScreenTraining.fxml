@@ -21,16 +21,16 @@
                   <children>
                     <GridPane prefHeight="99.99990000000253" prefWidth="389.0">
                       <children>
-                        <Button fx:id="add_images" minWidth="-1.0" mnemonicParsing="false" onAction="#addImages" text="Add Images" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
-                        <Button fx:id="returnToMainScreen" alignment="CENTER" defaultButton="true" minWidth="-1.0" mnemonicParsing="false" text="Return to Main Screen" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
+                        <Button fx:id="add_images" minWidth="-1.0" mnemonicParsing="false" onAction="#trainImages" text="Train Database" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
+                        <Button fx:id="returnToMainScreen" alignment="CENTER" defaultButton="true" minWidth="-1.0" mnemonicParsing="false" text="Return to Main" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
                         <Button fx:id="loadDatabase" minWidth="-1.0" mnemonicParsing="false" onAction="#loadDatabase" text="Load Database" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
                         <Button fx:id="logoutButton" mnemonicParsing="false" text="Logout" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="0" />
                       </children>
                       <columnConstraints>
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="228.0" minWidth="10.0" prefWidth="189.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="228.0" minWidth="10.0" prefWidth="189.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="228.0" minWidth="10.0" prefWidth="189.0" />
-                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="228.0" minWidth="10.0" prefWidth="189.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="228.0" minWidth="10.0" prefWidth="99.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="228.0" minWidth="10.0" prefWidth="102.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="228.0" minWidth="10.0" prefWidth="109.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="228.0" minWidth="10.0" prefWidth="79.0" />
                       </columnConstraints>
                       <rowConstraints>
                         <RowConstraints maxHeight="34.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
@@ -77,13 +77,20 @@
                           </VBox.margin>
                         </HBox>
                         <HBox fx:id="hBox_imgGallery_r2" prefHeight="100.0" prefWidth="200.0" VBox.margin="$x1" />
-                        <HBox fx:id="hBox_imgGallery_r3" prefHeight="100.0" prefWidth="200.0" VBox.margin="$x1" />
+                        <HBox fx:id="hBox_imgGallery_r3" prefHeight="100.0" prefWidth="200.0" VBox.margin="$x1">
+                          <children>
+                            <TextArea fx:id="textAreaTrain" minHeight="-Infinity" prefHeight="200.0" prefWidth="400.0" wrapText="true" />
+                          </children>
+                        </HBox>
                       </children>
                     </VBox>
                     <VBox prefHeight="200.0" prefWidth="100.0" />
                   </children>
                 </VBox>
               </left>
+              <top>
+                <Button fx:id="harrysPCA" mnemonicParsing="false" onAction="#testAlternativePca" prefWidth="88.0" text="H's Code" />
+              </top>
             </BorderPane>
           </children>
         </VBox>

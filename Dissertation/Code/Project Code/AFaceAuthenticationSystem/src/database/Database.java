@@ -37,11 +37,13 @@ public class Database {
 		
 		// set image set array size
 		imageSet = new Person[imageSetSize];
-		for(int i=0; i<=imageSetSize-1 ; i++) {			
+		for(int i=0; i<imageSetSize ; i++) {			
 			// populate each persons details in the image set array
 			try {
 				BufferedImage bi = ImageIO.read(new FileInputStream(filepath + list.get(i)));
 				imageSet[i] = new Person(bi, "new person", i, bi.getWidth(), bi.getHeight(), 1);
+				this.imageHeight = bi.getHeight();
+				this.imageWidth = bi.getWidth();
 			} catch (IOException e) {
 				e.printStackTrace();
 			}

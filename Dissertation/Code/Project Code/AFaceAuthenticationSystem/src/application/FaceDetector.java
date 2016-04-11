@@ -1,14 +1,29 @@
 
 package application;
 
+import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
+import java.awt.image.DataBufferByte;
+
+import java.awt.image.RenderedImage;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.IOException;
+
+import javax.imageio.ImageIO;
+
 import org.opencv.core.Mat;
+import org.opencv.core.MatOfByte;
 import org.opencv.core.MatOfRect;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
+import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.objdetect.Objdetect;
+
+import javafx.scene.image.Image;
 
 
 public class FaceDetector {
@@ -60,11 +75,37 @@ public class FaceDetector {
 			//crop image of face
 			Mat crop = imageMat.submat(faceArray[i]);
 			//crop grey image of face
-			Mat faceDetectGrey = greyScaleImg.submat(faceArray[i]);
+			faceDetectionG = greyScaleImg.submat(faceArray[i]);
 			//set local variables
 			setFD(crop);
-			setFDGrey(faceDetectGrey);
+			setFDGrey(faceDetectionG);
 		}				
+	}
+	
+	public void saveDetection2File() {
+		
+		try {
+			ImageIO.write(Mat2BufferedImage(faceDetectionG) ,".jpg", new File("C:\\Users\\user\\Desktop\\images\\detectedFace.jpg"));
+			System.out.println("try hit");
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			System.out.println("try caught");
+			e.printStackTrace();
+		}
+	}
+	
+	private BufferedImage Mat2BufferedImage(Mat m) {
+		int type = BufferedImage.TYPE_BYTE_GRAY;
+		if (m.channels() > 1) {
+			type = BufferedImage.TYPE_3BYTE_BGR;
+		}
+		int bufferSize = m.channels() * m.cols() * m.rows();
+		byte[] b = new byte[bufferSize];
+		m.get(0, 0, b); // get all the pixels
+		BufferedImage image = new BufferedImage(m.cols(), m.rows(), type);
+		final byte[] targetPixels = ((DataBufferByte) image.getRaster().getDataBuffer()).getData();
+		System.arraycopy(b, 0, targetPixels, 0, b.length);
+		return image;
 	}
 	
 	public Mat getFD() {

@@ -8,7 +8,7 @@ public class Person {
 	private String personName = null;
 	private int imageNum = 0;
 	private int imageWidth;
-	private int imageHeigth;
+	private int imageHeight;
 	private long imageSize;
 
 	public Person(BufferedImage image, String personName, int imageNum, int imageWidth, int imageHeight,
@@ -17,7 +17,7 @@ public class Person {
 		this.image = image;
 		this.personName = personName;
 		this.imageWidth = imageWidth;
-		this.imageHeigth = imageHeight;
+		this.imageHeight = imageHeight;
 		this.imageSize = imageSize;
 	}
 
@@ -37,8 +37,12 @@ public class Person {
 		return imageNum;
 	}
 
-	public int getImageHeigth() {
-		return imageHeigth;
+	public int getImageHeight() {
+		return imageHeight;
+	}
+	
+	public int getImageWidth() {
+		return imageWidth;
 	}
 
 	public long getImageSize() {

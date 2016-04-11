@@ -26,57 +26,64 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 
-public class LoginController {
+public class LoginController extends CustomAppTools{
 
-	@FXML private TextField usernameEntered;
-	@FXML private PasswordField passwordEntered;
-	@FXML private ImageView loginImage;
-	@FXML private ImageView capturedImage;
-	@FXML private Button loginButton;
-	@FXML private Button logout_button;
-	@FXML private Button captureImageButton;
-	@FXML private Button cameraButton;
-	
+	@FXML
+	private TextField usernameEntered;
+	@FXML
+	private PasswordField passwordEntered;
+	@FXML
+	private ImageView loginImage;
+	@FXML
+	private ImageView capturedImage;
+	@FXML
+	private Button loginButton;
+	@FXML
+	private Button logout_button;
+	@FXML
+	private Button captureImageButton;
+	@FXML
+	private Button cameraButton;
+
 	boolean cameraActive;
 	private FaceDetector faceDetector = new FaceDetector();
 	private VideoCapture vidCapture = new VideoCapture();
 	private Timer timer;
-	private Image CameraStream;	
+	private Image CameraStream;
 	private String username = "Tom";
 	private String password = "hello";
-	
-	public void initialize() {}
-	
-	public void initManager(final LoginManager loginManager)
-	{
-		try{
+
+	public void initialize() {
+	}
+
+	public void initManager(final LoginManager loginManager) {
+		try {
 			BufferedImage image = ImageIO.read(new File("images/userImage.png"));
 			loginImage.setImage(bufferedImg2Img(image));
 			capturedImage.setImage(bufferedImg2Img(image));
-		}catch(Exception ex)
-		{
+		} catch (Exception ex) {
 			System.out.println("Error: " + ex.getMessage());
 		}
-		loginButton.setOnAction(new EventHandler<ActionEvent>(){
-			@Override public void handle(ActionEvent event) {
+		loginButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
 				String sessionID = authorize();
-				if(sessionID != null)
-				{
+				if (sessionID != null) {
 					loginManager.authenticated(sessionID);
 				}
 			}
 		});
-		logout_button.setOnAction(new EventHandler<ActionEvent>(){
-			@Override public void handle(ActionEvent event) {
+		logout_button.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
 				String sessionID = authorize();
-				if(sessionID != null)
-				{
+				if (sessionID != null) {
 					exit(0);
 				}
 			}
 		});
 	}
-	
+
 	@FXML
 	public void startCamera() {
 		if (!this.cameraActive) {
@@ -153,76 +160,42 @@ public class LoginController {
 		}
 		return frameCanvas;
 	}
-	
-	private Image Mat2Image(Mat frame) {
-		// temporary buffer
-		MatOfByte buffer = new MatOfByte();
-		// encode image frame into PNG format
-		Imgcodecs.imencode(".PNG", frame, buffer);
-		// build image from encoded buffered data
-		return new Image(new ByteArrayInputStream(buffer.toArray()));
-	}
-	
+
 	@FXML
 	public void setUserImage() {
 		System.out.println("Button Hit!");
 		// crop face detection
 		Mat cropCamShot = faceDetector.getFD();
+
 		// set image view with face detection
 		capturedImage.setImage(Mat2Image(cropCamShot));
+		faceDetector.saveDetection2File();
 	}
-	
-	private String authorize()
-	{
+
+	private String authorize() {
 		String authorized = null;
-		if(usernameEntered.getText().equals(username) && passwordEntered.getText().equals(password))
-		{
+		if (usernameEntered.getText().equals(username) && passwordEntered.getText().equals(password)) {
 			authorized = generateSessionID();
-		}
-		else
-		{
-			// alert user and print to console wrong username or password entered!
+		} else {
+			// alert user and print to console wrong username or password
+			// entered!
 			System.out.println("Invalid username or password: Please re-enter!!");
 			JOptionPane.showMessageDialog(null, "Invalis username or password: Please re-enter!");
 		}
 		return authorized;
 	}
-	
+
 	private static int sessionID = 0;
-	
-	private String generateSessionID()
-	{
+
+	private String generateSessionID() {
 		sessionID++;
 		String id = null;
 		id = "session - " + sessionID;
 		return id;
 	}
-	
+
 	private static void exit(int status) {
 		System.exit(status);
 	}
-	
-	private WritableImage bufferedImg2Img(BufferedImage bi)
-	{
-		//write buffered image to image
-		WritableImage newImage = null;
-		if(bi != null)
-		{
-			// create writable image with same width and height as buff image
-			newImage = new WritableImage(bi.getHeight(), bi.getWidth());
-			PixelWriter pixWrite = newImage.getPixelWriter();
-			
-			for(int x=0; x<bi.getWidth(); x++)
-			{
-				for(int y=0; y<bi.getHeight(); y++)
-				{
-					//get pixel value at x and y co-ordinate
-					pixWrite.setArgb(x,y,bi.getRGB(x,y));
-				}
-			}
-		}
-		else
-			System.out.println("buffered image is empty");
-		return newImage;
-	}
+
 }
