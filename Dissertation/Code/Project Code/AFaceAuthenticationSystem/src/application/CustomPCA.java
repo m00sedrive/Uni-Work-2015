@@ -15,10 +15,12 @@ import org.apache.commons.math3.linear.EigenDecomposition;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.stat.correlation.Covariance;
 
+import com.sun.javafx.iio.ImageStorage.ImageType;
+
 import Jama.Matrix;
 import database.Database;
 
-public class CustomPCA extends CustomAppTools {
+public class CustomPCA extends AppTools {
 
 	private int imgSetSize = 8;
 	private List<List<Double>> faceMatrix;
@@ -42,26 +44,58 @@ public class CustomPCA extends CustomAppTools {
 	}
 
 	public void prepareFaceMatrix() {
-		double[][] image = null;
+		int[][] image = null;
 		faceMatrix = new ArrayList<List<Double>>(imgSetSize);
 		List<Double> imageRow = null;
 
 		// read values from each row into a column in face matrix
 		for (int i = 0; i < imgSetSize; i++) {
 			image = buffImg2array(database.getPerson(i).getImage());
+		
+			{
+				BufferedImage test = new BufferedImage(image.length, image[0].length, BufferedImage.TYPE_INT_RGB);
+				for (int a = 0; a < test.getWidth(); a++) {
+					for (int b = 0; b < test.getHeight(); b++) {
+						test.setRGB(a, b, image[a][b]);
+					}
+				}
+				try {
+					ImageIO.write(test, "jpg", new File(
+							"C:\\Users\\user\\Desktop\\FAResults\\face\\" + i
+							+ "_input.jpg"));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				
+				double[][] normalised = normalizeImageData(image);
+				test = denormaliseImageData(image.length, image[0].length, (float)0, (float)255, normalised);
+				
+				try {
+					ImageIO.write(test, "jpg", new File(
+							"C:\\Users\\user\\Desktop\\FAResults\\face\\" + i
+							+ "_normed_and_unnormed.jpg"));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			
+			}
+			
 			int imageLength = image.length;
 			// normalize image data
-			normalizeImageData(image);
+			double[][] normalised_matrix = normalizeImageData(image);
 			imageRow = new ArrayList<Double>(imageLength * imageLength);
-			for (int x = 0; x < imageLength; x++) {
+			for (int x = 0; x < normalised_matrix.length; x++) {
 				for (int y = 0; y < image[x].length; y++) {
-					imageRow.add(image[x][y]);
+					imageRow.add(normalised_matrix[x][y]);
 				}
 			}
 			faceMatrix.add(imageRow);
 		}
-		// setDebugMatrix(faceMatrix);
+		
 		// debug
+		setDebugMatrix(faceMatrix);
 		print2dListToFile("faceMatrix.txt", faceMatrix);
 	}
 
@@ -73,6 +107,18 @@ public class CustomPCA extends CustomAppTools {
 				faceMatrix_array[i][j] = faceMatrix.get(i).get(j).doubleValue();
 			}
 		}
+		
+		// save constructed eigen faces to file
+		for (int i = 0; i < faceMatrix_array.length; ++i) {
+			BufferedImage im = denormaliseImageData(55, 51, 0, 255, faceMatrix_array[i]);
+			try {
+				ImageIO.write(im, "jpg", new File("C:\\Users\\user\\Desktop\\FAResults\\face\\debug_" + i + ".jpg"));
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
 		// calculate averages and coefficents
 		calculateAverageAndCoevariance(faceMatrix_array);
 		// calculate Eigen values and vectors
@@ -232,43 +278,83 @@ public class CustomPCA extends CustomAppTools {
 		}
 	}
 
-	private double[][] normalizeImageData(double[][] image) {
+	private double[][] normalizeImageData(int[][] image) {
+		double[][] returnData = new double[image.length][image[0].length];
 		// Normalise data between 0 and 1
 		for (int faceInd = 0; faceInd < image.length; ++faceInd) {
-			double[] data2 = image[faceInd];
-			double min = getMinValue(data2);
-			double max = getMaxValue(data2);
-			for (int j = 0; j < data2.length; ++j)
-				data2[j] = 0 + (1 - 0) * (((data2[j]) - min) / (max - min));
+			double min = (double)getMinValue(image[faceInd]);
+			double max = (double)getMaxValue(image[faceInd]);
+			
+			for (int j = 0; j < image[faceInd].length; ++j)
+				returnData[faceInd][j] = ((((double)image[faceInd][j])) - min) / (max - min);
 		}
-		return image;
+		return returnData;
 	}
 
 	protected BufferedImage denormaliseImageData(int width, int height, float goalMin, float goalMax, double[] data) {
 		BufferedImage returnVal = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		double min = getMinValue(data);
 		double max = getMaxValue(data);
-		int row = -1;
-		for (int i = 0; i < data.length; ++i) {
-			// Normalise
-			double fgrey = goalMin + (goalMax - goalMin) * (((data[i]) - min) / (max - min));
-			int grey = (int) fgrey;
-			if (grey > 255)
-				grey = 255;
-			else if (grey < 0)
-				grey = 0;
-			grey = 0xff000000 | (grey << 16) | (grey << 8) | grey;
-			if (i % database.getPerson(0).getImageWidth() == 0)
-				++row;
-			returnVal.setRGB(row, i % database.getPerson(0).getImageWidth(), grey);
+		int row = 0;
+		for (int j = 0; j < height; ++j) {
+			for (int i = 0; i < width; ++i) {
+				// Normalise
+				double fgrey = goalMin + (goalMax - goalMin)
+						* (((data[row++]) - min) / (max - min));
+				int grey = (int) fgrey;
+				if (grey > 255)
+					grey = 255;
+				else if (grey < 0)
+					grey = 0;
+				grey = 0xff000000 | (grey << 16) | (grey << 8) | grey;
+				returnVal.setRGB(i, j, grey);
+			}
+		}
+		return returnVal;
+	}
+	
+	protected BufferedImage denormaliseImageData(int width, int height,
+			float goalMin, float goalMax, double[][] data) {
+		BufferedImage returnVal = new BufferedImage(width, height,
+				BufferedImage.TYPE_INT_RGB);
+		for (int j = 0; j < data.length; ++j) {
+			for (int i = 0; i < data[j].length; ++i) {
+				double min = getMinValue(data[j]);
+				double max = getMaxValue(data[j]);
+				// Normalise
+				double fgrey = goalMin + (goalMax - goalMin)
+						* (((data[j][i]) - min) / (max - min));
+				int grey = (int) fgrey;
+				if (grey > 255)
+					grey = 255;
+				else if (grey < 0)
+					grey = 0;
+				grey = 0xff000000 | (grey << 16) | (grey << 8) | grey;
+				returnVal.setRGB(j, i, grey);
+			}
 		}
 		return returnVal;
 	}
 
-	protected double getMinValue(double[] data) {
+	protected int getMinValue(int[] data2) {
+		int minVal = Integer.MAX_VALUE;
+		for (int i = 0; i < data2.length; ++i) {
+			minVal = Math.min(minVal, data2[i]);
+		}
+		return minVal;
+	}
+	
+	protected int getMaxValue(int[] data) {
+		int maxVal = Integer.MIN_VALUE;
+		for (int i = 0; i < data.length; ++i)
+			maxVal = Math.max(maxVal, data[i]);
+		return maxVal;
+	}
+	
+	protected double getMinValue(double[] data2) {
 		double minVal = Double.MAX_VALUE;
-		for (int i = 0; i < data.length; ++i) {
-			minVal = Math.min(minVal, data[i]);
+		for (int i = 0; i < data2.length; ++i) {
+			minVal = Math.min(minVal, data2[i]);
 		}
 		return minVal;
 	}

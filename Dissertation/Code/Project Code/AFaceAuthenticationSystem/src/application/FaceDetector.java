@@ -1,29 +1,21 @@
 
 package application;
 
-import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
-
-import java.awt.image.RenderedImage;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfByte;
 import org.opencv.core.MatOfRect;
 import org.opencv.core.Rect;
 import org.opencv.core.Scalar;
 import org.opencv.core.Size;
-import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.imgproc.Imgproc;
 import org.opencv.objdetect.CascadeClassifier;
 import org.opencv.objdetect.Objdetect;
-
-import javafx.scene.image.Image;
 
 
 public class FaceDetector {
@@ -86,10 +78,10 @@ public class FaceDetector {
 		
 		try {
 			ImageIO.write(Mat2BufferedImage(faceDetectionG) ,".jpg", new File("C:\\Users\\user\\Desktop\\images\\detectedFace.jpg"));
-			System.out.println("try hit");
+			System.out.println("try statement hit");
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			System.out.println("try caught");
+			System.out.println("try statement caught");
 			e.printStackTrace();
 		}
 	}

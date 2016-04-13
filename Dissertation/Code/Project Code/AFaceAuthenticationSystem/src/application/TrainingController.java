@@ -116,7 +116,7 @@ public class TrainingController {
 	public void trainImages() {
 		CustomPCA cpca = new CustomPCA();
 		if (database != null) {
-			cpca.setPCAData(8, database);
+			cpca.setPCAData(8,database);
 			cpca.prepareFaceMatrix();
 			cpca.performPCA();
 			textAreaTrain.setText("Training Complete!");

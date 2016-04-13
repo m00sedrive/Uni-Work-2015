@@ -29,7 +29,7 @@ import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 
 /** Controls the main application screen */
-public class MainController extends CustomAppTools {
+public class MainController extends AppTools {
 	@FXML
 	private Label sessionLabel;
 	@FXML

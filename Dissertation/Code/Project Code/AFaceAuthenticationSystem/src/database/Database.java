@@ -17,7 +17,7 @@ public class Database {
 	
 	private ArrayList<String> list = new ArrayList<String>();
 	private String filepath = "images/xm2vts/";
-	private int imageSetSize = 8;
+	private int imageSetSize;
 	public int imageWidth;
 	public int imageHeight;
 	public long imageSize;
@@ -48,6 +48,31 @@ public class Database {
 				e.printStackTrace();
 			}
 		}
+	}
+	
+	public void getFilepathList() {
+		
+		// Open the file
+		FileInputStream fstream;
+		try {
+			fstream = new FileInputStream("list_of_image_names.txt");
+			BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
+			String strLine;
+
+			//Read File Line By Line
+			while ((strLine = br.readLine()) != null)   {
+				// add string line to array list
+				list.add(strLine);
+			}
+			//Close the input stream
+			br.close();
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}	
 	}
 	
 	// read image library into memory
@@ -102,32 +127,7 @@ public class Database {
                 }
 			}
 		}
-		
-	}
-	
-	public void getFilepathList() {
-		
-		// Open the file
-		FileInputStream fstream;
-		try {
-			fstream = new FileInputStream("list_of_image_names.txt");
-			BufferedReader br = new BufferedReader(new InputStreamReader(fstream));
-			String strLine;
-
-			//Read File Line By Line
-			while ((strLine = br.readLine()) != null)   {
-				// add string line to array list
-				list.add(strLine);
-			}
-			//Close the input stream
-			br.close();
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}	
+		this.imageSetSize = imageSet1.size();
 	}
 
 	public Person[] getPersonImageSet() {

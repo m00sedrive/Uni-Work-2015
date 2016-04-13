@@ -26,7 +26,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.image.PixelWriter;
 import javafx.scene.image.WritableImage;
 
-public class LoginController extends CustomAppTools{
+public class LoginController extends AppTools{
 
 	@FXML
 	private TextField usernameEntered;
@@ -163,7 +163,6 @@ public class LoginController extends CustomAppTools{
 
 	@FXML
 	public void setUserImage() {
-		System.out.println("Button Hit!");
 		// crop face detection
 		Mat cropCamShot = faceDetector.getFD();
 
