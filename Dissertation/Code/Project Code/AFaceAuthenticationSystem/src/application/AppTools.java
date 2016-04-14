@@ -83,7 +83,7 @@ public class AppTools {
 	}
 
 	/**
-	 *  Converts an OpenCV Mat to java Image
+	 * Converts an OpenCV Mat to java Image
 	 * @param Mat frame
 	 * @return new Image
 	 */
@@ -96,12 +96,38 @@ public class AppTools {
 		return new Image(new ByteArrayInputStream(buffer.toArray()));
 	}
 
+	protected double[][] squareNonMatrix(double[][] data) { 
+		double[][] squaredNMResult = new double[data.length][data[0].length]; 
+		for (int i = 0; i < data.length; ++i) 
+			for (int j = 0; j < data[i].length; ++j) 
+				squaredNMResult[i][j] = data[i][j]; 
+ 		for (int i = 0; i < data.length; ++i) { 
+ 			for (int j = 0; j < data[i].length; ++j) { 
+ 				squaredNMResult[i][j] = squaredNMResult[i][j] * squaredNMResult[i][j]; 
+ 			} 
+ 		} 
+ 		return squaredNMResult; 
+ 	} 
+	
 	protected double[] matrixSubtract(double[] matrix1, double[] matrix2) {
 		double[] result = new double[matrix1.length];
 		for (int i = 0; i < result.length; ++i)
 			result[i] = matrix1[i] - matrix2[i];
 		return result;
 	}
+	
+	protected double[][] subtractFromEachRow(double[][] data, double[] data2subtract) { 
+ 		double[][] subtractMatResult = new double[data.length][data2subtract.length]; 
+ 		for (int i = 0; i < data.length; ++i) 
+ 			for (int j = 0; j < data2subtract.length; ++j) 
+ 				subtractMatResult[i][j] = data[i][j]; 
+ 		for (int i = 0; i < data.length; ++i) { 
+ 			for (int j = 0; j < data2subtract.length; ++j) { 
+ 				subtractMatResult[i][j] -= data2subtract[j]; 
+ 			} 
+ 		} 
+ 		return subtractMatResult; 
+ 	} 
 
 	protected String getMatrix2dFileString(double[][] input) {
 		List<List<Double>> list = new ArrayList<List<Double>>(input.length);
@@ -188,5 +214,35 @@ public class AppTools {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	protected int getMinValue(int[] data2) {
+		int minVal = Integer.MAX_VALUE;
+		for (int i = 0; i < data2.length; ++i) {
+			minVal = Math.min(minVal, data2[i]);
+		}
+		return minVal;
+	}
+
+	protected int getMaxValue(int[] data) {
+		int maxVal = Integer.MIN_VALUE;
+		for (int i = 0; i < data.length; ++i)
+			maxVal = Math.max(maxVal, data[i]);
+		return maxVal;
+	}
+
+	protected double getMinValue(double[] data2) {
+		double minVal = Double.MAX_VALUE;
+		for (int i = 0; i < data2.length; ++i) {
+			minVal = Math.min(minVal, data2[i]);
+		}
+		return minVal;
+	}
+
+	protected double getMaxValue(double[] data) {
+		double maxVal = Double.NEGATIVE_INFINITY;
+		for (int i = 0; i < data.length; ++i)
+			maxVal = Math.max(maxVal, data[i]);
+		return maxVal;
 	}
 }

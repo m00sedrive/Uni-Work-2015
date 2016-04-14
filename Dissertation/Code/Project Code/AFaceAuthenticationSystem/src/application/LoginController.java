@@ -1,7 +1,6 @@
 package application;
 
 import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.util.Timer;
 import java.util.TimerTask;
@@ -10,8 +9,6 @@ import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfByte;
-import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.videoio.VideoCapture;
 
 import javafx.application.Platform;
@@ -23,10 +20,8 @@ import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.image.PixelWriter;
-import javafx.scene.image.WritableImage;
 
-public class LoginController extends AppTools{
+public class LoginController extends AppTools {
 
 	@FXML
 	private TextField usernameEntered;
@@ -52,15 +47,19 @@ public class LoginController extends AppTools{
 	private Image CameraStream;
 	private String username = "Tom";
 	private String password = "hello";
+	private boolean getNewFaceImage = true;
+	private boolean defaultImage = true;
 
 	public void initialize() {
 	}
 
 	public void initManager(final LoginManager loginManager) {
 		try {
-			BufferedImage image = ImageIO.read(new File("images/userImage.png"));
-			loginImage.setImage(bufferedImg2Img(image));
-			capturedImage.setImage(bufferedImg2Img(image));
+			if (defaultImage) {
+				BufferedImage image = ImageIO.read(new File("images/userImage.png"));
+				loginImage.setImage(bufferedImg2Img(image));
+				capturedImage.setImage(bufferedImg2Img(image));
+			}
 		} catch (Exception ex) {
 			System.out.println("Error: " + ex.getMessage());
 		}
@@ -135,9 +134,16 @@ public class LoginController extends AppTools{
 			}
 			// release camera
 			this.vidCapture.release();
-			// clear image view
-			loginImage.setImage(null);
+
+			// reset image view to default image
+			try {
+				BufferedImage image = ImageIO.read(new File("images/userImage.png"));
+				loginImage.setImage(bufferedImg2Img(image));
+			} catch (Exception ex) {
+				System.out.println("Error: " + ex.getMessage());
+			}
 		}
+
 	}
 
 	public Mat grabFrame() {
@@ -152,6 +158,14 @@ public class LoginController extends AppTools{
 				if (!frameCanvas.empty()) {
 					// detect and display face detections
 					faceDetector.detection(frameCanvas);
+
+					// set detected face a user image once
+					if (faceDetector.getFD() != null) {
+						if (getNewFaceImage) {
+							getNewFaceImage = false;
+							capturedImage.setImage(Mat2Image(faceDetector.getFD()));
+						}
+					}
 				}
 			} catch (Exception e) {
 				System.err.print("ERROR");
@@ -163,11 +177,11 @@ public class LoginController extends AppTools{
 
 	@FXML
 	public void setUserImage() {
-		// crop face detection
-		Mat cropCamShot = faceDetector.getFD();
-
+		// get detected face image
+		// Mat cropCamShot = faceDetector.getFD();
 		// set image view with face detection
-		capturedImage.setImage(Mat2Image(cropCamShot));
+		// capturedImage.setImage(Mat2Image(cropCamShot));
+		// debug
 		faceDetector.saveDetection2File();
 	}
 
@@ -195,6 +209,10 @@ public class LoginController extends AppTools{
 
 	private static void exit(int status) {
 		System.exit(status);
+	}
+
+	public void setCapturedImage(ImageView capturedImage) {
+		this.capturedImage = capturedImage;
 	}
 
 }

@@ -7,5 +7,6 @@
 	<classpathentry kind="lib" path="lib/commons-math3-3.6.jar"/>
 	<classpathentry kind="lib" path="C:/Users/user/Documents/AFaceAuthenticationSystem/src/application/Resources/Jama-1.0.3.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/Prototype"/>
+	<classpathentry kind="lib" path="C:/Users/user/workspace/AFaceAuthenticationSystem/lib/imgscalr-lib-4.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

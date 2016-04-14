@@ -29,6 +29,8 @@ public class TrainingController {
 	@FXML
 	private Button harrysPCA;
 	@FXML
+	private Button searchPersonButton;
+	@FXML
 	private GridPane image_grid;
 	@FXML
 	private ImageView image2train;
@@ -81,6 +83,15 @@ public class TrainingController {
 		 */
 	}
 
+	@FXML
+	public void searchForPerson() {
+		
+		// get detected face buffered image.
+
+		//SearchPerson personSearch = new SearchPerson();
+		//personSearch.searchPersonInCache();
+	}
+	
 	@FXML
 	public void selectImage() {
 

@@ -1,10 +1,8 @@
-
 package application;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
 import java.io.File;
-import java.io.IOException;
 
 import javax.imageio.ImageIO;
 
@@ -66,21 +64,21 @@ public class FaceDetector {
 			Imgproc.rectangle(imageMat, faceArray[i].tl(), faceArray[i].br(), new Scalar(0, 250, 0, 255), 3);
 			//crop image of face
 			Mat crop = imageMat.submat(faceArray[i]);
-			//crop grey image of face
-			faceDetectionG = greyScaleImg.submat(faceArray[i]);
-			//set local variables
-			setFD(crop);
-			setFDGrey(faceDetectionG);
-		}				
+			// set local image variables
+			this.faceDetectionG = greyScaleImg.submat(faceArray[i]);
+			this.FD = crop;
+		}
 	}
 	
 	public void saveDetection2File() {
 		
 		try {
-			ImageIO.write(Mat2BufferedImage(faceDetectionG) ,".jpg", new File("C:\\Users\\user\\Desktop\\images\\detectedFace.jpg"));
+			boolean didWrite = ImageIO.write(Mat2BufferedImage(faceDetectionG), "jpg", new File("C:\\Users\\user\\Desktop\\images\\detectedFace.jpg"));
+			if (!didWrite) {
+				throw new Exception("failed");
+			}
 			System.out.println("try statement hit");
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
+		} catch (Exception e) {
 			System.out.println("try statement caught");
 			e.printStackTrace();
 		}

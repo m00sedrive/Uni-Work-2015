@@ -53,11 +53,19 @@
                       </VBox.margin>
                     </Label>
                     <ImageView fx:id="image2train" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-                    <Button fx:id="selectImageButton" mnemonicParsing="false" onAction="#selectImage" text="Select Image">
-                      <VBox.margin>
-                        <Insets bottom="10.0" left="40.0" right="40.0" top="10.0" />
-                      </VBox.margin>
-                    </Button>
+                    <GridPane>
+                      <children>
+                        <Button fx:id="searchPersonButton" mnemonicParsing="false" onAction="#searchForPerson" text="SearchPerson" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <Button fx:id="selectImageButton" mnemonicParsing="false" onAction="#selectImage" text="Select Image" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                      </children>
+                      <columnConstraints>
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      </columnConstraints>
+                      <rowConstraints>
+                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                      </rowConstraints>
+                    </GridPane>
                   </children>
                 </VBox>
               </center>

@@ -15,8 +15,6 @@ import org.apache.commons.math3.linear.EigenDecomposition;
 import org.apache.commons.math3.linear.RealMatrix;
 import org.apache.commons.math3.stat.correlation.Covariance;
 
-import com.sun.javafx.iio.ImageStorage.ImageType;
-
 import Jama.Matrix;
 import database.Database;
 
@@ -32,8 +30,10 @@ public class CustomPCA extends AppTools {
 	private double[][] eigenFaces = null;
 	private double[][] eigenWeights = null;
 	private int numOfEigenFacesSelected = 150;
+	private BufferedImage[] images;
 
 	private static List<List<Double>> debugMatrix = null;
+	private EigenCache cache;
 
 	public void setPCAData(int imgSetSize, Database database) {
 		// set up database
@@ -41,6 +41,10 @@ public class CustomPCA extends AppTools {
 		this.database.setUpDatabase();
 		// get image dimensions
 		this.imgSetSize = imgSetSize;
+	}
+	
+	public EigenCache getPCAResults() {
+		return cache;
 	}
 
 	public void prepareFaceMatrix() {
@@ -51,7 +55,7 @@ public class CustomPCA extends AppTools {
 		// read values from each row into a column in face matrix
 		for (int i = 0; i < imgSetSize; i++) {
 			image = buffImg2array(database.getPerson(i).getImage());
-		
+
 			{
 				BufferedImage test = new BufferedImage(image.length, image[0].length, BufferedImage.TYPE_INT_RGB);
 				for (int a = 0; a < test.getWidth(); a++) {
@@ -60,28 +64,24 @@ public class CustomPCA extends AppTools {
 					}
 				}
 				try {
-					ImageIO.write(test, "jpg", new File(
-							"C:\\Users\\user\\Desktop\\FAResults\\face\\" + i
-							+ "_input.jpg"));
+					ImageIO.write(test, "jpg",
+							new File("C:\\Users\\user\\Desktop\\FAResults\\face\\" + i + "_input.jpg"));
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-				
+
 				double[][] normalised = normalizeImageData(image);
-				test = denormaliseImageData(image.length, image[0].length, (float)0, (float)255, normalised);
-				
+				test = denormaliseImageData(image.length, image[0].length, (float) 0, (float) 255, normalised);
+
 				try {
-					ImageIO.write(test, "jpg", new File(
-							"C:\\Users\\user\\Desktop\\FAResults\\face\\" + i
-							+ "_normed_and_unnormed.jpg"));
+					ImageIO.write(test, "jpg",
+							new File("C:\\Users\\user\\Desktop\\FAResults\\face\\" + i + "_normed_and_unnormed.jpg"));
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-			
+
 			}
-			
+
 			int imageLength = image.length;
 			// normalize image data
 			double[][] normalised_matrix = normalizeImageData(image);
@@ -93,7 +93,7 @@ public class CustomPCA extends AppTools {
 			}
 			faceMatrix.add(imageRow);
 		}
-		
+
 		// debug
 		setDebugMatrix(faceMatrix);
 		print2dListToFile("faceMatrix.txt", faceMatrix);
@@ -107,18 +107,17 @@ public class CustomPCA extends AppTools {
 				faceMatrix_array[i][j] = faceMatrix.get(i).get(j).doubleValue();
 			}
 		}
-		
+
 		// save constructed eigen faces to file
 		for (int i = 0; i < faceMatrix_array.length; ++i) {
 			BufferedImage im = denormaliseImageData(55, 51, 0, 255, faceMatrix_array[i]);
 			try {
 				ImageIO.write(im, "jpg", new File("C:\\Users\\user\\Desktop\\FAResults\\face\\debug_" + i + ".jpg"));
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
-		
+
 		// calculate averages and coefficents
 		calculateAverageAndCoevariance(faceMatrix_array);
 		// calculate Eigen values and vectors
@@ -139,7 +138,6 @@ public class CustomPCA extends AppTools {
 			try {
 				ImageIO.write(constructedEFaces[i], "jpg", outputFile);
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -149,10 +147,13 @@ public class CustomPCA extends AppTools {
 			try {
 				ImageIO.write(im, "jpg", new File("C:\\Users\\user\\Desktop\\FAResults\\face\\face_" + i + ".jpg"));
 			} catch (IOException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
+
+		// set eigen cache
+		cache = new EigenCache(imgSetSize, numOfEigenFacesSelected, faceMatrix_array.length, eigenWeights,
+				dataAverageOfEachRow, eigenFaces, eigenValues, images);
 
 		// Convert face data from Array --> List
 		faceMatrix = new ArrayList<List<Double>>(faceMatrix_array.length);
@@ -183,6 +184,7 @@ public class CustomPCA extends AppTools {
 		for (int i = 0; i < rowLength; ++i) {
 			faceMatrixMinusAverages[i] = matrixSubtract(faceMatrix[i], dataAverageOfEachRow);
 		}
+
 		// debug
 		print2dArrayToFile("faceMatrixMinusAverages.txt", faceMatrixMinusAverages);
 	}
@@ -282,11 +284,11 @@ public class CustomPCA extends AppTools {
 		double[][] returnData = new double[image.length][image[0].length];
 		// Normalise data between 0 and 1
 		for (int faceInd = 0; faceInd < image.length; ++faceInd) {
-			double min = (double)getMinValue(image[faceInd]);
-			double max = (double)getMaxValue(image[faceInd]);
-			
+			double min = (double) getMinValue(image[faceInd]);
+			double max = (double) getMaxValue(image[faceInd]);
+
 			for (int j = 0; j < image[faceInd].length; ++j)
-				returnData[faceInd][j] = ((((double)image[faceInd][j])) - min) / (max - min);
+				returnData[faceInd][j] = ((((double) image[faceInd][j])) - min) / (max - min);
 		}
 		return returnData;
 	}
@@ -299,8 +301,7 @@ public class CustomPCA extends AppTools {
 		for (int j = 0; j < height; ++j) {
 			for (int i = 0; i < width; ++i) {
 				// Normalise
-				double fgrey = goalMin + (goalMax - goalMin)
-						* (((data[row++]) - min) / (max - min));
+				double fgrey = goalMin + (goalMax - goalMin) * (((data[row++]) - min) / (max - min));
 				int grey = (int) fgrey;
 				if (grey > 255)
 					grey = 255;
@@ -312,18 +313,15 @@ public class CustomPCA extends AppTools {
 		}
 		return returnVal;
 	}
-	
-	protected BufferedImage denormaliseImageData(int width, int height,
-			float goalMin, float goalMax, double[][] data) {
-		BufferedImage returnVal = new BufferedImage(width, height,
-				BufferedImage.TYPE_INT_RGB);
+
+	protected BufferedImage denormaliseImageData(int width, int height, float goalMin, float goalMax, double[][] data) {
+		BufferedImage returnVal = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 		for (int j = 0; j < data.length; ++j) {
 			for (int i = 0; i < data[j].length; ++i) {
 				double min = getMinValue(data[j]);
 				double max = getMaxValue(data[j]);
 				// Normalise
-				double fgrey = goalMin + (goalMax - goalMin)
-						* (((data[j][i]) - min) / (max - min));
+				double fgrey = goalMin + (goalMax - goalMin) * (((data[j][i]) - min) / (max - min));
 				int grey = (int) fgrey;
 				if (grey > 255)
 					grey = 255;
@@ -334,36 +332,6 @@ public class CustomPCA extends AppTools {
 			}
 		}
 		return returnVal;
-	}
-
-	protected int getMinValue(int[] data2) {
-		int minVal = Integer.MAX_VALUE;
-		for (int i = 0; i < data2.length; ++i) {
-			minVal = Math.min(minVal, data2[i]);
-		}
-		return minVal;
-	}
-	
-	protected int getMaxValue(int[] data) {
-		int maxVal = Integer.MIN_VALUE;
-		for (int i = 0; i < data.length; ++i)
-			maxVal = Math.max(maxVal, data[i]);
-		return maxVal;
-	}
-	
-	protected double getMinValue(double[] data2) {
-		double minVal = Double.MAX_VALUE;
-		for (int i = 0; i < data2.length; ++i) {
-			minVal = Math.min(minVal, data2[i]);
-		}
-		return minVal;
-	}
-
-	protected double getMaxValue(double[] data) {
-		double maxVal = Double.NEGATIVE_INFINITY;
-		for (int i = 0; i < data.length; ++i)
-			maxVal = Math.max(maxVal, data[i]);
-		return maxVal;
 	}
 
 	public static double[][] getDebugMatrix() {
