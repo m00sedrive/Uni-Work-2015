@@ -2,6 +2,7 @@ package application;
 
 import java.awt.image.BufferedImage;
 import java.awt.image.DataBufferByte;
+import java.awt.image.Raster;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.nio.charset.Charset;
@@ -214,6 +215,19 @@ public class AppTools {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	protected double[][] bufferedImageTo2DArray(BufferedImage bi) {
+		Raster raster = bi.getData();
+		int width = raster.getWidth();
+		int height = raster.getHeight();
+		double[][] returnArray = new double[width][height];
+		for (int i = 0; i < width; ++i) {
+			for (int j = 0; j < height; ++j) {
+				returnArray[i][j] = raster.getSample(i, j, 0);
+			}
+		}
+		return returnArray;
 	}
 	
 	protected int getMinValue(int[] data2) {

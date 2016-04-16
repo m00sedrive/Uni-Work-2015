@@ -17,7 +17,7 @@
           <children>
             <BorderPane prefHeight="200.0" prefWidth="200.0">
               <bottom>
-                <HBox prefHeight="100.0" prefWidth="200.0">
+                <HBox prefHeight="100.0" prefWidth="200.0" styleClass="containerStyle1">
                   <children>
                     <GridPane prefHeight="88.0" prefWidth="900.0">
                       <children>

@@ -1,13 +1,16 @@
 package application;
 
 import java.awt.image.BufferedImage;
+import java.awt.image.Raster;
 import java.io.File;
+import java.io.IOException;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import javax.imageio.ImageIO;
 import javax.swing.JOptionPane;
 
+import org.imgscalr.Scalr;
 import org.opencv.core.Mat;
 import org.opencv.videoio.VideoCapture;
 
@@ -98,6 +101,7 @@ public class LoginController extends AppTools {
 				TimerTask frameGrab = new TimerTask() {
 					@Override
 					public void run() {
+						defaultImage = false;
 						// set cameras stream image to grabbedFrame image
 						CameraStream = Mat2Image(grabFrame());
 						Platform.runLater(new Runnable() {
@@ -118,7 +122,6 @@ public class LoginController extends AppTools {
 				this.timer = new Timer();
 				this.timer.schedule(frameGrab, 0, 33);
 				this.cameraButton.setText("Stop Camera");
-
 			} else {
 				System.out.println("Failed to establish camera connection!");
 			}
@@ -134,14 +137,6 @@ public class LoginController extends AppTools {
 			}
 			// release camera
 			this.vidCapture.release();
-
-			// reset image view to default image
-			try {
-				BufferedImage image = ImageIO.read(new File("images/userImage.png"));
-				loginImage.setImage(bufferedImg2Img(image));
-			} catch (Exception ex) {
-				System.out.println("Error: " + ex.getMessage());
-			}
 		}
 
 	}
@@ -159,7 +154,7 @@ public class LoginController extends AppTools {
 					// detect and display face detections
 					faceDetector.detection(frameCanvas);
 
-					// set detected face a user image once
+					// detect and set first face image detected
 					if (faceDetector.getFD() != null) {
 						if (getNewFaceImage) {
 							getNewFaceImage = false;
@@ -182,7 +177,29 @@ public class LoginController extends AppTools {
 		// set image view with face detection
 		// capturedImage.setImage(Mat2Image(cropCamShot));
 		// debug
-		faceDetector.saveDetection2File();
+
+		// faceDetector.saveDetection2File();
+
+		// get 2d array from bufferedImage
+		BufferedImage bi = Mat2BufferedImage(faceDetector.getFDGrey());
+		double temp[][] = bufferedImageTo2DArray(bi);
+		
+		//debug
+		print2dArrayToFile("detectedFaceMatrix.txt", temp);
+		
+		// crop 95% of image
+		//int x = width / 100 * 5;
+		//int y = height / 100 * 5;
+		//int subImgWidth = width / 100 * 95;
+		//int subImgHeight = height / 100 * 95;
+		//BufferedImage biCropped = bi.getSubimage(x, y, subImgWidth, subImgHeight);
+		bi = Scalr.resize(bi, Scalr.Method.SPEED, Scalr.Mode.FIT_EXACT, 51, 55, Scalr.OP_ANTIALIAS);
+		try {
+			ImageIO.write(bi, "jpg", new File("C:\\Users\\user\\Desktop\\FAResults\\face\\detface.jpg"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+
 	}
 
 	private String authorize() {

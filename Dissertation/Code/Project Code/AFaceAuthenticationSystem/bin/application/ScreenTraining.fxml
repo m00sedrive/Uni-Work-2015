@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.paint.*?>
 
-<StackPane minWidth="-Infinity" prefWidth="920.0" styleClass="background" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="application.TrainingController">
+<StackPane minHeight="-Infinity" minWidth="-Infinity" prefHeight="606.0" prefWidth="920.0" styleClass="background" xmlns:fx="http://javafx.com/fxml/1" xmlns="http://javafx.com/javafx/2.2" fx:controller="application.TrainingController">
   <children>
     <StackPane>
       <children>
@@ -17,14 +17,13 @@
           <children>
             <BorderPane prefHeight="200.0" prefWidth="200.0">
               <bottom>
-                <HBox prefHeight="100.0" prefWidth="200.0" styleClass="containerStyle1">
+                <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="200.0" styleClass="containerStyle1" BorderPane.alignment="TOP_RIGHT">
                   <children>
                     <GridPane prefHeight="99.99990000000253" prefWidth="389.0">
                       <children>
-                        <Button fx:id="add_images" minWidth="-1.0" mnemonicParsing="false" onAction="#trainImages" text="Train Database" textAlignment="CENTER" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
                         <Button fx:id="returnToMainScreen" alignment="CENTER" defaultButton="true" minWidth="-1.0" mnemonicParsing="false" text="Return to Main" textAlignment="CENTER" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
-                        <Button fx:id="loadDatabase" minWidth="-1.0" mnemonicParsing="false" onAction="#loadDatabase" text="Load Database" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
                         <Button fx:id="logoutButton" mnemonicParsing="false" text="Logout" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+                        <Button fx:id="harrysPCA" mnemonicParsing="false" onAction="#testAlternativePca" prefWidth="88.0" text="H's Code" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                       </children>
                       <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="228.0" minWidth="10.0" prefWidth="99.0" />
@@ -34,71 +33,71 @@
                       </columnConstraints>
                       <rowConstraints>
                         <RowConstraints maxHeight="34.0" minHeight="10.0" prefHeight="34.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="33.0" minHeight="10.0" prefHeight="33.0" vgrow="SOMETIMES" />
-                        <RowConstraints maxHeight="33.0" minHeight="10.0" prefHeight="33.0" vgrow="SOMETIMES" />
                       </rowConstraints>
                       <HBox.margin>
-                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" fx:id="x1" />
+                        <Insets />
                       </HBox.margin>
                     </GridPane>
                   </children>
                 </HBox>
               </bottom>
               <center>
-                <VBox fx:id="vBox_right" maxWidth="-Infinity" prefHeight="200.0" prefWidth="600.0" styleClass="containerStyle1" BorderPane.alignment="CENTER">
+                <VBox fx:id="vBox_right" maxWidth="-Infinity" prefHeight="566.0" prefWidth="600.0" styleClass="containerStyle1" BorderPane.alignment="CENTER">
                   <children>
-                    <Label text="Image to Train">
+                    <Label text="Recognition Search">
                       <VBox.margin>
-                        <Insets left="10.0" top="10.0" />
+                        <Insets bottom="10.0" left="10.0" top="10.0" />
                       </VBox.margin>
                     </Label>
-                    <ImageView fx:id="image2train" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-                    <GridPane>
+                    <GridPane prefHeight="206.0" prefWidth="496.0">
                       <children>
-                        <Button fx:id="searchPersonButton" mnemonicParsing="false" onAction="#searchForPerson" text="SearchPerson" GridPane.columnIndex="0" GridPane.rowIndex="0" />
-                        <Button fx:id="selectImageButton" mnemonicParsing="false" onAction="#selectImage" text="Select Image" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <ImageView fx:id="selectedImageView" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <Button fx:id="searchPersonButton" mnemonicParsing="false" onAction="#searchForPerson" text="SearchPerson" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Button fx:id="selectImageButton" mnemonicParsing="false" onAction="#selectImage" text="Select Image" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                       </children>
                       <columnConstraints>
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="248.0" minWidth="10.0" prefWidth="248.0" />
+                        <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="322.0" minWidth="10.0" prefWidth="248.0" />
                       </columnConstraints>
                       <rowConstraints>
-                        <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="178.0" minHeight="10.0" prefHeight="175.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="69.0" minHeight="3.0" prefHeight="6.0" vgrow="SOMETIMES" />
                       </rowConstraints>
                     </GridPane>
                   </children>
                 </VBox>
               </center>
               <left>
-                <VBox maxHeight="-1.0" prefHeight="200.0" prefWidth="400.0" styleClass="containerStyle1">
+                <VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" prefHeight="566.0" prefWidth="400.0" spacing="20.0" styleClass="containerStyle1">
                   <children>
-                    <VBox prefHeight="200.0" prefWidth="100.0">
+                    <Label text="Database Training">
+                      <VBox.margin>
+                        <Insets bottom="10.0" left="10.0" top="10.0" />
+                      </VBox.margin>
+                    </Label>
+                    <TextArea fx:id="textAreaTrain" minHeight="-Infinity" prefHeight="200.0" prefWidth="400.0" wrapText="true" />
+                    <GridPane prefHeight="10.0" prefWidth="312.0" vgap="0.0">
                       <children>
-                        <Label text="Image Set">
-                          <VBox.margin>
-                            <Insets bottom="10.0" left="10.0" top="10.0" />
-                          </VBox.margin>
-                        </Label>
-                        <HBox id="hBox_imgGallery" fx:id="hBox_imgGallery_r1" prefHeight="100.0" prefWidth="200.0">
-                          <VBox.margin>
-                            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" fx:id="x1" />
-                          </VBox.margin>
-                        </HBox>
-                        <HBox fx:id="hBox_imgGallery_r2" prefHeight="100.0" prefWidth="200.0" VBox.margin="$x1" />
-                        <HBox fx:id="hBox_imgGallery_r3" prefHeight="100.0" prefWidth="200.0" VBox.margin="$x1">
-                          <children>
-                            <TextArea fx:id="textAreaTrain" minHeight="-Infinity" prefHeight="200.0" prefWidth="400.0" wrapText="true" />
-                          </children>
-                        </HBox>
+                        <Button fx:id="loadDatabase" minWidth="-1.0" mnemonicParsing="false" onAction="#loadDatabase" text="Load Database" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
+                        <Button fx:id="add_images" minWidth="-1.0" mnemonicParsing="false" onAction="#trainImages" text="Train Database" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="0" GridPane.valignment="CENTER" />
+                        <Button fx:id="writeDatabaseButton" mnemonicParsing="false" onAction="#writeDatabase" text="Write Database" GridPane.columnIndex="2" GridPane.rowIndex="0" />
                       </children>
-                    </VBox>
-                    <VBox prefHeight="200.0" prefWidth="100.0" />
+                      <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="128.0" minWidth="10.0" prefWidth="101.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="165.0" minWidth="10.0" prefWidth="103.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="187.0" minWidth="10.0" prefWidth="172.0" />
+                      </columnConstraints>
+                      <rowConstraints>
+                        <RowConstraints maxHeight="10.0" minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="10.0" minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
+                      </rowConstraints>
+                    </GridPane>
                   </children>
+                  <padding>
+                    <Insets left="10.0" right="10.0" />
+                  </padding>
                 </VBox>
               </left>
-              <top>
-                <Button fx:id="harrysPCA" mnemonicParsing="false" onAction="#testAlternativePca" prefWidth="88.0" text="H's Code" />
-              </top>
             </BorderPane>
           </children>
         </VBox>

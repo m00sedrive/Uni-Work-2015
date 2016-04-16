@@ -1,18 +1,13 @@
 package application;
 
 import java.awt.image.BufferedImage;
-import java.awt.image.DataBufferByte;
-import java.io.ByteArrayInputStream;
 import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
 
 import org.opencv.core.Mat;
-import org.opencv.core.MatOfByte;
-import org.opencv.imgcodecs.Imgcodecs;
 import org.opencv.videoio.VideoCapture;
 
-import database.Database;
 import javafx.application.Platform;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
@@ -30,41 +25,27 @@ import javafx.scene.layout.HBox;
 
 /** Controls the main application screen */
 public class MainController extends AppTools {
-	@FXML
-	private Label sessionLabel;
-	@FXML
-	private Button logoutButton;
-	@FXML
-	private Button imageDBButton;
-	@FXML
-	private Button detectedFaceButton;
-	@FXML
-	private Button cameraButton;
-	@FXML
-	private Button addImage_button;
-	@FXML
-	private ImageView originalImage;
-	@FXML
-	private ImageView faceDetected_IV;
-	@FXML
-	private ImageView greyscale;
-	@FXML
-	private ImageView canny_image;
-	@FXML
-	private HBox imageSet_hBox;
-	@FXML
-	private HBox hboxImageGallery_r1;
-	@FXML
-	private HBox hboxImageGallery_r2;
-	@FXML
-	private GridPane imageGalleryGrid;
+	
+	@FXML private Label sessionLabel;
+	@FXML private Button logoutButton;
+	@FXML private Button imageDBButton;
+	@FXML private Button detectedFaceButton;
+	@FXML private Button cameraButton;
+	@FXML private Button addImage_button;
+	@FXML private ImageView originalImage;
+	@FXML private ImageView faceDetected_IV;
+	@FXML private ImageView greyscale;
+	@FXML private ImageView canny_image;
+	@FXML private HBox imageSet_hBox;
+	@FXML private HBox hboxImageGallery_r1;
+	@FXML private HBox hboxImageGallery_r2;
+	@FXML private GridPane imageGalleryGrid;
 
 	private boolean cameraActive;
 	private Image CameraStream;
 	private Timer timer;
 	private Mat greyFaceDetected;
 	private ArrayList<ImageView> new_imageSet = new ArrayList<ImageView>();
-	private Database database;
 	// object for handling video capture
 	private VideoCapture vidCapture = new VideoCapture();
 	// object for handling Face detection

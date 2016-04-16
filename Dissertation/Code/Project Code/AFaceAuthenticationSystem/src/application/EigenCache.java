@@ -1,6 +1,5 @@
 package application;
 
-import java.awt.image.BufferedImage;
 import java.io.Serializable;
 
 public class EigenCache implements Serializable, Cloneable {
@@ -14,7 +13,7 @@ public class EigenCache implements Serializable, Cloneable {
 	private double[] averageFace;
 	private double[][] eigenFaces;
 	private double[] eigenValues;
-	private BufferedImage[] images;
+	private CustomImage[] images;
 
 	@Override
 	public EigenCache clone() {
@@ -23,7 +22,7 @@ public class EigenCache implements Serializable, Cloneable {
 	}
 
 	public EigenCache(int numOfFaces, int numEigenFaces, int imageDimension, double[][] eigenWeights,
-			double[] averageFaces, double[][] eigenFaces, double[] eigenValues, BufferedImage[] images) {
+			double[] averageFaces, double[][] eigenFaces, double[] eigenValues, CustomImage[] images) {
 		this.numOfFace = numOfFaces;
 		this.numOfEigenFaces = numEigenFaces;
 		this.imageDimensions = imageDimension;	

@@ -30,17 +30,18 @@ public class CustomPCA extends AppTools {
 	private double[][] eigenFaces = null;
 	private double[][] eigenWeights = null;
 	private int numOfEigenFacesSelected = 150;
-	private BufferedImage[] images;
+	private CustomImage[] images;
 
 	private static List<List<Double>> debugMatrix = null;
 	private EigenCache cache;
 
-	public void setPCAData(int imgSetSize, Database database) {
+	public void setPCAData(Database database) {
 		// set up database
 		this.database = database;
 		this.database.setUpDatabase();
 		// get image dimensions
-		this.imgSetSize = imgSetSize;
+		this.imgSetSize = database.getImageSetSize();
+		System.out.println();
 	}
 	
 	public EigenCache getPCAResults() {
@@ -48,14 +49,15 @@ public class CustomPCA extends AppTools {
 	}
 
 	public void prepareFaceMatrix() {
+		images = new CustomImage[imgSetSize];
 		int[][] image = null;
 		faceMatrix = new ArrayList<List<Double>>(imgSetSize);
 		List<Double> imageRow = null;
 
 		// read values from each row into a column in face matrix
 		for (int i = 0; i < imgSetSize; i++) {
+			images[i] = new CustomImage(database.getPerson(i).getImage());
 			image = buffImg2array(database.getPerson(i).getImage());
-
 			{
 				BufferedImage test = new BufferedImage(image.length, image[0].length, BufferedImage.TYPE_INT_RGB);
 				for (int a = 0; a < test.getWidth(); a++) {
@@ -347,4 +349,5 @@ public class CustomPCA extends AppTools {
 	public void setDebugMatrix(List<List<Double>> matrix) {
 		debugMatrix = matrix;
 	}
+	
 }

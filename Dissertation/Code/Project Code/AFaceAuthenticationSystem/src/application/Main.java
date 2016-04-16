@@ -1,5 +1,7 @@
 package application;
 	
+import javax.swing.UIManager;
+
 import org.opencv.core.Core;
 
 import javafx.application.Application;
@@ -14,7 +16,11 @@ public class Main extends Application {
 	
 	@Override
 	public void start(Stage primaryStage) {
-				
+		try {
+			 UIManager.setLookAndFeel("com.sun.java.swing.plaf.windows.WindowsLookAndFeel");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		try {
 			Scene scene = new Scene(new StackPane());		
 			LoginManager loginManager = new LoginManager(scene, primaryStage);

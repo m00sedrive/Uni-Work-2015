@@ -12,21 +12,18 @@ public class SearchPerson extends AppTools {
 
 	private double threshold = 250;
 	private EigenCache cache = null;
-	private String personSearch = null;
-	private BufferedImage searchImage = null;
+	private BufferedImage searchImage;
 
-	public SearchPerson(EigenCache cache, String personSearch, double threshold) {
+	public SearchPerson(EigenCache cache, BufferedImage inputImage, double threshold) {  //change string person to input buffered image 
 		this.threshold = threshold;
 		this.cache = cache;
-		this.personSearch = personSearch;
+		this.searchImage = inputImage;
 	}
 
-	public SearchResults[] searchPersonInCache(BufferedImage inputImage) {
-
-		this.searchImage = inputImage;
+	public SearchResults[] searchPersonInCache() {
 
 		// resize image
-		searchImage = Scalr.resize(searchImage, Scalr.Method.SPEED, Scalr.Mode.FIT_EXACT, 55, 51, Scalr.OP_ANTIALIAS);
+		searchImage = Scalr.resize(searchImage, Scalr.Method.SPEED, Scalr.Mode.FIT_EXACT, 51, 55, Scalr.OP_ANTIALIAS);
 
 		// list for results
 		List<SearchResults> results = new ArrayList<SearchResults>();
