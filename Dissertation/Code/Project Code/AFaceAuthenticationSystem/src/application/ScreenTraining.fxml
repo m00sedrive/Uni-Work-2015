@@ -64,6 +64,34 @@
                         <RowConstraints maxHeight="69.0" minHeight="3.0" prefHeight="6.0" vgrow="SOMETIMES" />
                       </rowConstraints>
                     </GridPane>
+                    <GridPane prefHeight="206.0" prefWidth="496.0">
+                      <children>
+                        <ImageView fx:id="iv_faceMatch1" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                          <GridPane.margin>
+                            <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+                          </GridPane.margin>
+                        </ImageView>
+                        <Label text="Recognition Results" GridPane.columnIndex="0" GridPane.rowIndex="0">
+                          <GridPane.margin>
+                            <Insets left="10.0" top="10.0" />
+                          </GridPane.margin>
+                        </Label>
+                      </children>
+                      <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                      </columnConstraints>
+                      <padding>
+                        <Insets top="20.0" />
+                      </padding>
+                      <rowConstraints>
+                        <RowConstraints maxHeight="61.0" minHeight="10.0" prefHeight="28.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="136.0" minHeight="10.0" prefHeight="136.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="62.0" minHeight="10.0" prefHeight="22.0" vgrow="SOMETIMES" />
+                      </rowConstraints>
+                    </GridPane>
                   </children>
                 </VBox>
               </center>

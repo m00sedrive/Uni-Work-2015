@@ -33,6 +33,7 @@ public class TrainingController extends AppTools {
 	@FXML private Button writeDatabase;
 	@FXML private GridPane image_grid;
 	@FXML private ImageView selectedImageView;
+	@FXML private ImageView iv_faceMatch1;
 	@FXML private VBox vBox_right;
 	@FXML private HBox hBox_imgGallery_r1;
 	@FXML private HBox hBox_imgGallery_r2;
@@ -131,8 +132,8 @@ public class TrainingController extends AppTools {
 			BufferedImage image = SwingFXUtils.fromFXImage(imageSelection, null);
 			// search for image in eigen cache results
 			SearchResults[] results;
-			SearchPerson personSearch = new SearchPerson(cpca.getPCAResults(), image, 250);
-			results = personSearch.searchPersonInCache();
+			SearchPerson personSearch = new SearchPerson(cpca.getPCAResults(), image, 100000);
+			results = personSearch.searchPersonInCache(database);
 		}
 		else {
 			textAreaTrain.setText("No written training data detected." + "\n" + "Please write trained database before searching for person.");

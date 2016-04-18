@@ -2,11 +2,17 @@ package application;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.SortedMap;
+import java.util.TreeMap;
 
 import org.imgscalr.Scalr;
 
+import API.database.Person;
 import Jama.Matrix;
+import database.Database;
 
 public class SearchPerson extends AppTools {
 
@@ -20,7 +26,7 @@ public class SearchPerson extends AppTools {
 		this.searchImage = inputImage;
 	}
 
-	public SearchResults[] searchPersonInCache() {
+	public SearchResults[] searchPersonInCache(Database database) {
 
 		// resize image
 		searchImage = Scalr.resize(searchImage, Scalr.Method.SPEED, Scalr.Mode.FIT_EXACT, 51, 55, Scalr.OP_ANTIALIAS);
@@ -55,6 +61,17 @@ public class SearchPerson extends AppTools {
 		// get distance
 		double[] distances = getDistances(weights);
 		double[] minDistance = getMinDistance(distances);
+		
+		// sort and display results
+		System.out.println("---- Printing Results:");
+		Map<Double, Integer> sorting = new TreeMap<Double, Integer>();
+		for (int i = 0; i < distances.length; ++i) {
+			sorting.put(distances[i], i);
+		}
+		for(Map.Entry<Double, Integer> entry : sorting.entrySet()) {
+			database.Person person = database.getPerson(entry.getValue().intValue());
+			System.out.println("[" + entry.getKey().toString() + "] = " + person.getPersonName());
+		}
 		
 		// check results are within set threshold
 		int result = -1;
