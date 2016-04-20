@@ -1,0 +1,49 @@
+
+1. Welcome and good morning to my dissertation project demonstration.
+	
+	- My dissertation project was to developed as a proof of concept of a face authentication system.
+	
+	- The main features algorithmic features of the project are face detection and user verification
+	
+	- The sytem hs been developed in java cv which is a ported version of the OpenCV library natively written in C++
+	
+2. System hosts 3 main interfaces, login, custom database design and traing database interface
+
+3. A user will initally login using a username password so that can create, load or train a dataset
+
+4. demo of create database, Explain Haar-like feature extraction and success rates of face detection.
+
+5. training interface.
+ - filepath has been coded to a small sample set of the xm2vs database provided by Surrey uni for the demo.
+ - the system has been tested on both the AT&T database compliments of the cambridge university comp labs and XM2VS db from surrey uni
+
+6. train datbase
+	
+	- main algorithmic feature is the linear detection algorthm PCA used to to calculate eigenDecomposition.
+	- as image analysis is a demanding computational process in regards to face recognition PCA seeks to optimise the representation of data.
+	- essentially this is done by:
+		- data to be normalized to standardize data.
+		- produce covariance matrix
+		- calculate eigen vectors and corresponding values
+	- eigen vectors represent the direction of principal components and the values rep the variances of data in that direction
+	- vectors with the least values are removed to potimise data representation
+
+7. write database 
+- The PCA computation results are serialized and saved to file so that a known user can authentiate a the log in screen without having to initially train the DB.
+
+8. return to login screen and demomstrate authentication
+
+10. on main screen demostrate spoofing:
+	- display spoofing and explain why this system if security is paramount should only be used to compliment an existing authentication system.
+	- this can be prevented by implementing liveness detection which is becoming a common practice for face authentication systems be delivered today.
+
+9. Here is an extract from the complimentary final report that illustares the systems workflow to better visualize the applications purpose
+
+
+Thank you for your time. Could i answer any questions?
+Please dont hurt me!!!!
+
+
+
+
+

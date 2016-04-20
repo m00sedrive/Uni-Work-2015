@@ -34,7 +34,6 @@ public class TrainingController extends AppTools {
 	@FXML private Button logoutButton;
 	@FXML private Button returnToMainScreen;
 	@FXML private Button selectImageButton;
-	@FXML private Button harrysPCA;
 	@FXML private Button searchPersonButton;
 	@FXML private Button writeDatabase;
 	@FXML private GridPane image_grid;
@@ -189,7 +188,6 @@ public class TrainingController extends AppTools {
 		}
 	}
 
-	@FXML
 	public void testAlternativePca() {
 		API.PCA.PCA pca = new API.PCA.PCA();
 		pca.image_data = CustomPCA.getDebugMatrix();

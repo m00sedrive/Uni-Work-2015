@@ -19,20 +19,20 @@
               <children>
                 <GridPane hgap="0.0" minWidth="-Infinity" prefHeight="248.0" prefWidth="398.0" vgap="30.0">
                   <children>
-                    <Label minWidth="-Infinity" text="Username:" GridPane.columnIndex="2" GridPane.rowIndex="0" GridPane.valignment="CENTER">
+                    <Label fx:id="usernameLabel" minWidth="-Infinity" text="Username:" GridPane.columnIndex="2" GridPane.rowIndex="0" GridPane.valignment="CENTER">
                       <GridPane.margin>
                         <Insets />
                       </GridPane.margin>
                     </Label>
                     <Label minWidth="-Infinity" text="Password" GridPane.columnIndex="2" GridPane.rowIndex="1" />
                     <Label text="User Image" GridPane.columnIndex="2" GridPane.rowIndex="2" GridPane.rowSpan="2147483647" />
-                    <TextField fx:id="usernameEntered" promptText="Use &quot;Tom&quot; to login" text="Tom" GridPane.columnIndex="3" GridPane.rowIndex="0" GridPane.valignment="CENTER">
+                    <TextField fx:id="usernameEntered" promptText="" text="Tom" GridPane.columnIndex="3" GridPane.rowIndex="0" GridPane.valignment="CENTER">
                       <GridPane.margin>
                         <Insets right="10.0" fx:id="x1" />
                       </GridPane.margin>
                     </TextField>
-                    <PasswordField fx:id="passwordEntered" promptText="Use &quot;hello&quot; to login" text="hello" GridPane.columnIndex="3" GridPane.margin="$x1" GridPane.rowIndex="1" />
-                    <ImageView fx:id="capturedImage" fitHeight="100.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.rowIndex="2">
+                    <PasswordField fx:id="passwordEntered" promptText="Enter Password" text="hello" GridPane.columnIndex="3" GridPane.margin="$x1" GridPane.rowIndex="1" />
+                    <ImageView fx:id="capturedImage" fitHeight="100.0" fitWidth="90.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.rowIndex="2">
                       <GridPane.margin>
                         <Insets left="20.0" top="50.0" />
                       </GridPane.margin>
@@ -55,7 +55,7 @@
                   <rowConstraints>
                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
                     <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-                    <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
+                    <RowConstraints minHeight="10.0" valignment="CENTER" vgrow="SOMETIMES" />
                     <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                     <RowConstraints minHeight="10.0" vgrow="SOMETIMES" />
                   </rowConstraints>

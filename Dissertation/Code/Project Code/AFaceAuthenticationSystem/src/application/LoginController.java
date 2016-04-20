@@ -3,7 +3,9 @@ package application;
 import java.awt.image.BufferedImage;
 import java.awt.image.Raster;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.ObjectInputStream;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -14,11 +16,13 @@ import org.imgscalr.Scalr;
 import org.opencv.core.Mat;
 import org.opencv.videoio.VideoCapture;
 
+import database.Database;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
@@ -26,22 +30,15 @@ import javafx.scene.image.ImageView;
 
 public class LoginController extends AppTools {
 
-	@FXML
-	private TextField usernameEntered;
-	@FXML
-	private PasswordField passwordEntered;
-	@FXML
-	private ImageView loginImage;
-	@FXML
-	private ImageView capturedImage;
-	@FXML
-	private Button loginButton;
-	@FXML
-	private Button logout_button;
-	@FXML
-	private Button captureImageButton;
-	@FXML
-	private Button cameraButton;
+	@FXML private TextField usernameEntered;
+	@FXML private Label usernameLabel;
+	@FXML private PasswordField passwordEntered;
+	@FXML private ImageView loginImage;
+	@FXML private ImageView capturedImage;
+	@FXML private Button loginButton;
+	@FXML private Button logout_button;
+	@FXML private Button captureImageButton;
+	@FXML private Button cameraButton;
 
 	boolean cameraActive;
 	private FaceDetector faceDetector = new FaceDetector();
@@ -52,6 +49,8 @@ public class LoginController extends AppTools {
 	private String password = "hello";
 	private boolean getNewFaceImage = true;
 	private boolean defaultImage = true;
+	private Database database;
+	private EigenCache eigenCache;
 
 	public void initialize() {
 	}
@@ -153,14 +152,6 @@ public class LoginController extends AppTools {
 				if (!frameCanvas.empty()) {
 					// detect and display face detections
 					faceDetector.detection(frameCanvas);
-
-					// detect and set first face image detected
-					if (faceDetector.getFD() != null) {
-						if (getNewFaceImage) {
-							getNewFaceImage = false;
-							capturedImage.setImage(Mat2Image(faceDetector.getFD()));
-						}
-					}
 				}
 			} catch (Exception e) {
 				System.err.print("ERROR");
@@ -172,34 +163,59 @@ public class LoginController extends AppTools {
 
 	@FXML
 	public void setUserImage() {
-		// get detected face image
-		// Mat cropCamShot = faceDetector.getFD();
-		// set image view with face detection
-		// capturedImage.setImage(Mat2Image(cropCamShot));
-		// debug
 
-		// faceDetector.saveDetection2File();
+		// detect and set first face image detected
+		if (faceDetector.getFD() != null) {
+			capturedImage.setImage(Mat2Image(faceDetector.getFD()));
+		}
 
+		// set up database
+		database = new Database();
+		database.loadImageLibrary();	
+		// load eigen cache data
+		loadEigenCache();
+		
+		// Username label and field
+		usernameEntered.setVisible(false);
+		usernameLabel.setVisible(false);
+		passwordEntered.setText("");
+		
+		
+		/*
+		//debug
 		// get 2d array from bufferedImage
 		BufferedImage bi = Mat2BufferedImage(faceDetector.getFDGrey());
 		double temp[][] = bufferedImageTo2DArray(bi);
-		
-		//debug
 		print2dArrayToFile("detectedFaceMatrix.txt", temp);
-		
 		// crop 95% of image
-		//int x = width / 100 * 5;
-		//int y = height / 100 * 5;
-		//int subImgWidth = width / 100 * 95;
-		//int subImgHeight = height / 100 * 95;
-		//BufferedImage biCropped = bi.getSubimage(x, y, subImgWidth, subImgHeight);
+		int x = width / 100 * 5;
+		int y = height / 100 * 5;
+		int subImgWidth = width / 100 * 95;
+		int subImgHeight = height / 100 * 95;
+		BufferedImage biCropped = bi.getSubimage(x, y, subImgWidth, subImgHeight);
 		bi = Scalr.resize(bi, Scalr.Method.SPEED, Scalr.Mode.FIT_EXACT, 51, 55, Scalr.OP_ANTIALIAS);
 		try {
 			ImageIO.write(bi, "jpg", new File("C:\\Users\\user\\Desktop\\FAResults\\face\\detface.jpg"));
 		} catch (IOException e) {
 			e.printStackTrace();
+		}*/
+	}
+	
+	private void loadEigenCache() {
+		// read eigen cache into memory 
+		FileInputStream fs;
+		try {
+			fs = new FileInputStream("C:\\Users\\user\\workspace\\AFaceAuthenticationSystem\\EigenCache\\eigenCache.db");
+			ObjectInputStream os = new ObjectInputStream(fs);
+			eigenCache = (EigenCache) os.readObject();
+			// close streams
+			os.close();
+			fs.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
 		}
-
 	}
 
 	private String authorize() {

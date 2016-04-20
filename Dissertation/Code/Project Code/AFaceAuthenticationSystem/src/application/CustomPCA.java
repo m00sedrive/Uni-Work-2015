@@ -65,23 +65,8 @@ public class CustomPCA extends AppTools {
 						test.setRGB(a, b, image[a][b]);
 					}
 				}
-				/*try {
-					ImageIO.write(test, "jpg",
-							new File("C:\\Users\\user\\Desktop\\FAResults\\face\\" + i + "_input.jpg"));
-				} catch (IOException e) {
-					e.printStackTrace();
-				}*/
-
-				double[][] normalised = normalizeImageData(image);
-				test = denormaliseImageData(image.length, image[0].length, (float) 0, (float) 255, normalised);
-
-				/*try {
-					ImageIO.write(test, "jpg",
-							new File("C:\\Users\\user\\Desktop\\FAResults\\face\\" + i + "_normed_and_unnormed.jpg"));
-				} catch (IOException e) {
-					e.printStackTrace();
-				}*/
-
+				//double[][] normalised = normalizeImageData(image);
+				//test = denormaliseImageData(image.length, image[0].length, (float) 0, (float) 255, normalised);
 			}
 
 			int imageLength = image.length;
@@ -350,4 +335,11 @@ public class CustomPCA extends AppTools {
 		debugMatrix = matrix;
 	}
 	
+	/*try {
+	ImageIO.write(test, "jpg",
+			new File("C:\\Users\\user\\Desktop\\FAResults\\face\\" + i + "_normed_and_unnormed.jpg"));
+	} catch (IOException e) {
+		e.printStackTrace();
+	}*/
+
 }

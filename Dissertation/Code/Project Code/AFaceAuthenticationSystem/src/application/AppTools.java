@@ -120,7 +120,7 @@ public class AppTools {
  			for (int j = 0; j < data[i].length; ++j) { 
  				squaredNMResult[i][j] = squaredNMResult[i][j] * squaredNMResult[i][j]; 
  			} 
- 		} 
+ 		}
  		return squaredNMResult; 
  	} 
 	
