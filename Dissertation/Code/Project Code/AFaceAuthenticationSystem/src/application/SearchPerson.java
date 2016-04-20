@@ -2,15 +2,12 @@ package application;
 
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedMap;
 import java.util.TreeMap;
 
 import org.imgscalr.Scalr;
 
-import API.database.Person;
 import Jama.Matrix;
 import database.Database;
 
@@ -19,9 +16,10 @@ public class SearchPerson extends AppTools {
 	private double threshold = 250;
 	private EigenCache cache = null;
 	private BufferedImage searchImage;
+	private List<String> sortedResultFilenames;
+	private List<String> thresholdResults;
 
-	public SearchPerson(EigenCache cache, BufferedImage inputImage, double threshold) {  //change string person to input buffered image 
-		this.threshold = threshold;
+	public SearchPerson(EigenCache cache, BufferedImage inputImage, double threshold) {
 		this.cache = cache;
 		this.searchImage = inputImage;
 	}
@@ -32,7 +30,9 @@ public class SearchPerson extends AppTools {
 		searchImage = Scalr.resize(searchImage, Scalr.Method.SPEED, Scalr.Mode.FIT_EXACT, 51, 55, Scalr.OP_ANTIALIAS);
 
 		// list for results
+		thresholdResults = new ArrayList<String>();
 		List<SearchResults> results = new ArrayList<SearchResults>();
+		sortedResultFilenames = new ArrayList<String>();
 
 		// get face image data
 		int count = 0;
@@ -71,6 +71,9 @@ public class SearchPerson extends AppTools {
 		for(Map.Entry<Double, Integer> entry : sorting.entrySet()) {
 			database.Person person = database.getPerson(entry.getValue().intValue());
 			System.out.println("[" + entry.getKey().toString() + "] = " + person.getPersonName());
+			sortedResultFilenames.add(person.getPersonName());
+			String line = "Threshold/Distance: [" + entry.getKey().toString() + "] = " + person.getPersonName() + "\n";
+			thresholdResults.add(line);
 		}
 		
 		// check results are within set threshold
@@ -123,5 +126,13 @@ public class SearchPerson extends AppTools {
 			distances[i] = total;
 		}
 		return distances;
+	}
+	
+	public List<String> getListOfFileNums() {
+		return sortedResultFilenames;
+	}
+	
+	public List<String> getThresholdResults() {
+		return thresholdResults;
 	}
 }

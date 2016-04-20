@@ -49,7 +49,6 @@
                         <Insets left="10.0" top="10.0" fx:id="x3" />
                       </VBox.margin>
                     </Label>
-                    <Label fx:id="sessionLabel" text="Undefined" />
                     <GridPane id="imageGaleery" fx:id="imageGalleryGrid" hgap="10.0" prefHeight="186.0" prefWidth="469.0" vgap="10.0">
                       <columnConstraints>
                         <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="269.0" minWidth="10.0" prefWidth="80.0" />
@@ -137,9 +136,6 @@
                   </children>
                 </VBox>
               </left>
-              <right>
-                <Label text="Session ID:" />
-              </right>
             </BorderPane>
           </children>
         </VBox>

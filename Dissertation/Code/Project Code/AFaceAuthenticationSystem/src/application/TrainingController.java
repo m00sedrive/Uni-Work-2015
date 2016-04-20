@@ -5,6 +5,10 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.imageio.ImageIO;
 
 import database.Database;
 import javafx.embed.swing.SwingFXUtils;
@@ -12,6 +16,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.Slider;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -33,12 +39,20 @@ public class TrainingController extends AppTools {
 	@FXML private Button writeDatabase;
 	@FXML private GridPane image_grid;
 	@FXML private ImageView selectedImageView;
+	@FXML private ImageView matchImageView;
 	@FXML private ImageView iv_faceMatch1;
+	@FXML private ImageView iv_faceMatch2;
+	@FXML private ImageView iv_faceMatch3;
+	@FXML private Label matchLabel1;
+	@FXML private Label matchLabel2;
+	@FXML private Label matchLabel3;
 	@FXML private VBox vBox_right;
 	@FXML private HBox hBox_imgGallery_r1;
 	@FXML private HBox hBox_imgGallery_r2;
 	@FXML private HBox hBox_imgGallery_r3;
 	@FXML private TextArea textAreaTrain;
+	@FXML private TextArea textAreaResults;
+	@FXML private Slider thresholdSlider;
 
 	public Database database;
 	public EigenCache cache;
@@ -48,7 +62,9 @@ public class TrainingController extends AppTools {
 
 	public void initSessionID(final LoginManager loginManager, String sessionID) {
 
+		//textAreaResults.setEditable(false);
 		textAreaTrain.setEditable(false);
+		
 		logoutButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {
@@ -126,14 +142,47 @@ public class TrainingController extends AppTools {
 
 	@FXML
 	public void searchForPerson() {
-
+		String filepath = "C:\\Users\\user\\workspace\\AFaceAuthenticationSystem\\images\\TestFDB\\";
+		List<String> filenames = new ArrayList<String>();
+		
 		if(imageSelection != null && trainedDataWritten) {
 			// get detected face and convert to buffered image.
 			BufferedImage image = SwingFXUtils.fromFXImage(imageSelection, null);
 			// search for image in eigen cache results
 			SearchResults[] results;
-			SearchPerson personSearch = new SearchPerson(cpca.getPCAResults(), image, 100000);
+			SearchPerson personSearch = new SearchPerson(cpca.getPCAResults(), image, 250);
 			results = personSearch.searchPersonInCache(database);
+			//get recognised image file paths
+			filenames = personSearch.getListOfFileNums();
+			//get threshold results
+			StringBuilder sb = new StringBuilder();;
+			for(int i=0;i<personSearch.getThresholdResults().size();++i) {
+				sb.append(personSearch.getThresholdResults().get(i));
+			}		
+			textAreaResults.setText(sb.toString());
+			
+			// get and set images 4 highest matches
+			BufferedImage bi = null;
+			BufferedImage bi1 = null;
+			BufferedImage bi2 = null;
+			BufferedImage bi3 = null;
+			try {
+				bi = ImageIO.read(new File(filepath + filenames.get(0)));
+				bi1 = ImageIO.read(new File(filepath + filenames.get(1)));
+				bi2 = ImageIO.read(new File(filepath + filenames.get(2)));
+				bi3 = ImageIO.read(new File(filepath + filenames.get(3)));
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			// set GUI components with results
+			matchImageView.setImage(buffToWriteImage(bi));
+			iv_faceMatch1.setImage(buffToWriteImage(bi1));
+			iv_faceMatch2.setImage(buffToWriteImage(bi2));
+			iv_faceMatch3.setImage(buffToWriteImage(bi3));
+			matchLabel1.setText("2nd Closest Match");
+			matchLabel2.setText("3rd Closest Match");
+			matchLabel3.setText("4th Closest Match");
 		}
 		else {
 			textAreaTrain.setText("No written training data detected." + "\n" + "Please write trained database before searching for person.");

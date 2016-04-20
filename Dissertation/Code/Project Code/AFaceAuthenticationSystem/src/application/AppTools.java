@@ -38,6 +38,20 @@ public class AppTools {
 		}
 		return returnArray;
 	}
+	
+	protected WritableImage buffToWriteImage(BufferedImage bi) {
+        WritableImage wr = null;
+        if (bi != null) {
+            wr = new WritableImage(bi.getWidth(), bi.getHeight());
+            PixelWriter pw = wr.getPixelWriter();
+            for (int x = 0; x < bi.getWidth(); x++) {
+                for (int y = 0; y < bi.getHeight(); y++) {
+                    pw.setArgb(x, y, bi.getRGB(x, y));
+                }
+            }
+        }
+        return wr;
+	}
 
 	// source:
 	// http://answers.opencv.org/question/10344/opencv-java-load-image-to-gui/
@@ -69,7 +83,7 @@ public class AppTools {
 		WritableImage newImage = null;
 		if (bi != null) {
 			// create writable image with same width and height as buff image
-			newImage = new WritableImage(bi.getHeight(), bi.getWidth());
+			newImage = new WritableImage(bi.getWidth(), bi.getHeight());
 			PixelWriter pixWrite = newImage.getPixelWriter();
 
 			for (int x = 0; x < bi.getWidth(); x++) {

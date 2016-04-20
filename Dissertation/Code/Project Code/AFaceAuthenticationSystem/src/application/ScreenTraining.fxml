@@ -52,6 +52,7 @@
                     <GridPane prefHeight="206.0" prefWidth="496.0">
                       <children>
                         <ImageView fx:id="selectedImageView" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <ImageView fx:id="matchImageView" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.rowIndex="0" />
                         <Button fx:id="searchPersonButton" mnemonicParsing="false" onAction="#searchForPerson" text="SearchPerson" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <Button fx:id="selectImageButton" mnemonicParsing="false" onAction="#selectImage" text="Select Image" GridPane.columnIndex="0" GridPane.rowIndex="1" />
                       </children>
@@ -66,16 +67,25 @@
                     </GridPane>
                     <GridPane prefHeight="206.0" prefWidth="496.0">
                       <children>
-                        <ImageView fx:id="iv_faceMatch1" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.rowIndex="1">
+                        <ImageView fx:id="iv_faceMatch1" fitHeight="110.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="1">
                           <GridPane.margin>
                             <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
                           </GridPane.margin>
                         </ImageView>
+                        <ImageView id="iv_" fx:id="iv_faceMatch2" fitHeight="110.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
+                        <ImageView fx:id="iv_faceMatch3" fitHeight="110.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="1" />
                         <Label text="Recognition Results" GridPane.columnIndex="0" GridPane.rowIndex="0">
                           <GridPane.margin>
                             <Insets left="10.0" top="10.0" />
                           </GridPane.margin>
                         </Label>
+                        <Label id="matchLabel" fx:id="matchLabel1" labelFor="$iv_faceMatch1" text="" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.rowIndex="2">
+                          <GridPane.margin>
+                            <Insets />
+                          </GridPane.margin>
+                        </Label>
+                        <Label fx:id="matchLabel2" text="" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
+                        <Label fx:id="matchLabel3" text="" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.rowIndex="2" />
                       </children>
                       <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -92,6 +102,16 @@
                         <RowConstraints maxHeight="62.0" minHeight="10.0" prefHeight="22.0" vgrow="SOMETIMES" />
                       </rowConstraints>
                     </GridPane>
+                    <Label text="Set Threshold">
+                      <VBox.margin>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" fx:id="x1" />
+                      </VBox.margin>
+                    </Label>
+                    <Slider fx:id="thresholdSlider">
+                      <VBox.margin>
+                        <Insets left="50.0" right="50.0" />
+                      </VBox.margin>
+                    </Slider>
                   </children>
                 </VBox>
               </center>
@@ -120,6 +140,12 @@
                         <RowConstraints maxHeight="10.0" minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
                       </rowConstraints>
                     </GridPane>
+                    <Label text="Recognition Results">
+                      <VBox.margin>
+                        <Insets left="10.0" top="10.0" />
+                      </VBox.margin>
+                    </Label>
+                    <TextArea fx:id="textAreaResults" prefWidth="200.0" wrapText="true" />
                   </children>
                   <padding>
                     <Insets left="10.0" right="10.0" />

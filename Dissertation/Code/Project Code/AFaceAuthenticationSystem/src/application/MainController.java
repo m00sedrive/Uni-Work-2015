@@ -57,7 +57,7 @@ public class MainController extends AppTools {
 
 	public void initSessionID(LoginManager loginManager, String sessionID) {
 
-		sessionLabel.setText(sessionID);
+		//sessionLabel.setText(sessionID);
 		logoutButton.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent event) {

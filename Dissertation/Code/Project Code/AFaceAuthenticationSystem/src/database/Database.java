@@ -67,11 +67,11 @@ public class Database {
 					imageSet[filecount] = person;
 					
                     // debug
-					System.out.println("Image Number: " + filecount);
-                    System.out.println("image: " + f.getName());
-                    System.out.println(" width : " + image.getWidth());
-                    System.out.println(" height: " + image.getHeight());
-                    System.out.println(" size  : " + f.length());
+					//System.out.println("Image Number: " + filecount);
+                    //System.out.println("image: " + f.getName());
+                    //System.out.println(" width : " + image.getWidth());
+                    //System.out.println(" height: " + image.getHeight());
+                    //System.out.println(" size  : " + f.length());
                     
                     filecount++;
                 } catch (final IOException e) {

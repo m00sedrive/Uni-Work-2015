@@ -65,22 +65,22 @@ public class CustomPCA extends AppTools {
 						test.setRGB(a, b, image[a][b]);
 					}
 				}
-				try {
+				/*try {
 					ImageIO.write(test, "jpg",
 							new File("C:\\Users\\user\\Desktop\\FAResults\\face\\" + i + "_input.jpg"));
 				} catch (IOException e) {
 					e.printStackTrace();
-				}
+				}*/
 
 				double[][] normalised = normalizeImageData(image);
 				test = denormaliseImageData(image.length, image[0].length, (float) 0, (float) 255, normalised);
 
-				try {
+				/*try {
 					ImageIO.write(test, "jpg",
 							new File("C:\\Users\\user\\Desktop\\FAResults\\face\\" + i + "_normed_and_unnormed.jpg"));
 				} catch (IOException e) {
 					e.printStackTrace();
-				}
+				}*/
 
 			}
 
@@ -97,8 +97,8 @@ public class CustomPCA extends AppTools {
 		}
 
 		// debug
-		setDebugMatrix(faceMatrix);
-		print2dListToFile("faceMatrix.txt", faceMatrix);
+		//setDebugMatrix(faceMatrix);
+		//print2dListToFile("faceMatrix.txt", faceMatrix);
 	}
 
 	public void performPCA() {
@@ -180,7 +180,7 @@ public class CustomPCA extends AppTools {
 			dataAverageOfEachRow[i] = sum / rowLength;
 		}
 		// debug
-		print1dToFile("dataAverageEachRow.txt", dataAverageOfEachRow);
+		//print1dToFile("dataAverageEachRow.txt", dataAverageOfEachRow);
 
 		faceMatrixMinusAverages = new double[rowLength][columnLength];
 		for (int i = 0; i < rowLength; ++i) {
@@ -188,7 +188,7 @@ public class CustomPCA extends AppTools {
 		}
 
 		// debug
-		print2dArrayToFile("faceMatrixMinusAverages.txt", faceMatrixMinusAverages);
+		//print2dArrayToFile("faceMatrixMinusAverages.txt", faceMatrixMinusAverages);
 	}
 
 	private void calculateWeightsAndEigenFaces() {
@@ -248,8 +248,8 @@ public class CustomPCA extends AppTools {
 		// Transpose so that eigenvalues are in vectors/columns
 		eigenVectors = eigen.getV().transpose().getData();
 
-		print1dToFile("EigenValues.txt", eigenValues);
-		print2dArrayToFile("EigenVectors.txt", eigenVectors);
+		//print1dToFile("EigenValues.txt", eigenValues);
+		//print2dArrayToFile("EigenVectors.txt", eigenVectors);
 	}
 
 	private void calculatePrincipalComponents() {
