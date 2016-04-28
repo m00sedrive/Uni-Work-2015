@@ -6,6 +6,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.imageio.ImageIO;
@@ -90,6 +92,14 @@ public class TrainingController extends AppTools {
 
 	@FXML
 	public void trainImages() {
+		
+	      long startTime = System.currentTimeMillis();
+
+	      long total = 0;
+	      for (int i = 0; i < 10000000; i++) {
+	         total += i;
+	      }
+		
 		if (database != null) {
 			textAreaTrain.setText("Training Database...");
 			cpca = new CustomPCA();
@@ -107,6 +117,10 @@ public class TrainingController extends AppTools {
 		} else {
 			textAreaTrain.setText("Database has not been loaded." + "\n" + "Please load a database to train!");
 		}
+		
+	      long stopTime = System.currentTimeMillis();
+	      long elapsedTime = stopTime - startTime;
+	      System.out.println("Time taken to train: " + elapsedTime);
 	}
 
 	@FXML
@@ -187,7 +201,7 @@ public class TrainingController extends AppTools {
 			textAreaTrain.setText("No written training data detected." + "\n" + "Please write trained database before searching for person.");
 		}
 	}
-
+	
 	public void testAlternativePca() {
 		API.PCA.PCA pca = new API.PCA.PCA();
 		pca.image_data = CustomPCA.getDebugMatrix();

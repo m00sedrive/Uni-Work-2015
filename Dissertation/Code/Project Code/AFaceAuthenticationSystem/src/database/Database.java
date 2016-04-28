@@ -15,7 +15,7 @@ import javax.imageio.ImageIO;
 public class Database {
 	
 	private ArrayList<String> list = new ArrayList<String>();
-	private String filepath = "images/TestFDB/";
+	private String filepath = "images/xm2vts/";
 	private int imageSetSize;
 	public int imageWidth;
 	public int imageHeight;

@@ -108,11 +108,11 @@ public class CustomPCA extends AppTools {
 		// calculate averages and coefficents
 		calculateAverageAndCoevariance(faceMatrix_array);
 		// calculate Eigen values and vectors
-		calculateEigenValuesAndVectors();
+		calculateEigenVectorsAndValues();
 		// calculate principal components
 		calculatePrincipalComponents();
 		// calculate weights and Eigen Faces
-		calculateWeightsAndEigenFaces();
+		calculateEigenFacesAndWeights();
 
 		// construct buffered image from eigen faces
 		BufferedImage[] constructedEFaces = new BufferedImage[faceMatrix_array.length];
@@ -176,12 +176,11 @@ public class CustomPCA extends AppTools {
 		//print2dArrayToFile("faceMatrixMinusAverages.txt", faceMatrixMinusAverages);
 	}
 
-	private void calculateWeightsAndEigenFaces() {
+	private void calculateEigenFacesAndWeights() {
 		int pixelTotal = faceMatrixMinusAverages[0].length;
 		int imageTotal = faceMatrixMinusAverages.length;
 		int vectorTotal = eigenVectors.length;
 
-		// normalise data
 		// calculate eigen faces
 		double[][] eigenFace = new double[vectorTotal][pixelTotal];
 		for (int i = 0; i < vectorTotal; ++i) {
@@ -220,7 +219,7 @@ public class CustomPCA extends AppTools {
 		return denormaliseImageData(imageHeight, imageWidth, 0, 255, imageData);
 	}
 
-	private void calculateEigenValuesAndVectors() {
+	private void calculateEigenVectorsAndValues() {
 
 		// Log.append("Computing covariance matrix...");
 		// Compute covariance matrix
