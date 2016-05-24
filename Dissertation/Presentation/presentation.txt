@@ -26,7 +26,7 @@
 		- produce covariance matrix
 		- calculate eigen vectors and corresponding values
 	- eigen vectors represent the direction of principal components and the values rep the variances of data in that direction
-	- vectors with the least values are removed to potimise data representation
+	- vectors with the least values are removed to optimise data set
 
 7. write database 
 - The PCA computation results are serialized and saved to file so that a known user can authentiate a the log in screen without having to initially train the DB.
